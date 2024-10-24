@@ -16,11 +16,12 @@ public:
 	static void EngineWindowInit(HINSTANCE _Instance);
 	static void CreateWindowClass(const WNDCLASSEXA& _Class);
 
-	static int WindowMessageLoop(EngineDelegate _FrameFunction);
-
+	static int WindowMessageLoop(EngineDelegate _StartFunction, EngineDelegate _FrameFunction);
+	// constrcuter destructer
 	UEngineWindow();
 	~UEngineWindow();
 
+	// delete Function
 	UEngineWindow(const UEngineWindow& _Other) = delete;
 	UEngineWindow(UEngineWindow&& _Other) noexcept = delete;
 	UEngineWindow& operator=(const UEngineWindow& _Other) = delete;

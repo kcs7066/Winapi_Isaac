@@ -18,7 +18,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     }
     break;
     case WM_DESTROY:
-        PostQuitMessage(0);
+        --WindowCount;
         break;
     default:
         return DefWindowProc(hWnd, message, wParam, lParam);
@@ -46,11 +46,11 @@ void UEngineWindow::EngineWindowInit(HINSTANCE _Instance)
     CreateWindowClass(wcex);
 }
 
-int UEngineWindow::WindowMessageLoop(EngineDelegate _FrameFunction)
+int UEngineWindow::WindowMessageLoop(EngineDelegate _StartFunction, EngineDelegate _FrameFunction)
 {
-	MSG msg;
+    MSG msg = MSG();
 
-    while (WindowCount)
+    while (0 != WindowCount)
     {
         if (0 != PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
         {
@@ -108,7 +108,7 @@ void UEngineWindow::Create(std::string_view _TitleName, std::string_view _ClassN
 
     if (nullptr == WindowHandle)
     {
-        MSGASSERT("윈도우 생성에 실패했습니다." + std::string(_TitleName));
+        MSGASSERT(std::string(_TitleName) + " 윈도우 생성에 실패했습니다.");
         return;
     }
 
@@ -116,9 +116,14 @@ void UEngineWindow::Create(std::string_view _TitleName, std::string_view _ClassN
 
 void UEngineWindow::Open(std::string_view _TitleName)
 {
-    if (nullptr == WindowHandle)
+    if (0 == WindowHandle)
     {
         Create("Window");
+    }
+
+    if (0 == WindowHandle)
+    {
+        return;
     }
 
 	ShowWindow(WindowHandle, SW_SHOW);

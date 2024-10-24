@@ -139,16 +139,32 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="AActor.h" />
+    <ClInclude Include="Actor.h" />
+    <ClInclude Include="AGameMode.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="EngineAPICore.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Level.h">
       <SubType>
       </SubType>
     </ClInclude>
     <ClInclude Include="PreCompile.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AActor.cpp" />
+    <ClCompile Include="Actor.cpp" />
+    <ClCompile Include="AGameMode.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="EngineAPICore.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Level.cpp">
       <SubType>
       </SubType>
     </ClCompile>
