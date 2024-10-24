@@ -50,6 +50,11 @@ int UEngineWindow::WindowMessageLoop(EngineDelegate _StartFunction, EngineDelega
 {
     MSG msg = MSG();
 
+    if (true == _StartFunction.IsBind())
+    {
+        _StartFunction();
+    }
+
     while (0 != WindowCount)
     {
         if (0 != PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
@@ -112,6 +117,7 @@ void UEngineWindow::Create(std::string_view _TitleName, std::string_view _ClassN
         return;
     }
 
+    BackBuffer = GetDC(WindowHandle);
 }
 
 void UEngineWindow::Open(std::string_view _TitleName)

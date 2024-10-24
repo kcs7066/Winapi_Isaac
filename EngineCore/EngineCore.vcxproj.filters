@@ -7,7 +7,7 @@
     <ClInclude Include="PreCompile.h">
       <Filter>PreCompile</Filter>
     </ClInclude>
-    <ClInclude Include="AGameMode.h">
+    <ClInclude Include="GameMode.h">
       <Filter>Object\Actor</Filter>
     </ClInclude>
     <ClInclude Include="Actor.h">
@@ -24,7 +24,7 @@
     <ClCompile Include="PreCompile.cpp">
       <Filter>PreCompile</Filter>
     </ClCompile>
-    <ClCompile Include="AGameMode.cpp">
+    <ClCompile Include="GameMode.cpp">
       <Filter>Object\Actor</Filter>
     </ClCompile>
     <ClCompile Include="Actor.cpp">

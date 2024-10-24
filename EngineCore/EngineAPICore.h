@@ -40,12 +40,19 @@ public:
 		return EngineMainWindow;
 	}
 
-	void CreateLevel(std::string_view _LevelName)
+	template<typename GameModeType, typename MainPawnType>
+	ULevel* CreateLevel(std::string_view _LevelName)
 	{
 		ULevel* NewLevel = new ULevel();
 
+		NewLevel->CreateGameMode<GameModeType, MainPawnType>();
+
 		Levels.insert({ _LevelName.data() , NewLevel });
+
+		return NewLevel;
 	}
+
+	void OpenLevel(std::string_view _LevelName);
 
 protected:
 
@@ -58,6 +65,8 @@ private:
 	UEngineWindow EngineMainWindow;
 
 	std::map<std::string, class ULevel*> Levels;
+
+	class ULevel* CurLevel = nullptr;
 
 	void Tick();
 	
