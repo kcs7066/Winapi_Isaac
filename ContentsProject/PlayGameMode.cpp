@@ -14,5 +14,5 @@ APlayGameMode::~APlayGameMode()
 
 void APlayGameMode::BeginPlay()
 {
-	int a = 0;
+
 }

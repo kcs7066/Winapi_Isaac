@@ -15,6 +15,8 @@ IsaacContentsCore::~IsaacContentsCore()
 
 void IsaacContentsCore::BeginPlay()
 {
+	UEngineAPICore::GetCore()->GetMainWindow().SetWindowTitle("EduWindow");
+
 	UEngineAPICore::GetCore()->CreateLevel<APlayGameMode, APlayer>("Play");
 
 	UEngineAPICore::GetCore()->OpenLevel("Play");
