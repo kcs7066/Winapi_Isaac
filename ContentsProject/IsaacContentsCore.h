@@ -1,5 +1,6 @@
 #pragma once
 #include <EngineCore/EngineAPICore.h>
+#include <EnginePlatform/EngineWindow.h>
 
 class IsaacContentsCore : public UContentsCore
 {

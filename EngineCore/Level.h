@@ -1,5 +1,6 @@
 #pragma once
 #include "GameMode.h"
+#include <EnginePlatform/EngineWinImage.h>
 
 class ULevel
 {
@@ -33,6 +34,10 @@ public:
 protected:
 
 private:
+	void ScreenClear();
+	void DoubleBuffering();
+
+
 	template<typename GameModeType, typename MainPawnType>
 	void CreateGameMode()
 	{
