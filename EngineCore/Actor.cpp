@@ -1,6 +1,10 @@
 #include "PreCompile.h"
 #include "Actor.h"
+
 #include <EngineCore/EngineAPICore.h>
+#include <EngineBase/EngineMath.h>
+#include <EnginePlatform/EngineWindow.h>
+#include <EnginePlatform/EngineWinImage.h>
 
 AActor::AActor()
 {

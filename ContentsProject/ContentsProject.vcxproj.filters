@@ -7,9 +7,6 @@
     <Filter Include="PreCompile">
       <UniqueIdentifier>{ef81e9e8-a3fb-4378-98e6-fbde807770a4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Core">
-      <UniqueIdentifier>{c2a5ad15-bab3-46d2-856e-de4a270ef3fb}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ContentsObject\GameMode">
       <UniqueIdentifier>{448b2668-82c0-4362-8031-a12cce32fca9}</UniqueIdentifier>
     </Filter>
@@ -19,13 +16,13 @@
     <Filter Include="ContentsObject\Play">
       <UniqueIdentifier>{6affa9df-cb72-4732-8c45-68ea0ba24e39}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core">
+      <UniqueIdentifier>{dc359422-6fbf-4ba6-8db5-bc99bb3b6e70}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PreCompile.cpp">
       <Filter>PreCompile</Filter>
-    </ClCompile>
-    <ClCompile Include="IsaacContentsCore.cpp">
-      <Filter>Core</Filter>
     </ClCompile>
     <ClCompile Include="PlayGameMode.cpp">
       <Filter>ContentsObject\GameMode</Filter>
@@ -39,13 +36,13 @@
     <ClCompile Include="PlayMap.cpp">
       <Filter>ContentsObject\Play</Filter>
     </ClCompile>
+    <ClCompile Include="IsaacContentsCore.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PreCompile.h">
       <Filter>PreCompile</Filter>
-    </ClInclude>
-    <ClInclude Include="IsaacContentsCore.h">
-      <Filter>Core</Filter>
     </ClInclude>
     <ClInclude Include="PlayGameMode.h">
       <Filter>ContentsObject\GameMode</Filter>
@@ -58,6 +55,9 @@
     </ClInclude>
     <ClInclude Include="PlayMap.h">
       <Filter>ContentsObject\Play</Filter>
+    </ClInclude>
+    <ClInclude Include="IsaacContentsCore.h">
+      <Filter>Core</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

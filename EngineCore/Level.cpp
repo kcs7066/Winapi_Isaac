@@ -2,6 +2,10 @@
 #include "Level.h"
 #include "EngineAPICore.h"
 
+#include <EngineBase/EngineMath.h>
+#include <EnginePlatform/EngineWindow.h>
+#include <EnginePlatform/EngineWinImage.h>
+
 ULevel::ULevel()
 {
 

@@ -16,6 +16,9 @@
     <ClInclude Include="Level.h">
       <Filter>Object\Level</Filter>
     </ClInclude>
+    <ClInclude Include="ImageManager.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EngineAPICore.cpp">
@@ -33,6 +36,9 @@
     <ClCompile Include="Level.cpp">
       <Filter>Object\Level</Filter>
     </ClCompile>
+    <ClCompile Include="ImageManager.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Core">
@@ -49,6 +55,9 @@
     </Filter>
     <Filter Include="Object\Level">
       <UniqueIdentifier>{b400bca7-246b-4ffb-a7af-7975debb55a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{48aa54f4-95c2-4d79-a4aa-6d0cc3574585}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

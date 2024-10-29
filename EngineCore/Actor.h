@@ -1,10 +1,11 @@
 #pragma once
 #include <EngineBase/EngineMath.h>
-#include <EnginePlatform/EngineWinImage.h>
 
 class AActor
 {
 public:
+	typedef AActor Super;
+
 	friend class ULevel;
 	// constrcuter destructer
 	AActor();

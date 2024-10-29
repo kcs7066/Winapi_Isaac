@@ -143,10 +143,7 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="IsaacContentsCore.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
+    <ClInclude Include="IsaacContentsCore.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayGameMode.h">
       <SubType>
@@ -163,10 +160,7 @@
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="IsaacContentsCore.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
+    <ClCompile Include="IsaacContentsCore.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayGameMode.cpp">
       <SubType>

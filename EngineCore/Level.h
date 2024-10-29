@@ -1,6 +1,6 @@
 #pragma once
 #include "GameMode.h"
-#include <EnginePlatform/EngineWinImage.h>
+
 
 class ULevel
 {
