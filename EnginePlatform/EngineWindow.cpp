@@ -108,6 +108,12 @@ UEngineWindow::~UEngineWindow()
         delete BackBufferImage;
         BackBufferImage = nullptr;
     }
+
+    if (nullptr != WindowHandle)
+    {
+        DestroyWindow(WindowHandle);
+        WindowHandle = nullptr;
+    }
 }
 
 void UEngineWindow::Create(std::string_view _TitleName, std::string_view _ClassName)

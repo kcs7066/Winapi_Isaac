@@ -37,6 +37,8 @@ void IsaacContentsCore::BeginPlay()
 		UImageManager::GetInst().Load(FilePath);
 	}
 
+	UImageManager::GetInst().CuttingSprite("Test_Monstro.png", { 512, 512 });
+
 	UEngineAPICore::GetCore()->GetMainWindow().SetWindowTitle("Isaac");
 
 	UEngineAPICore::GetCore()->GetMainWindow().SetWindowPosAndScale({ 0, 0 }, { 1280, 720 });

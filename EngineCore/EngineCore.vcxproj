@@ -140,6 +140,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h" />
+    <ClInclude Include="EngineSprite.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="GameMode.h">
       <SubType>
       </SubType>
@@ -160,6 +164,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Actor.cpp" />
+    <ClCompile Include="EngineSprite.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="GameMode.cpp">
       <SubType>
       </SubType>

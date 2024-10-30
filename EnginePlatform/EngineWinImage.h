@@ -1,8 +1,9 @@
 #pragma once
 #include <Windows.h>
 #include <EngineBase/EngineMath.h>
+#include <EngineBase/Object.h>
 
-class UEngineWinImage
+class UEngineWinImage : public UObject
 {
 public:
 	// constrcuter destructer
@@ -27,7 +28,20 @@ public:
 	
 	void Create(UEngineWinImage* _TargetImage, FVector2D _Scale);
 
-	void CopyToBit(UEngineWinImage* _TargetImage, const FTransform& _Pos);
+	void CopyToBit(UEngineWinImage* _TargetImage,
+		const FTransform& _Trans);
+
+	void CopyToTrans(UEngineWinImage* _TargetImage,
+		const FTransform& _RenderTrans,
+		const FTransform& _LTImageTrans,
+		UColor _Color = UColor(255, 0, 255, 0));
+
+	void Load(UEngineWinImage* _TargetImage, std::string_view _Path);
+
+	FVector2D GetImageScale() const
+	{
+		return { Info.bmWidth, Info.bmHeight };
+	}
 
 protected:
 
