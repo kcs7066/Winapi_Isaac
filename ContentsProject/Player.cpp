@@ -14,14 +14,14 @@ void APlayer::RunSoundPlay()
 
 APlayer::APlayer()
 {
-	SetActorLocation({ 100, 100 });
+	SetActorLocation({ 424, 268 });
 	{
 		SpriteRenderer = CreateDefaultSubObject<USpriteRenderer>();
 		SpriteRenderer->SetSprite("Test_Loki.png");
 		SpriteRenderer->SetComponentScale({ 300, 300 });
 
 
-		SpriteRenderer->CreateAnimation("Run_Right", "Test_Loki.png", 2, 4, 0.1f);
+		SpriteRenderer->CreateAnimation("Run_Right", "Test_Loki.png", 2, 18, 0.1f);
 		SpriteRenderer->CreateAnimation("Idle_Right", "Test_Loki.png", 0, 0, 0.1f);
 
 		SpriteRenderer->ChangeAnimation("Idle_Right");

@@ -40,12 +40,21 @@ void IsaacContentsCore::BeginPlay()
 
 	UImageManager::GetInst().CuttingSprite("Test_Loki.png", { 128, 128 });
 
+	{
+
+		UEngineDirectory TitleDir;
+		TitleDir.MoveParentToDirectory("IsaacResource");
+		TitleDir.Append("Title");
+
+		UImageManager::GetInst().LoadFolder(TitleDir.GetPathToString());
+
+	}
 
 
 
 	UEngineAPICore::GetCore()->GetMainWindow().SetWindowTitle("Isaac");
 
-	UEngineAPICore::GetCore()->GetMainWindow().SetWindowPosAndScale({ 0, 0 }, { 1280, 720 });
+	UEngineAPICore::GetCore()->GetMainWindow().SetWindowPosAndScale({ 0, 0 }, { 960, 540 });
 
 	UEngineAPICore::GetCore()->CreateLevel<APlayGameMode, APlayer>("Play");
 

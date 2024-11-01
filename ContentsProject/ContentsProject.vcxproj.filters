@@ -25,6 +25,9 @@
     <Filter Include="Global">
       <UniqueIdentifier>{bb8374ab-1304-4494-b404-7f7b3f9f5a48}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ContentsObject\End">
+      <UniqueIdentifier>{46649ed2-2de2-427c-a35a-ef3081f7ea24}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PreCompile.cpp">
@@ -54,6 +57,15 @@
     <ClCompile Include="ContentsEnum.cpp">
       <Filter>Global</Filter>
     </ClCompile>
+    <ClCompile Include="EndGameMode.cpp">
+      <Filter>ContentsObject\GameMode</Filter>
+    </ClCompile>
+    <ClCompile Include="EndingCredit.cpp">
+      <Filter>ContentsObject\End</Filter>
+    </ClCompile>
+    <ClCompile Include="Room.cpp">
+      <Filter>ContentsObject\Play</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PreCompile.h">
@@ -82,6 +94,15 @@
     </ClInclude>
     <ClInclude Include="ContentsEnum.h">
       <Filter>Global</Filter>
+    </ClInclude>
+    <ClInclude Include="EndGameMode.h">
+      <Filter>ContentsObject\GameMode</Filter>
+    </ClInclude>
+    <ClInclude Include="EndingCredit.h">
+      <Filter>ContentsObject\End</Filter>
+    </ClInclude>
+    <ClInclude Include="Room.h">
+      <Filter>ContentsObject\Play</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

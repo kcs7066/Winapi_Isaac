@@ -5,6 +5,9 @@
 #include <EngineCore/EngineAPICore.h>
 
 #include "TitleLogo.h"
+#include <EngineCore/SpriteRenderer.h>
+
+
 
 ATitleGameMode::ATitleGameMode()
 {
@@ -18,6 +21,7 @@ ATitleGameMode::~ATitleGameMode()
 void ATitleGameMode::BeginPlay()
 {
 	Super::BeginPlay();
+	TitleLogo* NewActor = GetWorld()->SpawnActor<TitleLogo>();
 }
 
 
