@@ -23,41 +23,73 @@ UEnginePath::~UEnginePath()
 {
 }
 
+//경로를 얻어주는 함수
 std::string UEnginePath::GetPathToString()
 {
 	return Path.string();
 }
 
+//파일 이름을 얻어주는 함수
 std::string UEnginePath::GetFileName()
 {
+	if (true == IsDirectory())
+	{
+		MSGASSERT("파일 경로 일때만 GetFileName을 호출할수 있습니다." + Path.string());
+		return "";
+	}
+
 	return Path.filename().string();
 }
 
+//디렉토리 이름을 얻어주는 함수
+std::string UEnginePath::GetDirectoryName()
+{
+	if (false == IsDirectory())
+	{
+		MSGASSERT("디렉토리 경로 일때만 GetDirectoryName을 호출할수 있습니다." + Path.string());
+		return "";
+	}
+
+	return Path.filename().string();
+}
+
+//확장자명을 얻어주는 함수
 std::string UEnginePath::GetExtension()
 {
 	return Path.extension().string();
 }
 
+// ??
 bool UEnginePath::IsExists()
 {
 	return std::filesystem::exists(Path);
 }
 
+//파일인가
 bool UEnginePath::IsFile()
 {
 	return false == IsDirectory();
 }
 
+//디렉토리인가
 bool UEnginePath::IsDirectory()
 {
 	return std::filesystem::is_directory(Path);
 }
 
+// 상위 경로로 이동
 void UEnginePath::MoveParent()
 {
 	Path = Path.parent_path();
 }
 
+//경로에 이름 추가
+void UEnginePath::Append(std::string_view _AppendName)
+{
+	Path.append(_AppendName);
+}
+
+// ??
 bool UEnginePath::MoveParentToDirectory(std::string_view _Path)
 {
 

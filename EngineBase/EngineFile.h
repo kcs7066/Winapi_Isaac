@@ -23,7 +23,7 @@ public:
 	void Read(void* _Ptr, size_t _Size);
 
 	void FileOpen(const char* _Mode);
-	bool IsExits();
+	bool IsExist();
 	void Close();
 
 private:

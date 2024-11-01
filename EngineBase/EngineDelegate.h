@@ -20,16 +20,19 @@ public:
 	//EngineDelegate& operator=(const EngineDelegate& _Other) = delete;
 	//EngineDelegate& operator=(EngineDelegate&& _Other) noexcept = delete;
 
+	// 함수가 연결되었는가?
 	bool IsBind()
 	{
 		return false == Functions.empty();
 	}
 
-	void operator=(std::function<void()> _Function)
+	// += 연산자 겹지정 (함수연결)
+	void operator+=(std::function<void()> _Function)
 	{
 		Functions.push_back(_Function);
 	}
 
+	// ??
 	void operator()()
 	{
 		std::list<std::function<void()>>::iterator StartIter = Functions.begin();
@@ -42,6 +45,7 @@ public:
 		}
 	}
 
+	//함수 지우기
 	void Clear()
 	{
 		Functions.clear();

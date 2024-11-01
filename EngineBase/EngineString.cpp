@@ -10,7 +10,7 @@ UEngineString::~UEngineString()
 {
 }
 
-
+// ??
 std::string UEngineString::ToUpper(std::string_view _string)
 {
 	std::string Result = _string.data();
@@ -24,6 +24,7 @@ std::string UEngineString::ToUpper(std::string_view _string)
 	return Result;
 }
 
+// 인코딩함수
 std::wstring UEngineString::AnsiToUnicode(std::string_view _Name)
 {
 	

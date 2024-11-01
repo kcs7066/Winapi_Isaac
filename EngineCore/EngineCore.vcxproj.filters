@@ -22,6 +22,21 @@
     <ClInclude Include="EngineSprite.h">
       <Filter>Resources</Filter>
     </ClInclude>
+    <ClInclude Include="EngineCoreDebug.h">
+      <Filter>Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="2DCollision.h">
+      <Filter>Object\Actor\Component\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="SpriteRenderer.h">
+      <Filter>Object\Actor\Component\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="ActorComponent.h">
+      <Filter>Object\Actor\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneComponent.h">
+      <Filter>Object\Actor\Component</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EngineAPICore.cpp">
@@ -45,6 +60,21 @@
     <ClCompile Include="EngineSprite.cpp">
       <Filter>Resources</Filter>
     </ClCompile>
+    <ClCompile Include="EngineCoreDebug.cpp">
+      <Filter>Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="2DCollision.cpp">
+      <Filter>Object\Actor\Component\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="SpriteRenderer.cpp">
+      <Filter>Object\Actor\Component\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="ActorComponent.cpp">
+      <Filter>Object\Actor\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneComponent.cpp">
+      <Filter>Object\Actor\Component</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Core">
@@ -64,6 +94,18 @@
     </Filter>
     <Filter Include="Resources">
       <UniqueIdentifier>{48aa54f4-95c2-4d79-a4aa-6d0cc3574585}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Debug">
+      <UniqueIdentifier>{2478ce23-f271-4dc3-bab4-2c524eb39808}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Actor\Component">
+      <UniqueIdentifier>{eb3cc882-bd4a-42a7-9d4d-89423e65880b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Actor\Component\Collision">
+      <UniqueIdentifier>{babb5a39-0c37-42f8-aa5c-d639b94096b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Actor\Component\Rendering">
+      <UniqueIdentifier>{1caba884-bbb9-4ba9-9033-9796991e36eb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

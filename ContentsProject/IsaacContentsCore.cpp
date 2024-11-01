@@ -8,6 +8,7 @@
 #include <EngineBase/EngineFile.h>
 #include <EngineCore/ImageManager.h>
 
+#include "TitleGameMode.h"
 #include "PlayGameMode.h"
 #include "Player.h"
 
@@ -39,13 +40,18 @@ void IsaacContentsCore::BeginPlay()
 
 	UImageManager::GetInst().CuttingSprite("Test_Loki.png", { 128, 128 });
 
+
+
+
 	UEngineAPICore::GetCore()->GetMainWindow().SetWindowTitle("Isaac");
 
 	UEngineAPICore::GetCore()->GetMainWindow().SetWindowPosAndScale({ 0, 0 }, { 1280, 720 });
 
 	UEngineAPICore::GetCore()->CreateLevel<APlayGameMode, APlayer>("Play");
 
-	UEngineAPICore::GetCore()->OpenLevel("Play");
+	UEngineAPICore::GetCore()->CreateLevel<ATitleGameMode, AActor>("Title");
+
+	UEngineAPICore::GetCore()->OpenLevel("Title");
 }
 
 void IsaacContentsCore::Tick()

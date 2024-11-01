@@ -19,6 +19,12 @@
     <Filter Include="Core">
       <UniqueIdentifier>{dc359422-6fbf-4ba6-8db5-bc99bb3b6e70}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ContentsObject\Title">
+      <UniqueIdentifier>{efcb1657-3e8d-4285-8c6e-07d37908b794}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Global">
+      <UniqueIdentifier>{bb8374ab-1304-4494-b404-7f7b3f9f5a48}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PreCompile.cpp">
@@ -39,6 +45,15 @@
     <ClCompile Include="IsaacContentsCore.cpp">
       <Filter>Core</Filter>
     </ClCompile>
+    <ClCompile Include="TitleGameMode.cpp">
+      <Filter>ContentsObject\GameMode</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleLogo.cpp">
+      <Filter>ContentsObject\Title</Filter>
+    </ClCompile>
+    <ClCompile Include="ContentsEnum.cpp">
+      <Filter>Global</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PreCompile.h">
@@ -58,6 +73,15 @@
     </ClInclude>
     <ClInclude Include="IsaacContentsCore.h">
       <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleGameMode.h">
+      <Filter>ContentsObject\GameMode</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleLogo.h">
+      <Filter>ContentsObject\Title</Filter>
+    </ClInclude>
+    <ClInclude Include="ContentsEnum.h">
+      <Filter>Global</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

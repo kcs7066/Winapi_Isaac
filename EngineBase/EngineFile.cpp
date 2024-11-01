@@ -25,6 +25,8 @@ UEngineFile::~UEngineFile()
 	Close();
 }
 
+
+// 파일을 여는 함수
 void UEngineFile::FileOpen(const char* _Mode)
 {
 	fopen_s(&File, Path, _Mode);
@@ -37,7 +39,7 @@ void UEngineFile::FileOpen(const char* _Mode)
 	}
 }
 
-
+//파일 쓰기
 void UEngineFile::Write(const void* _Ptr, size_t _Size)
 {
 	if (0 == _Size)
@@ -59,6 +61,7 @@ void UEngineFile::Write(const void* _Ptr, size_t _Size)
 	fwrite(_Ptr, _Size, 1, File);
 }
 
+//파일 읽기
 void UEngineFile::Read(void* _Ptr, size_t _Size)
 {
 	if (0 == _Size)
@@ -80,7 +83,8 @@ void UEngineFile::Read(void* _Ptr, size_t _Size)
 	fread(_Ptr, _Size, 1, File);
 }
 
-bool UEngineFile::IsExits()
+//파일이 존재하는가
+bool UEngineFile::IsExist()
 {
 	int Result = _access(Path, 00);
 
@@ -89,7 +93,7 @@ bool UEngineFile::IsExits()
 
 
 
-
+// 파일 닫기
 void UEngineFile::Close()
 {
 	if (nullptr != File)

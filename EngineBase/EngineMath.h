@@ -32,21 +32,25 @@ public:
 
 	}
 
+	//X값을 int로 바꿔주는 함수
 	int iX() const
 	{
 		return static_cast<int>(X);
 	}
 
+	//Y값을 int로 바꿔주는 함수
 	int iY() const
 	{
 		return static_cast<int>(Y);
 	}
 
+	// X든 Y든 0이있으면 터트리는 함수.
 	bool IsZeroed() const
 	{
 		return X == 0.0f || Y == 0.0f;
 	}
 
+	// 값을 절반으로 바꿔주는 함수
 	FVector2D Half() const
 	{
 		return { X * 0.5f, Y * 0.5f };
@@ -105,9 +109,17 @@ public:
 		return *this;
 	}
 
-	void Normalize()
+	//X와Y의 값을 문자열로 표현해주는 함수
+	std::string ToString()
 	{
+		std::string Stream;
 
+		Stream += "X : [";
+		Stream += std::to_string(X);
+		Stream += "] Y : [";
+		Stream += std::to_string(Y);
+		Stream += "]";
+		return Stream;
 	}
 };
 
@@ -117,11 +129,13 @@ public:
 	FVector2D Scale;
 	FVector2D Location;
 
+	// 왼쪽위
 	FVector2D CenterLeftTop() const
 	{
 		return Location - Scale.Half();
 	}
 
+	//오른쪽아래
 	FVector2D CenterRightBottom() const
 	{
 		return Location + Scale.Half();
