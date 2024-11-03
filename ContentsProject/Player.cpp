@@ -28,6 +28,9 @@ APlayer::APlayer()
 
 
 		SpriteRenderer->SetAnimationEvent("Run_Right", 2, std::bind(&APlayer::RunSoundPlay, this));
+
+		std::string Name = SpriteRenderer->GetCurSpriteName();
+
 	}
 }
 

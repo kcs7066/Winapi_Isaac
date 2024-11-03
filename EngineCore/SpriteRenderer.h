@@ -65,9 +65,17 @@ public:
 
 		void CreateAnimation(std::string_view _AnimationName, std::string_view _SpriteName, std::vector<int> _Indexs, std::vector<float> _Frame, bool _Loop = true);
 
+		void CreateAnimation(std::string_view _AnimationName, std::string_view _SpriteName, std::vector<int> _Indexs, float _Frame, bool _Loop = true);
+
 		void ChangeAnimation(std::string_view _AnimationName, bool _Force = false);
 
 		void SetAnimationEvent(std::string_view _AnimationName, int _Frame, std::function<void()> _Function);
+
+		std::string GetCurSpriteName()
+		{
+			return Sprite->GetName();
+		}
+
 
 protected:
 
