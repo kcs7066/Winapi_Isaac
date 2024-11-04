@@ -1,5 +1,7 @@
 #include "PreCompile.h"
 #include "Player.h"
+#include "Room.h"
+#include "PlayGameMode.h"
 
 #include <EngineCore/EngineAPICore.h>
 #include <EngineCore/SpriteRenderer.h>
@@ -14,7 +16,7 @@ void APlayer::RunSoundPlay()
 
 APlayer::APlayer()
 {
-	SetActorLocation({ 424, 268 });
+	SetActorLocation({ 480, 270 });
 	{
 		SpriteRenderer = CreateDefaultSubObject<USpriteRenderer>();
 		SpriteRenderer->SetSprite("Test_Loki.png");
@@ -54,6 +56,7 @@ void APlayer::Tick(float _DeltaTime)
 
 	UEngineDebug::CoreOutPutString("FPS : " + std::to_string(1.0f / _DeltaTime));
 	UEngineDebug::CoreOutPutString("PlayerPos : " + GetActorLocation().ToString());
+
 
 	if (true == UEngineInput::GetInst().IsDown('R'))
 	{

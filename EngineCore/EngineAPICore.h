@@ -29,6 +29,7 @@ public:
 	UEngineAPICore& operator=(const UEngineAPICore& _Other) = delete;
 	UEngineAPICore& operator=(UEngineAPICore&& _Other) noexcept = delete;
 
+
 	static int EngineStart(HINSTANCE _Inst, UContentsCore* _UserCore);
 
 	static class UEngineAPICore* GetCore()

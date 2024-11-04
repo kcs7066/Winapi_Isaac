@@ -40,6 +40,8 @@ public:
 		Data.clear();
 	}
 
+
+
 protected:
 
 	std::vector<USpriteData> Data;

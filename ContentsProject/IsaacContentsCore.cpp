@@ -39,6 +39,7 @@ void IsaacContentsCore::BeginPlay()
 	}
 
 	UImageManager::GetInst().CuttingSprite("Test_Loki.png", { 128, 128 });
+	UImageManager::GetInst().CuttingSprite("Test_Monstro.png", { 512, 512 });
 
 	{
 
@@ -47,6 +48,16 @@ void IsaacContentsCore::BeginPlay()
 		TitleDir.Append("Title");
 
 		UImageManager::GetInst().LoadFolder(TitleDir.GetPathToString());
+
+	}
+
+	{
+
+		UEngineDirectory PlayDir;
+		PlayDir.MoveParentToDirectory("IsaacResource");
+		PlayDir.Append("Play");
+
+		UImageManager::GetInst().LoadFolder(PlayDir.GetPathToString());
 
 	}
 

@@ -22,6 +22,7 @@ public:
 	void LevelChangeStart();
 	void LevelChangeEnd();
 
+
 protected:
 
 private:

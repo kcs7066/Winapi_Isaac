@@ -80,7 +80,8 @@ void USpriteRenderer::Render(float _DeltaTime)
 
 	ULevel* Level = GetActor()->GetWorld();
 
-	Trans.Location = Trans.Location - Level->CameraPos;
+	//카메라 따라오는 기능
+	//Trans.Location = Trans.Location - Level->CameraPos;
 
 
 	CurData.Image->CopyToTrans(BackBufferImage, Trans, CurData.Transform);
@@ -107,6 +108,8 @@ void USpriteRenderer::SetSprite(std::string_view _Name, int _CurIndex /*= 0*/)
 {
 
 	Sprite = UImageManager::GetInst().FindSprite(_Name);
+
+	int a = 0;
 
 	if (nullptr == Sprite)
 	{

@@ -12,6 +12,7 @@ UEngineAPICore* UEngineAPICore::MainCore = nullptr;
 UContentsCore* UEngineAPICore::UserCore = nullptr;
 
 UEngineAPICore::UEngineAPICore()
+	
 {
 
 }

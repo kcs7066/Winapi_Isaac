@@ -2,7 +2,8 @@
 #include "GameMode.h"
 
 
-class ULevel
+
+class ULevel :public UObject
 {
 public:
 	friend class USpriteRenderer;
@@ -30,6 +31,8 @@ public:
 
 		AActor* ActorPtr = dynamic_cast<AActor*>(NewActor);
 		ActorPtr->World = this;
+
+	
 
 		BeginPlayList.push_back(ActorPtr);
 
@@ -78,9 +81,14 @@ private:
 		MainPawn->World = this;
 		GameMode->World = this;
 
+		MainPawn->SetName("메인폰");
+		GameMode->SetName("게임모드");
+			
 
 		BeginPlayList.push_back(GameMode);
 		BeginPlayList.push_back(MainPawn);
+
+
 	}
 
 	void PushRenderer(class USpriteRenderer* _Renderer);
