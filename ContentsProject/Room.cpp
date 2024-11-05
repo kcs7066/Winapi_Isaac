@@ -8,12 +8,7 @@ ARoom::ARoom()
 {
 
 	{
-		USpriteRenderer* SpriteRenderer = CreateDefaultSubObject<USpriteRenderer>();
-		SpriteRenderer->SetOrder(ERenderOrder::BACKGROUND);
-		SpriteRenderer->SetSprite("Room_01.png");
 
-		FVector2D MapScale = SpriteRenderer->SetSpriteScale(1.0f);
-		SpriteRenderer->SetComponentLocation(MapScale.Half());
 	}
 
 }
@@ -28,16 +23,16 @@ void ARoom::Link(ARoom* _Room, RoomDir _Dir)
 	switch (_Dir)
 	{
 	case RoomDir::LEFT:
-		Rooms.insert({ RoomDir::LEFT,_Room });
+		LinkedRooms.insert({ RoomDir::LEFT,_Room });
 		break;
 	case RoomDir::RIGHT:
-		Rooms.insert({ RoomDir::RIGHT, _Room });
+		LinkedRooms.insert({ RoomDir::RIGHT, _Room });
 		break;
 	case RoomDir::UP:
-		Rooms.insert({ RoomDir::UP, _Room });
+		LinkedRooms.insert({ RoomDir::UP, _Room });
 		break;
 	case RoomDir::DOWN:
-		Rooms.insert({ RoomDir::DOWN, _Room });
+		LinkedRooms.insert({ RoomDir::DOWN, _Room });
 		break;
 	default:
 		break;

@@ -3,6 +3,7 @@
 #include "EngineSprite.h"
 #include <EngineBase/EngineDelegate.h>
 #include <map>
+#include "Actor.h"
 
 class USpriteRenderer : public USceneComponent
 {
@@ -29,62 +30,82 @@ public:
 
 	};
 
-	public:
-		// constrcuter destructer
-		USpriteRenderer();
-		~USpriteRenderer();
+public:
+	// constrcuter destructer
+	USpriteRenderer();
+	~USpriteRenderer();
 
-		// delete Function
-		USpriteRenderer(const USpriteRenderer& _Other) = delete;
-		USpriteRenderer(USpriteRenderer&& _Other) noexcept = delete;
-		USpriteRenderer& operator=(const USpriteRenderer& _Other) = delete;
-		USpriteRenderer& operator=(USpriteRenderer&& _Other) noexcept = delete;
+	// delete Function
+	USpriteRenderer(const USpriteRenderer& _Other) = delete;
+	USpriteRenderer(USpriteRenderer&& _Other) noexcept = delete;
+	USpriteRenderer& operator=(const USpriteRenderer& _Other) = delete;
+	USpriteRenderer& operator=(USpriteRenderer&& _Other) noexcept = delete;
 
-		void Render(float _DeltaTime);
-		void BeginPlay() override;
-		void ComponentTick(float _DeltaTime) override;
-
-
-		template<typename EnumType>
-		void SetOrder(EnumType _Order)
-		{
-			SetOrder(static_cast<int>(_Order));
-		}
-
-		void SetOrder(int _Order);
-
-		int GetOrder()
-		{
-			return Order;
-		}
-
-		FVector2D SetSpriteScale(float _Ratio = 1.0f, int _CurIndex = 0);
+	void Render(float _DeltaTime);
+	void BeginPlay() override;
+	void ComponentTick(float _DeltaTime) override;
 
 
-		void CreateAnimation(std::string_view _AnimationName, std::string_view _SpriteName, int _Start, int _End, float Time = 0.1f, bool _Loop = true);
+	template<typename EnumType>
+	void SetOrder(EnumType _Order)
+	{
+		SetOrder(static_cast<int>(_Order));
+	}
 
-		void CreateAnimation(std::string_view _AnimationName, std::string_view _SpriteName, std::vector<int> _Indexs, std::vector<float> _Frame, bool _Loop = true);
+	void SetOrder(int _Order);
 
-		void CreateAnimation(std::string_view _AnimationName, std::string_view _SpriteName, std::vector<int> _Indexs, float _Frame, bool _Loop = true);
+	int GetOrder()
+	{
+		return Order;
+	}
 
-		void ChangeAnimation(std::string_view _AnimationName, bool _Force = false);
+	FVector2D SetSpriteScale(float _Ratio = 1.0f, int _CurIndex = 0);
 
-		void SetAnimationEvent(std::string_view _AnimationName, int _Frame, std::function<void()> _Function);
 
-		std::string GetCurSpriteName()
-		{
-			return Sprite->GetName();
-		}
+	void CreateAnimation(std::string_view _AnimationName, std::string_view _SpriteName, int _Start, int _End, float Time = 0.1f, bool _Loop = true);
 
+	void CreateAnimation(std::string_view _AnimationName, std::string_view _SpriteName, std::vector<int> _Indexs, std::vector<float> _Frame, bool _Loop = true);
+
+	void CreateAnimation(std::string_view _AnimationName, std::string_view _SpriteName, std::vector<int> _Indexs, float _Frame, bool _Loop = true);
+
+	void ChangeAnimation(std::string_view _AnimationName, bool _Force = false);
+
+	void SetAnimationEvent(std::string_view _AnimationName, int _Frame, std::function<void()> _Function);
+
+	std::string GetCurSpriteName()
+	{
+		return Sprite->GetName();
+	}
+
+	bool IsActive() override
+	{
+		return UObject::IsActive() && GetActor()->IsActive();
+	}
+
+
+	bool IsDestroy() override
+	{
+		return UObject::IsDestroy() || GetActor()->IsDestroy();
+	}
+
+	void SetCameraEffect(bool _Value)
+	{
+		IsCameraEffect = _Value;
+	}
+
+	void SetCameraEffectScale(float _Effect);
+	void SetSprite(std::string_view _Name, int _CurIndex = 0);
 
 protected:
 
 public:
 	int Order = 0;
 	int CurIndex = 0;
+	bool IsCameraEffect = true;
+	float CameraEffectScale = 1.0f;
 
 	class UEngineSprite* Sprite = nullptr;
-	void SetSprite(std::string_view _Name, int _CurIndex = 0);
+
 
 	std::map<std::string, FrameAnimation> FrameAnimations;
 	FrameAnimation* CurAnimation = nullptr;

@@ -161,6 +161,7 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="EngineRandom.h" />
     <ClInclude Include="EngineString.h">
       <SubType>
       </SubType>
@@ -169,6 +170,7 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="FSMStateManager.h" />
     <ClInclude Include="Object.h">
       <SubType>
       </SubType>
@@ -194,6 +196,7 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="EngineRandom.cpp" />
     <ClCompile Include="EngineString.cpp">
       <SubType>
       </SubType>
@@ -202,6 +205,7 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="FSMStateManager.cpp" />
     <ClCompile Include="Object.cpp">
       <SubType>
       </SubType>

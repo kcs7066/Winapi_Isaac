@@ -3,7 +3,7 @@
 
 
 
-class ULevel :public UObject
+class ULevel
 {
 public:
 	friend class USpriteRenderer;
@@ -23,6 +23,7 @@ public:
 
 	void Tick(float _DeltaTime);
 	void Render(float _DeltaTime);
+	void Release(float _DeltaTime);
 
 	template<typename ActorType>
 	ActorType* SpawnActor()
@@ -32,7 +33,7 @@ public:
 		AActor* ActorPtr = dynamic_cast<AActor*>(NewActor);
 		ActorPtr->World = this;
 
-	
+
 
 		BeginPlayList.push_back(ActorPtr);
 
@@ -64,6 +65,16 @@ public:
 		return CameraPos;
 	}
 
+	AActor* GetPawn()
+	{
+		return MainPawn;
+	}
+
+	template<typename ConvertType>
+	ConvertType* GetPawn()
+	{
+		return dynamic_cast<ConvertType*>(MainPawn);
+	}
 
 protected:
 
@@ -83,7 +94,7 @@ private:
 
 		MainPawn->SetName("메인폰");
 		GameMode->SetName("게임모드");
-			
+
 
 		BeginPlayList.push_back(GameMode);
 		BeginPlayList.push_back(MainPawn);
@@ -96,7 +107,7 @@ private:
 
 	class AGameMode* GameMode = nullptr;
 
-    AActor* MainPawn = nullptr;
+	AActor* MainPawn = nullptr;
 
 	std::list<AActor*> AllActors;
 

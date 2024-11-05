@@ -112,7 +112,7 @@ void UEngineWinImage::CopyToTrans(UEngineWinImage* _TargetImage, const FTransfor
 
 void UEngineWinImage::Load(UEngineWinImage* _TargetImage, std::string_view _Path)
 {
-	
+
 
 	UEnginePath Path = _Path;
 
@@ -122,7 +122,7 @@ void UEngineWinImage::Load(UEngineWinImage* _TargetImage, std::string_view _Path
 
 	if (".PNG" == UpperExt)
 	{
-		
+
 
 		ULONG_PTR gidplustoken = 0;
 
@@ -144,12 +144,12 @@ void UEngineWinImage::Load(UEngineWinImage* _TargetImage, std::string_view _Path
 			return;
 		}
 
-	
+
 		delete pBitMap;
 		delete pImage;
 
 
-	
+
 
 		int a = 0;
 
@@ -173,4 +173,30 @@ void UEngineWinImage::Load(UEngineWinImage* _TargetImage, std::string_view _Path
 	ImageDC = NewImageDC;
 
 	GetObject(hBitMap, sizeof(BITMAP), &Info);
+}
+
+UColor UEngineWinImage::GetColor(FIntPoint _Point, UColor _DefaultColor = UColor::WHITE)
+{
+	if (0 > _Point.X)
+	{
+		return _DefaultColor;
+	}
+
+	if (0 > _Point.Y)
+	{
+		return _DefaultColor;
+	}
+
+	if (Info.bmWidth <= _Point.X)
+	{
+		return _DefaultColor;
+	}
+
+	if (Info.bmHeight <= _Point.Y)
+	{
+		return _DefaultColor;
+	}
+
+	UColor ResultColor = ::GetPixel(ImageDC, _Point.X, _Point.Y);
+	return ResultColor;
 }

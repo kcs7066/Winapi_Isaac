@@ -78,6 +78,6 @@ private:
 	class ULevel* NextLevel = nullptr;
 
 	void Tick();
-	
+
 };
 

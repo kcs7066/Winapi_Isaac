@@ -80,11 +80,15 @@ void USpriteRenderer::Render(float _DeltaTime)
 
 	ULevel* Level = GetActor()->GetWorld();
 
-	//카메라 따라오는 기능
-	//Trans.Location = Trans.Location - Level->CameraPos;
-
+	//카메라
+	if (true == IsCameraEffect)
+	{
+		Trans.Location = Trans.Location - (Level->CameraPos * CameraEffectScale);
+	}
 
 	CurData.Image->CopyToTrans(BackBufferImage, Trans, CurData.Transform);
+
+	int a = 0;
 }
 
 void USpriteRenderer::BeginPlay()
@@ -108,8 +112,6 @@ void USpriteRenderer::SetSprite(std::string_view _Name, int _CurIndex /*= 0*/)
 {
 
 	Sprite = UImageManager::GetInst().FindSprite(_Name);
-
-	int a = 0;
 
 	if (nullptr == Sprite)
 	{
@@ -175,7 +177,7 @@ void USpriteRenderer::CreateAnimation(std::string_view _AnimationName, std::stri
 	CreateAnimation(_AnimationName, _SpriteName, Indexs, Times, _Loop);
 }
 
-void USpriteRenderer::CreateAnimation(std::string_view _AnimationName, std::string_view _SpriteName, std::vector<int> _Indexs, float _Frame, bool _Loop )
+void USpriteRenderer::CreateAnimation(std::string_view _AnimationName, std::string_view _SpriteName, std::vector<int> _Indexs, float _Frame, bool _Loop)
 {
 	std::vector<float> Times;
 
@@ -281,4 +283,9 @@ void USpriteRenderer::SetAnimationEvent(std::string_view _AnimationName, int _Fr
 
 	ChangeAnimation->Events[_Frame] += _Function;
 
+}
+
+void USpriteRenderer::SetCameraEffectScale(float _Effect)
+{
+	CameraEffectScale = _Effect;
 }

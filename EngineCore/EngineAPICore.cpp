@@ -12,7 +12,7 @@ UEngineAPICore* UEngineAPICore::MainCore = nullptr;
 UContentsCore* UEngineAPICore::UserCore = nullptr;
 
 UEngineAPICore::UEngineAPICore()
-	
+
 {
 
 }
@@ -37,7 +37,7 @@ UEngineAPICore::~UEngineAPICore()
 int UEngineAPICore::EngineStart(HINSTANCE _Inst, UContentsCore* _UserCore)
 {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-	
+
 	UserCore = _UserCore;
 
 	UEngineWindow::EngineWindowInit(_Inst);
@@ -94,6 +94,7 @@ void UEngineAPICore::Tick()
 	UEngineInput::GetInst().EventCheck(DeltaTime);
 	CurLevel->Tick(DeltaTime);
 	CurLevel->Render(DeltaTime);
+	CurLevel->Release(DeltaTime);
 }
 
 void UEngineAPICore::OpenLevel(std::string_view _LevelName)

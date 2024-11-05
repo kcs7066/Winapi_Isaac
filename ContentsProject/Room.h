@@ -44,8 +44,8 @@ public:
 			break;
 		case RoomDir::DOWN:
 			return RoomDir::UP;
-			break;	
-	    default:
+			break;
+		default:
 			break;
 		}
 	}
@@ -55,11 +55,11 @@ public:
 		return true;
 	}
 
-	std::map<RoomDir, ARoom*> Rooms;
+	std::map<RoomDir, ARoom*> LinkedRooms;
 protected:
 
-private:	
-	
-	
+private:
+
+
 };
 

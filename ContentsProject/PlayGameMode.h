@@ -17,20 +17,24 @@ public:
 	APlayGameMode& operator=(const APlayGameMode& _Other) = delete;
 	APlayGameMode& operator=(APlayGameMode&& _Other) noexcept = delete;
 
-	void BeginPlay();
+	void BeginPlay() override;
 
-	void Tick(float _DeltaTime);
+	void Tick(float _DeltaTime) override;
 
 	void SetCurRoom(class ARoom* _Room)
 	{
 		CurRoom = _Room;
 	}
 
-	ARoom* CurRoom = nullptr;
+	ARoom* GetCurRoom()
+	{
+		return CurRoom;
+	}
+
 
 protected:
 
 private:
-
-	
+	ARoom* CurRoom = nullptr;
+	ARoom* CreateRoom(int _X, int _Y, std::string_view _RoomImage);
 };

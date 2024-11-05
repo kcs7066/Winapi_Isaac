@@ -22,7 +22,7 @@ public:
 
 	virtual void BeginPlay() {}
 	virtual void Tick(float _DeltaTime) {}
-	
+
 	virtual void LevelChangeStart() {}
 	virtual void LevelChangeEnd() {}
 
@@ -72,6 +72,8 @@ private:
 
 	static bool IsNewActorCreate;
 	static std::list<class UActorComponent*> ComponentList;
+
+	void ReleaseCheck(float _DeltaTime) override;
 
 	class ULevel* World = nullptr;
 	FTransform Transform;

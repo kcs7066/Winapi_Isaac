@@ -16,7 +16,7 @@ void APlayer::RunSoundPlay()
 
 APlayer::APlayer()
 {
-	SetActorLocation({ 480, 270 });
+	SetActorLocation({ 0, 0 });
 	{
 		SpriteRenderer = CreateDefaultSubObject<USpriteRenderer>();
 		SpriteRenderer->SetSprite("Test_Loki.png");
@@ -67,25 +67,25 @@ void APlayer::Tick(float _DeltaTime)
 	{
 		SpriteRenderer->ChangeAnimation("Run_Right");
 		AddActorLocation(FVector2D::RIGHT * _DeltaTime * Speed);
-		
+
 	}
 	if (true == UEngineInput::GetInst().IsPress('A'))
 	{
 		SpriteRenderer->ChangeAnimation("Run_Right");
 		AddActorLocation(FVector2D::LEFT * _DeltaTime * Speed);
-		
+
 	}
 	if (true == UEngineInput::GetInst().IsPress('S'))
 	{
 		SpriteRenderer->ChangeAnimation("Run_Right");
 		AddActorLocation(FVector2D::DOWN * _DeltaTime * Speed);
-		
+
 	}
 	if (true == UEngineInput::GetInst().IsPress('W'))
 	{
 		SpriteRenderer->ChangeAnimation("Run_Right");
 		AddActorLocation(FVector2D::UP * _DeltaTime * Speed);
-		
+
 	}
 
 	if (false == UEngineInput::GetInst().IsPress('A') &&
