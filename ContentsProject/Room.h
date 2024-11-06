@@ -6,11 +6,16 @@
 
 enum class RoomDir
 {
-	LEFT,
-	RIGHT,
-	UP,
-	DOWN,
-	MAX,
+	UP = 1,
+	RIGHT = 2,
+	DOWN = 3,
+	LEFT = 4
+	
+};
+
+enum class RoomValue
+{
+	RoomQUANTITY = 8
 };
 
 class ARoom : public AActor
@@ -50,16 +55,18 @@ public:
 		}
 	}
 
-	bool IsLink()
+	bool IsLink(RoomDir _Dir)
 	{
-		return true;
+		return true == LinkedRooms.contains(_Dir);
 	}
 
-	std::map<RoomDir, ARoom*> LinkedRooms;
+	FVector2D RoomPos;
+
 protected:
 
 private:
 
+	std::map<RoomDir, ARoom*> LinkedRooms;
 
 };
 
