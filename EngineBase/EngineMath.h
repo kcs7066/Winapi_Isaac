@@ -32,6 +32,26 @@ public:
 
 	}
 
+	static FVector2D LerpClamp(FVector2D p1, FVector2D p2, float d1)
+	{
+		if (0.0f >= d1)
+		{
+			d1 = 0.0f;
+		}
+
+		if (1.0f <= d1)
+		{
+			d1 = 1.0f;
+		}
+
+		return Lerp(p1, p2, d1);
+	}
+
+	static FVector2D Lerp(FVector2D p1, FVector2D p2, float d1)
+	{
+		return (p1 * (1.0f - d1)) + (p2 * d1);
+	}
+
 	//X값을 int로 바꿔주는 함수
 	int iX() const
 	{
@@ -69,7 +89,7 @@ public:
 		if (0.0f < Len && false == isnan(Len))
 		{
 			X = X / Len;
-			X = Y / Len;
+			Y = Y / Len;
 		}
 		return;
 	}
@@ -140,7 +160,7 @@ public:
 	}
 
 	//X와Y의 값을 문자열로 표현해주는 함수
-	std::string ToString()
+	std::string ToString() const
 	{
 		std::string Stream;
 
@@ -226,8 +246,13 @@ public:
 
 };
 
-class EngineMath
+class UEngineMath
 {
+public:
+	static float Sqrt(float _Value)
+	{
+		return ::sqrtf(_Value);
+	}
 };
 
 class UColor

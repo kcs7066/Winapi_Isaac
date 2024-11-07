@@ -48,6 +48,30 @@ void APlayer::BeginPlay()
 	FVector2D Size = UEngineAPICore::GetCore()->GetMainWindow().GetWindowSize();
 	GetWorld()->SetCameraPivot(Size.Half() * -1.0f);
 
+	ChangeState(PlayerState::Idle);
+}
+
+void APlayer::IdleStart()
+{
+	SpriteRenderer->ChangeAnimation("Idle_Right");
+}
+
+void APlayer::ChangeState(PlayerState _CurPlayerState)
+{
+	switch (_CurPlayerState)
+	{
+	case PlayerState::Idle:
+		IdleStart();
+		break;
+	case PlayerState::Move:
+		MoveStart();
+		break;
+	default:
+		break;
+	}
+
+	CurPlayerState = _CurPlayerState;
+
 }
 
 void APlayer::Tick(float _DeltaTime)
@@ -63,39 +87,17 @@ void APlayer::Tick(float _DeltaTime)
 		UEngineAPICore::GetCore()->OpenLevel("Title");
 	}
 
-	if (true == UEngineInput::GetInst().IsPress('D'))
+	switch (CurPlayerState)
 	{
-		SpriteRenderer->ChangeAnimation("Run_Right");
-		AddActorLocation(FVector2D::RIGHT * _DeltaTime * Speed);
-
+	case PlayerState::Idle:
+		Idle(_DeltaTime);
+		break;
+	case PlayerState::Move:
+		Move(_DeltaTime);
+		break;
+	default:
+		break;
 	}
-	if (true == UEngineInput::GetInst().IsPress('A'))
-	{
-		SpriteRenderer->ChangeAnimation("Run_Right");
-		AddActorLocation(FVector2D::LEFT * _DeltaTime * Speed);
-
-	}
-	if (true == UEngineInput::GetInst().IsPress('S'))
-	{
-		SpriteRenderer->ChangeAnimation("Run_Right");
-		AddActorLocation(FVector2D::DOWN * _DeltaTime * Speed);
-
-	}
-	if (true == UEngineInput::GetInst().IsPress('W'))
-	{
-		SpriteRenderer->ChangeAnimation("Run_Right");
-		AddActorLocation(FVector2D::UP * _DeltaTime * Speed);
-
-	}
-
-	if (false == UEngineInput::GetInst().IsPress('A') &&
-		false == UEngineInput::GetInst().IsPress('D') &&
-		false == UEngineInput::GetInst().IsPress('W') &&
-		false == UEngineInput::GetInst().IsPress('S'))
-	{
-		SpriteRenderer->ChangeAnimation("Idle_Right");
-	}
-
 
 }
 
@@ -109,4 +111,70 @@ void APlayer::LevelChangeEnd()
 	Super::LevelChangeEnd();
 
 
+}
+
+void APlayer::Idle(float _DeltaTime)
+{
+
+
+
+	SpriteRenderer->ChangeAnimation("Idle_Right");
+
+	if (true == UEngineInput::GetInst().IsPress('A') ||
+		true == UEngineInput::GetInst().IsPress('D') ||
+		true == UEngineInput::GetInst().IsPress('W') ||
+		true == UEngineInput::GetInst().IsPress('S'))
+	{
+		ChangeState(PlayerState::Move);
+		return;
+	}
+
+	if (true == UEngineInput::GetInst().IsPress(VK_SPACE))
+	{
+		ChangeState(PlayerState::Jump);
+		return;
+	}
+
+}
+
+void APlayer::MoveStart()
+{
+	SpriteRenderer->ChangeAnimation("Run_Right");
+}
+
+void APlayer::Move(float _DeltaTime)
+{
+
+	FVector2D Vector = FVector2D::ZERO;
+
+	if (true == UEngineInput::GetInst().IsPress('D'))
+	{
+		Vector += FVector2D::RIGHT;
+		
+	}
+	if (true == UEngineInput::GetInst().IsPress('A'))
+	{
+		Vector += FVector2D::LEFT;
+	}
+	if (true == UEngineInput::GetInst().IsPress('S'))
+	{
+		Vector += FVector2D::DOWN;
+	}
+	if (true == UEngineInput::GetInst().IsPress('W'))
+	{
+		Vector += FVector2D::UP;
+	}
+
+
+
+	if (false == UEngineInput::GetInst().IsPress('A') &&
+		false == UEngineInput::GetInst().IsPress('D') &&
+		false == UEngineInput::GetInst().IsPress('W') &&
+		false == UEngineInput::GetInst().IsPress('S'))
+	{
+		ChangeState(PlayerState::Idle);
+		return;
+	}
+
+	AddActorLocation(Vector * _DeltaTime * Speed);
 }

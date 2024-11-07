@@ -9,7 +9,8 @@
 #include "ContentsEnum.h"
 #include <EngineBase/EngineMath.h>
 #include <EngineBase/EngineString.h>
-
+#include "Isaac.h"
+#include <EngineCore/Level.h>
 
 
 
@@ -56,7 +57,7 @@ void APlayGameMode::CreateBossRoomPath()
 
 		if (4 == RoomNumber)
 		{
-			int Distance = abs(CreateRoomPos.X) + abs(CreateRoomPos.Y);
+			int Distance = abs(CreateRoomPos.iX()) + abs(CreateRoomPos.iY());
 			if (4 != Distance)
 			{
 				CreateRoomPos = { 0,0 };
@@ -104,9 +105,14 @@ void APlayGameMode::CreateRestRoomPath(int _RoomNumber)
 		default:
 			break;
 		}
-		if (true == IsAdjacentTwice(CreateRoomPos))
+		if (true == IsBind(CreateRoomPos))
 		{
-			CreateRoomPos = { 0,0 };
+		}
+		else {
+			if (true == IsAdjacentTwice(CreateRoomPos))
+			{
+				CreateRoomPos = { 0,0 };
+			}
 		}
 	}
 
@@ -117,6 +123,9 @@ void APlayGameMode::CreateRestRoomPath(int _RoomNumber)
 
 void APlayGameMode::BeginPlay()
 {
+
+ AIsaac* Player = GetWorld()->GetPawn<AIsaac>();
+
 	CreateBossRoomPath();
 	CreateRestRoomPath(5);
 	CreateRestRoomPath(6);
@@ -131,27 +140,9 @@ void APlayGameMode::BeginPlay()
 	ARoom* Room6 = CreateRoom("Room6", RoomBind[6]);
 	ARoom* Room7 = CreateRoom("Room7", RoomBind[7]);
 
+	CurRoom = Room0;
+	PrevRoom = Room1;
 
-
-	//ARoom* Room5 = CreateRoom("Room5");
-
-	//ARoom* Room6 = CreateRoom("Room6");
-
-	//ARoom* Room7 = CreateRoom("Room7");
-
-	//ARoom* Room8 = CreateRoom("Room8");
-
-
-
-	//Room0->InterLink(Room1, RoomDir::LEFT);
-	//FirstRoom->InterLink(RoomW, RoomDir::LEFT);
-	//FirstRoom->InterLink(RoomS, RoomDir::DOWN);
-	//FirstRoom->InterLink(RoomN, RoomDir::UP);
-
-	//SetCurRoom(Room0);
-	//bool Value = Room0->IsLink(RoomDir::LEFT);
-	//bool Value1 = Room1->IsLink(RoomDir::LEFT);
-	
 	int a = 0;
 
 }
@@ -164,8 +155,43 @@ void APlayGameMode::Tick(float _DeltaTime)
 
 	if (true == UEngineInput::GetInst().IsDown('Q'))
 	{
-
+		FVector2D Value = { -480.0f, 270.0f };
+		ARoom* Room = Rooms["Room5"];
+		FVector2D Pos = Room->RoomPos + Value;
+		GetWorld()->SetCameraPos(Pos);
+		
 	}
+
+
+
+
+	//if (CurRoom != PrevRoom)
+	//{
+
+	//	RoomMoveCameraTime += _DeltaTime * 5;
+	//	FVector2D Size = UEngineAPICore::GetCore()->GetMainWindow().GetWindowSize();
+	//	
+	//	PrevRoom = Rooms["Room3"];
+	//	FVector2D StartCameraPos = PrevRoom->RoomPos;
+
+	//	CurRoom = Rooms["Room4"];
+	//	FVector2D TargetCameraPos = CurRoom->RoomPos;
+
+	//	FVector2D CurCameraPos = FVector2D::LerpClamp(StartCameraPos, TargetCameraPos, RoomMoveCameraTime);
+	//	
+	//	ULevel NewLevel = ULevel();
+
+	//	NewLevel.SetCameraPos(CurCameraPos);
+
+	//	if (1.0f <= RoomMoveCameraTime)
+	//	{
+	//		RoomMoveCameraTime = 0.0f;
+	//		PrevRoom = CurRoom;
+	//		CurRoom->GetWorld()->SetCameraPos(GetActorLocation() - Size.Half());;
+	//	}
+
+	//	int a = 0;
+	//}
 
 }
 
@@ -173,9 +199,6 @@ void APlayGameMode::Tick(float _DeltaTime)
 
 ARoom* APlayGameMode::CreateRoom(std::string_view _RoomName,FVector2D _Pos)
 {
-
-	//int Value = Random.RandomInt(1,3);
-
 
 
 	ARoom* NewRoom = GetWorld()->SpawnActor<ARoom>();
@@ -196,20 +219,8 @@ ARoom* APlayGameMode::CreateRoom(std::string_view _RoomName,FVector2D _Pos)
 	{
 		SpriteRenderer->SetSprite("Room_01.png");
 	}
-		//if(1==Value)
-	//{
-	//	SpriteRenderer->SetSprite("Room_01.png");
-	//}
-	//else if (2 == Value)
-	//{
-	//	SpriteRenderer->SetSprite("Room_02.png");
-	//}
-	//else
-	//{
-	//	SpriteRenderer->SetSprite("Room_03.png");
-	//}
 
-	FVector2D MapScale = SpriteRenderer->SetSpriteScale(0.1f);
+	FVector2D MapScale = SpriteRenderer->SetSpriteScale(1.0f);
 
 
 	

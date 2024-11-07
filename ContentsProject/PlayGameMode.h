@@ -102,16 +102,20 @@ public:
 	//{
 	//	return CurRoom;
 	//}
-
+	
 
 protected:
 	
 private:
-	
+
+	ARoom* CurRoom = nullptr;
+	ARoom* PrevRoom = nullptr;
+	float RoomMoveCameraTime = 0.0f;
+
 	std::map<std::string_view, ARoom*> Rooms;
 	std::map<int, FVector2D> RoomBind;
 
-	ARoom* PrevRoom = nullptr;
+
 	void CreateBossRoomPath();
 	void CreateRestRoomPath(int _RoomNumber);
 	ARoom* CreateRoom(std::string_view _RoomName,FVector2D _Pos);

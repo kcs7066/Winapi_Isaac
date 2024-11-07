@@ -92,9 +92,6 @@ private:
 		MainPawn->World = this;
 		GameMode->World = this;
 
-		MainPawn->SetName("메인폰");
-		GameMode->SetName("게임모드");
-
 
 		BeginPlayList.push_back(GameMode);
 		BeginPlayList.push_back(MainPawn);

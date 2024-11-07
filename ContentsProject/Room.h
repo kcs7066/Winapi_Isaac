@@ -6,6 +6,7 @@
 
 enum class RoomDir
 {
+	NONE = 0,
 	UP = 1,
 	RIGHT = 2,
 	DOWN = 3,
@@ -51,6 +52,7 @@ public:
 			return RoomDir::UP;
 			break;
 		default:
+			return RoomDir::NONE;
 			break;
 		}
 	}
@@ -60,6 +62,11 @@ public:
 		return true == LinkedRooms.contains(_Dir);
 	}
 
+	void RoomCameraFocus()
+    {
+		GetWorld()->SetCameraPos(GetActorLocation() - Size.Half());
+	}
+
 	FVector2D RoomPos;
 
 protected:
@@ -67,6 +74,6 @@ protected:
 private:
 
 	std::map<RoomDir, ARoom*> LinkedRooms;
-
-};
+	FVector2D Size = UEngineAPICore::GetCore()->GetMainWindow().GetWindowSize();
+}; 
 

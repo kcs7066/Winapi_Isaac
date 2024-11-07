@@ -10,7 +10,7 @@
 
 #include "TitleGameMode.h"
 #include "PlayGameMode.h"
-#include "Player.h"
+#include "Isaac.h"
 
 IsaacContentsCore::IsaacContentsCore()
 {
@@ -38,8 +38,10 @@ void IsaacContentsCore::BeginPlay()
 		UImageManager::GetInst().Load(FilePath);
 	}
 
-	UImageManager::GetInst().CuttingSprite("Test_Loki.png", { 128, 128 });
-	UImageManager::GetInst().CuttingSprite("Test_Monstro.png", { 512, 512 });
+	//UImageManager::GetInst().CuttingSprite("Test_Loki.png", { 128, 128 });
+	//UImageManager::GetInst().CuttingSprite("Test_Monstro.png", { 512, 512 });
+	UImageManager::GetInst().CuttingSprite("Head.png", { 64, 64 });
+	UImageManager::GetInst().CuttingSprite("Body.png", { 64, 64 });
 
 	{
 
@@ -63,15 +65,15 @@ void IsaacContentsCore::BeginPlay()
 
 
 
-	UEngineAPICore::GetCore()->GetMainWindow().SetWindowTitle("Isaac");
+	UEngineAPICore::GetCore()->GetMainWindow().SetWindowTitle("The Binding Of Isaac");
 
 	UEngineAPICore::GetCore()->GetMainWindow().SetWindowPosAndScale({ 0, 0 }, { 960, 540 });
 
-	UEngineAPICore::GetCore()->CreateLevel<APlayGameMode, APlayer>("Play");
+	UEngineAPICore::GetCore()->CreateLevel<APlayGameMode, AIsaac>("Play");
 
 	UEngineAPICore::GetCore()->CreateLevel<ATitleGameMode, AActor>("Title");
 
-	UEngineAPICore::GetCore()->OpenLevel("Title");
+	UEngineAPICore::GetCore()->OpenLevel("Play");
 }
 
 void IsaacContentsCore::Tick()

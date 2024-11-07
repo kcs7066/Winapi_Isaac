@@ -66,6 +66,9 @@
     <ClCompile Include="Room.cpp">
       <Filter>ContentsObject\Play</Filter>
     </ClCompile>
+    <ClCompile Include="Isaac.cpp">
+      <Filter>ContentsObject\Global</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PreCompile.h">
@@ -103,6 +106,9 @@
     </ClInclude>
     <ClInclude Include="Room.h">
       <Filter>ContentsObject\Play</Filter>
+    </ClInclude>
+    <ClInclude Include="Isaac.h">
+      <Filter>ContentsObject\Global</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
