@@ -3,6 +3,7 @@
 #include <EngineCore/SpriteRenderer.h>
 #include <EngineCore/EngineAPICore.h>
 #include "Player.h"
+#include "Door.h"
 
 enum class RoomDir
 {
@@ -32,9 +33,6 @@ public:
 	ARoom& operator=(const ARoom& _Other) = delete;
 	ARoom& operator=(ARoom&& _Other) noexcept = delete;
 
-	void Link(ARoom* _Room, RoomDir _Dir);
-	void InterLink(ARoom* _Room, RoomDir _Dir);
-
 	RoomDir ReverseDir(RoomDir _Dir)
 	{
 		switch (_Dir)
@@ -57,23 +55,18 @@ public:
 		}
 	}
 
-	bool IsLink(RoomDir _Dir)
-	{
-		return true == LinkedRooms.contains(_Dir);
-	}
+	void CreateDoor(RoomDir _Dir, FVector2D _Pos);
 
-	void RoomCameraFocus()
-    {
-		GetWorld()->SetCameraPos(GetActorLocation() - Size.Half());
-	}
-
+	FVector2D NomalizedRoomPos;
 	FVector2D RoomPos;
-
+	
+	std::map<RoomDir, ARoom*> LinkedRooms;
+	std::map<RoomDir, ADoor*> Doors;
 protected:
 
 private:
 
-	std::map<RoomDir, ARoom*> LinkedRooms;
 	FVector2D Size = UEngineAPICore::GetCore()->GetMainWindow().GetWindowSize();
+
 }; 
 

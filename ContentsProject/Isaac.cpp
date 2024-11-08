@@ -41,7 +41,7 @@ AIsaac::~AIsaac()
 void AIsaac::BeginPlay()
 {
 	Super::BeginPlay();
-	GetWorld()->SetCameraToMainPawn(false);
+	GetWorld()->SetCameraToMainPawn(true);
 	
 
 	

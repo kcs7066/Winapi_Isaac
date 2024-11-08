@@ -42,6 +42,8 @@ void IsaacContentsCore::BeginPlay()
 	//UImageManager::GetInst().CuttingSprite("Test_Monstro.png", { 512, 512 });
 	UImageManager::GetInst().CuttingSprite("Head.png", { 64, 64 });
 	UImageManager::GetInst().CuttingSprite("Body.png", { 64, 64 });
+	UImageManager::GetInst().CuttingSprite("NormalRoomDoor.png", { 256, 256 });
+
 
 	{
 

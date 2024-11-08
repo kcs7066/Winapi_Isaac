@@ -7,9 +7,6 @@
     <Filter Include="PreCompile">
       <UniqueIdentifier>{ef81e9e8-a3fb-4378-98e6-fbde807770a4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ContentsObject\GameMode">
-      <UniqueIdentifier>{448b2668-82c0-4362-8031-a12cce32fca9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ContentsObject\Global">
       <UniqueIdentifier>{e5f576e1-47d7-4c69-aaf3-f35a6a1c148c}</UniqueIdentifier>
     </Filter>
@@ -33,32 +30,20 @@
     <ClCompile Include="PreCompile.cpp">
       <Filter>PreCompile</Filter>
     </ClCompile>
-    <ClCompile Include="PlayGameMode.cpp">
-      <Filter>ContentsObject\GameMode</Filter>
-    </ClCompile>
     <ClCompile Include="Player.cpp">
       <Filter>ContentsObject\Global</Filter>
     </ClCompile>
     <ClCompile Include="Bullet.cpp">
       <Filter>ContentsObject\Play</Filter>
     </ClCompile>
-    <ClCompile Include="PlayMap.cpp">
-      <Filter>ContentsObject\Play</Filter>
-    </ClCompile>
     <ClCompile Include="IsaacContentsCore.cpp">
       <Filter>Core</Filter>
-    </ClCompile>
-    <ClCompile Include="TitleGameMode.cpp">
-      <Filter>ContentsObject\GameMode</Filter>
     </ClCompile>
     <ClCompile Include="TitleLogo.cpp">
       <Filter>ContentsObject\Title</Filter>
     </ClCompile>
     <ClCompile Include="ContentsEnum.cpp">
       <Filter>Global</Filter>
-    </ClCompile>
-    <ClCompile Include="EndGameMode.cpp">
-      <Filter>ContentsObject\GameMode</Filter>
     </ClCompile>
     <ClCompile Include="EndingCredit.cpp">
       <Filter>ContentsObject\End</Filter>
@@ -69,13 +54,22 @@
     <ClCompile Include="Isaac.cpp">
       <Filter>ContentsObject\Global</Filter>
     </ClCompile>
+    <ClCompile Include="PlayGameMode.cpp">
+      <Filter>ContentsObject\Play</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleGameMode.cpp">
+      <Filter>ContentsObject\Title</Filter>
+    </ClCompile>
+    <ClCompile Include="EndGameMode.cpp">
+      <Filter>ContentsObject\End</Filter>
+    </ClCompile>
+    <ClCompile Include="Door.cpp">
+      <Filter>ContentsObject\Play</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PreCompile.h">
       <Filter>PreCompile</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayGameMode.h">
-      <Filter>ContentsObject\GameMode</Filter>
     </ClInclude>
     <ClInclude Include="Player.h">
       <Filter>ContentsObject\Global</Filter>
@@ -83,23 +77,14 @@
     <ClInclude Include="Bullet.h">
       <Filter>ContentsObject\Play</Filter>
     </ClInclude>
-    <ClInclude Include="PlayMap.h">
-      <Filter>ContentsObject\Play</Filter>
-    </ClInclude>
     <ClInclude Include="IsaacContentsCore.h">
       <Filter>Core</Filter>
-    </ClInclude>
-    <ClInclude Include="TitleGameMode.h">
-      <Filter>ContentsObject\GameMode</Filter>
     </ClInclude>
     <ClInclude Include="TitleLogo.h">
       <Filter>ContentsObject\Title</Filter>
     </ClInclude>
     <ClInclude Include="ContentsEnum.h">
       <Filter>Global</Filter>
-    </ClInclude>
-    <ClInclude Include="EndGameMode.h">
-      <Filter>ContentsObject\GameMode</Filter>
     </ClInclude>
     <ClInclude Include="EndingCredit.h">
       <Filter>ContentsObject\End</Filter>
@@ -109,6 +94,18 @@
     </ClInclude>
     <ClInclude Include="Isaac.h">
       <Filter>ContentsObject\Global</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayGameMode.h">
+      <Filter>ContentsObject\Play</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleGameMode.h">
+      <Filter>ContentsObject\Title</Filter>
+    </ClInclude>
+    <ClInclude Include="EndGameMode.h">
+      <Filter>ContentsObject\End</Filter>
+    </ClInclude>
+    <ClInclude Include="Door.h">
+      <Filter>ContentsObject\Play</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

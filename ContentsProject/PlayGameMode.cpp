@@ -4,7 +4,6 @@
 #include <EngineCore/EngineCoreDebug.h>
 #include <EngineCore/EngineAPICore.h>
 #include <EnginePlatform/EngineInput.h>
-#include "PlayMap.h"
 #include "Room.h"
 #include "ContentsEnum.h"
 #include <EngineBase/EngineMath.h>
@@ -24,8 +23,10 @@ APlayGameMode::~APlayGameMode()
 
 void APlayGameMode::CreateBossRoomPath()
 {
+	int RoomNum = 0;
+
 	FVector2D CreateRoomPos = { 0,0 };
-	RoomBind.insert({ RoomNumber, CreateRoomPos });
+	RoomBind.insert({ RoomNum, CreateRoomPos });
 
 	for (size_t i = 0; i < 4; i++)
 	{
@@ -52,18 +53,18 @@ void APlayGameMode::CreateBossRoomPath()
 		}
 
 		
-		RoomNumber++;		
-		RoomBind.insert({ RoomNumber, CreateRoomPos });
+		RoomNum++;		
+		RoomBind.insert({ RoomNum, CreateRoomPos });
 
-		if (4 == RoomNumber)
+		if (4 == RoomNum)
 		{
 			int Distance = abs(CreateRoomPos.iX()) + abs(CreateRoomPos.iY());
 			if (4 != Distance)
 			{
 				CreateRoomPos = { 0,0 };
-				RoomNumber = 0;
+				RoomNum = 0;
 				RoomBind.clear();
-				RoomBind.insert({ RoomNumber, CreateRoomPos });
+				RoomBind.insert({ RoomNum, CreateRoomPos });
 				i = -1;
 			}
 		}
@@ -140,8 +141,20 @@ void APlayGameMode::BeginPlay()
 	ARoom* Room6 = CreateRoom("Room6", RoomBind[6]);
 	ARoom* Room7 = CreateRoom("Room7", RoomBind[7]);
 
+	Link(Room0);
+	Link(Room1);
+	Link(Room2);
+	Link(Room3);
+	Link(Room4);
+	Link(Room5);
+	Link(Room6);
+	Link(Room7);
+
+
+
 	CurRoom = Room0;
-	PrevRoom = Room1;
+	PrevRoom = Room0;
+	GetWorld()->SetCameraPos({ CurRoom->RoomPos.X - 480.0f ,CurRoom->RoomPos.Y - 270.0f });
 
 	int a = 0;
 
@@ -154,44 +167,70 @@ void APlayGameMode::Tick(float _DeltaTime)
 	//UEngineDebug::CoreOutPutString("Room : " + APlayGameMode::CurRoom->GetName());
 
 	if (true == UEngineInput::GetInst().IsDown('Q'))
+	{	
+		int a = 0;
+	}
+	if (true == UEngineInput::GetInst().IsDown(VK_NUMPAD0))
 	{
-		FVector2D Value = { -480.0f, 270.0f };
-		ARoom* Room = Rooms["Room5"];
-		FVector2D Pos = Room->RoomPos + Value;
-		GetWorld()->SetCameraPos(Pos);
+		CurRoom = Rooms[0];
 		
+	}
+	if (true == UEngineInput::GetInst().IsDown(VK_NUMPAD1))
+	{
+		CurRoom = Rooms[1];
+	}
+	if (true == UEngineInput::GetInst().IsDown(VK_NUMPAD2))
+	{
+		CurRoom = Rooms[2];
+	}
+	if (true == UEngineInput::GetInst().IsDown(VK_NUMPAD3))
+	{
+		CurRoom = Rooms[3];
+	}
+	if (true == UEngineInput::GetInst().IsDown(VK_NUMPAD4))
+	{
+		CurRoom = Rooms[4];
+	}
+	if (true == UEngineInput::GetInst().IsDown(VK_NUMPAD5))
+	{
+		CurRoom = Rooms[5];
+	}
+	if (true == UEngineInput::GetInst().IsDown(VK_NUMPAD6))
+	{
+		CurRoom = Rooms[6];
+	}
+	if (true == UEngineInput::GetInst().IsDown(VK_NUMPAD7))
+	{
+		CurRoom = Rooms[7];
 	}
 
 
 
+	
+	if (CurRoom != PrevRoom)
+	{
 
-	//if (CurRoom != PrevRoom)
-	//{
+		RoomMoveCameraTime += _DeltaTime * 5;
+		FVector2D Size = UEngineAPICore::GetCore()->GetMainWindow().GetWindowSize();
+				
+		FVector2D StartCameraPos = { PrevRoom->RoomPos.X - 480.0f ,PrevRoom->RoomPos.Y - 270.0f };
 
-	//	RoomMoveCameraTime += _DeltaTime * 5;
-	//	FVector2D Size = UEngineAPICore::GetCore()->GetMainWindow().GetWindowSize();
-	//	
-	//	PrevRoom = Rooms["Room3"];
-	//	FVector2D StartCameraPos = PrevRoom->RoomPos;
+		FVector2D TargetCameraPos = { CurRoom->RoomPos.X - 480.0f ,CurRoom->RoomPos.Y - 270.0f };
 
-	//	CurRoom = Rooms["Room4"];
-	//	FVector2D TargetCameraPos = CurRoom->RoomPos;
+		FVector2D CurCameraPos = FVector2D::LerpClamp(StartCameraPos, TargetCameraPos, RoomMoveCameraTime);
+		
+	    GetWorld()->SetCameraPos(CurCameraPos);
 
-	//	FVector2D CurCameraPos = FVector2D::LerpClamp(StartCameraPos, TargetCameraPos, RoomMoveCameraTime);
-	//	
-	//	ULevel NewLevel = ULevel();
+		if (1.0f <= RoomMoveCameraTime)
+		{
+			RoomMoveCameraTime = 0.0f;
+			PrevRoom = CurRoom;
+			GetWorld()->SetCameraPos({ CurRoom->RoomPos.X - 480.0f ,CurRoom->RoomPos.Y - 270.0f });
+			GetWorld()->GetPawn()->SetActorLocation(CurRoom->RoomPos);
+		}
 
-	//	NewLevel.SetCameraPos(CurCameraPos);
-
-	//	if (1.0f <= RoomMoveCameraTime)
-	//	{
-	//		RoomMoveCameraTime = 0.0f;
-	//		PrevRoom = CurRoom;
-	//		CurRoom->GetWorld()->SetCameraPos(GetActorLocation() - Size.Half());;
-	//	}
-
-	//	int a = 0;
-	//}
+		int a = 0;
+	}
 
 }
 
@@ -226,12 +265,47 @@ ARoom* APlayGameMode::CreateRoom(std::string_view _RoomName,FVector2D _Pos)
 	
    
 	
-
-	NewRoom->RoomPos = { MapScale.X * _Pos.X, MapScale.Y * _Pos.Y };
+	NewRoom->NomalizedRoomPos = _Pos;
+	NewRoom->RoomPos = { MapScale.X * _Pos.X , MapScale.Y * _Pos.Y};
 	SpriteRenderer->SetComponentLocation(NewRoom->RoomPos);
-	Rooms.insert({ _RoomName,NewRoom });
+	Rooms.insert({ RoomNumber,NewRoom });
 	
 	RoomNumber++;
 
 	return NewRoom;
 }
+
+void APlayGameMode::Link(ARoom* _Room)
+{
+	FVector2D NewPosUp = { _Room->NomalizedRoomPos.X ,_Room->NomalizedRoomPos.Y - 1 };
+	FVector2D NewPosRight = { _Room->NomalizedRoomPos.X + 1 ,_Room->NomalizedRoomPos.Y };
+	FVector2D NewPosDown = { _Room->NomalizedRoomPos.X ,_Room->NomalizedRoomPos.Y + 1 };
+	FVector2D NewPosLeft = { _Room->NomalizedRoomPos.X - 1 ,_Room->NomalizedRoomPos.Y };
+
+	if (true == IsBind(NewPosUp))
+	{
+		int Key = Roomkey(NewPosUp);
+		_Room->LinkedRooms.insert({ RoomDir::UP,Rooms[Key]});
+		_Room->CreateDoor(RoomDir::UP,_Room->RoomPos);
+	}
+	if (true == IsBind(NewPosRight))
+	{
+		int Key = Roomkey(NewPosRight);
+		_Room->LinkedRooms.insert({ RoomDir::RIGHT,Rooms[Key] });
+		_Room->CreateDoor(RoomDir::RIGHT, _Room->RoomPos);
+	}
+	if (true == IsBind(NewPosDown))
+	{
+		int Key = Roomkey(NewPosDown);
+		_Room->LinkedRooms.insert({ RoomDir::DOWN,Rooms[Key] });
+		_Room->CreateDoor(RoomDir::DOWN, _Room->RoomPos);
+	}
+	if (true == IsBind(NewPosLeft))
+	{
+		int Key = Roomkey(NewPosLeft);
+		_Room->LinkedRooms.insert({ RoomDir::LEFT,Rooms[Key] });
+		_Room->CreateDoor(RoomDir::LEFT, _Room->RoomPos);
+	}
+
+}
+

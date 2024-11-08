@@ -3,7 +3,9 @@
 
 #include <EngineCore/GameMode.h>
 #include "Room.h"
+#include "Door.h"
 #include <EngineBase/EngineRandom.h>
+
 
 class APlayGameMode : public AGameMode
 {
@@ -22,6 +24,8 @@ public:
 
 	void Tick(float _DeltaTime) override;
 
+	void Link(ARoom* _Room);
+
 	bool IsBind(FVector2D _Pos)
 	{
 		{
@@ -31,7 +35,9 @@ public:
 			for (; StartIter != EndIter; ++StartIter)
 			{
 				if (StartIter->second == _Pos)
+				{
 					return true;
+				}
 			}
 		}
 		return false;
@@ -93,15 +99,18 @@ public:
 		}
 		return true;
 	}
-	//void SetCurRoom(class ARoom* _Room)
-	//{
-	//	CurRoom = _Room;
-	//}
+	
+	int Roomkey(FVector2D _Pos)
+	{
+		std::map<int, FVector2D>::iterator StartIter = RoomBind.begin();
+		std::map<int, FVector2D>::iterator EndIter = RoomBind.end();
 
-	//ARoom* GetCurRoom()
-	//{
-	//	return CurRoom;
-	//}
+		for (; StartIter != EndIter; ++StartIter)
+		{
+			if (StartIter->second == _Pos)
+				return StartIter->first;
+		}
+	}
 	
 
 protected:
@@ -112,17 +121,21 @@ private:
 	ARoom* PrevRoom = nullptr;
 	float RoomMoveCameraTime = 0.0f;
 
-	std::map<std::string_view, ARoom*> Rooms;
+	std::map<int, ARoom*> Rooms;
 	std::map<int, FVector2D> RoomBind;
 
 
 	void CreateBossRoomPath();
 	void CreateRestRoomPath(int _RoomNumber);
 	ARoom* CreateRoom(std::string_view _RoomName,FVector2D _Pos);
+
+
 	UEngineRandom Random;
 
 	
 
 	int RoomNumber = 0;
 
+	
 };
+
