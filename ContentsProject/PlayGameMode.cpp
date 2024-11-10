@@ -23,53 +23,125 @@ APlayGameMode::~APlayGameMode()
 
 void APlayGameMode::CreateBossRoomPath()
 {
-	int RoomNum = 0;
-
+	int RoomNumber =0;
 	FVector2D CreateRoomPos = { 0,0 };
-	RoomBind.insert({ RoomNum, CreateRoomPos });
+	RoomBind.insert({ RoomNumber, CreateRoomPos });
+	int RandomValue = Random.RandomInt(1, 4);
 
-	for (size_t i = 0; i < 4; i++)
+	switch (RandomValue)
 	{
-        int PosValue = Random.RandomInt(1, 4);
-
-		switch (PosValue)
+	case 1:
+		CreateRoomPos += {0, -1};
+		RoomNumber++;
+		RoomBind.insert({ RoomNumber, CreateRoomPos });
+		for (size_t i = 0; i < 3; i++)
 		{
-		case 1:
-			CreateRoomPos += {0, -1};
-			break;
-		case 2:
-			CreateRoomPos += {1, 0};
-			break;
-		case 3:
-			CreateRoomPos += {0, 1};
-			break;
-		case 4:
-			CreateRoomPos += {-1, 0};
-			break;
+			RandomValue = Random.RandomInt(1, 2);
 
-		default:
-			break;
-
-		}
-
-		
-		RoomNum++;		
-		RoomBind.insert({ RoomNum, CreateRoomPos });
-
-		if (4 == RoomNum)
-		{
-			int Distance = abs(CreateRoomPos.iX()) + abs(CreateRoomPos.iY());
-			if (4 != Distance)
+			switch (RandomValue)
 			{
-				CreateRoomPos = { 0,0 };
-				RoomNum = 0;
-				RoomBind.clear();
-				RoomBind.insert({ RoomNum, CreateRoomPos });
-				i = -1;
+
+			case 1:
+				CreateRoomPos += {0, -1};
+				RoomNumber++;
+				RoomBind.insert({ RoomNumber, CreateRoomPos });
+				break;
+
+			case 2:
+				CreateRoomPos += {1, 0};
+				RoomNumber++;
+				RoomBind.insert({ RoomNumber, CreateRoomPos });
+				break;
+			default:
+				break;
 			}
 		}
-	}
+		break;
+	case 2:
+		CreateRoomPos += {1, 0};
+		RoomNumber++;
+		RoomBind.insert({ RoomNumber, CreateRoomPos });
+		for (size_t i = 0; i < 3; i++)
+		{
+			RandomValue = Random.RandomInt(1, 2);
 
+			switch (RandomValue)
+			{
+
+			case 1:
+				CreateRoomPos += {1, 0};
+				RoomNumber++;
+				RoomBind.insert({ RoomNumber, CreateRoomPos });
+				break;
+
+			case 2:
+				CreateRoomPos += {0, 1};
+				RoomNumber++;
+				RoomBind.insert({ RoomNumber, CreateRoomPos });
+				break;
+			default:
+				break;
+			}
+		}
+		break;
+	case 3:
+		CreateRoomPos += {0, 1};
+		RoomNumber++;
+		RoomBind.insert({ RoomNumber, CreateRoomPos });
+		for (size_t i = 0; i < 3; i++)
+		{
+			RandomValue = Random.RandomInt(1, 2);
+
+			switch (RandomValue)
+			{
+
+			case 1:
+				CreateRoomPos += {0, 1};
+				RoomNumber++;
+				RoomBind.insert({ RoomNumber, CreateRoomPos });
+				break;
+
+			case 2:
+				CreateRoomPos += {-1, 0};
+				RoomNumber++;
+				RoomBind.insert({ RoomNumber, CreateRoomPos });
+				break;
+			default:
+				break;
+			}
+		}
+		break;
+	case 4:
+		CreateRoomPos += {-1, 0};
+		RoomNumber++;
+		RoomBind.insert({ RoomNumber, CreateRoomPos });
+		for (size_t i = 0; i < 3; i++)
+		{
+			RandomValue = Random.RandomInt(1, 2);
+
+			switch (RandomValue)
+			{
+
+			case 1:
+				CreateRoomPos += {-1, 0};
+				RoomNumber++;
+				RoomBind.insert({ RoomNumber, CreateRoomPos });
+				break;
+
+			case 2:
+				CreateRoomPos += {0, -1};
+				RoomNumber++;
+				RoomBind.insert({ RoomNumber, CreateRoomPos });
+				break;
+			default:
+				break;
+			}
+		}
+		break;
+
+	default:
+		break; 
+	}
 
 }
 
