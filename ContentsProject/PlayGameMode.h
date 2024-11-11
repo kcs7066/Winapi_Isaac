@@ -112,12 +112,13 @@ public:
 		}
 	}
 	
+	ARoom* CurRoom = nullptr;
 
 protected:
 	
 private:
 
-	ARoom* CurRoom = nullptr;
+	
 	ARoom* PrevRoom = nullptr;
 	float RoomMoveCameraTime = 0.0f;
 
@@ -127,8 +128,7 @@ private:
 
 	void CreateBossRoomPath();
 	void CreateRestRoomPath(int _RoomNumber);
-	ARoom* CreateRoom(std::string_view _RoomName,FVector2D _Pos);
-	void CreateBullet(FVector2D _Dir);
+	void CreateRoom(std::string_view _RoomName,FVector2D _Pos);
 
 	USpriteRenderer* SpriteRenderer;
 

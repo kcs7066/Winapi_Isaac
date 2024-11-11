@@ -14,3 +14,10 @@ enum class ERenderOrder
 	UI = 10000
 };
 
+enum class ECollisionGroup
+{
+	Player,
+	Monster,
+	Tear,
+	Door
+};

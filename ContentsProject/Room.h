@@ -55,13 +55,14 @@ public:
 		}
 	}
 
-	void CreateDoor(RoomDir _Dir, FVector2D _Pos);
+	void CreateDoor(RoomDir _Dir, FVector2D _Pos, ARoom* _LinkRoom);
 
 	FVector2D NomalizedRoomPos;
 	FVector2D RoomPos;
 	
 	std::map<RoomDir, ARoom*> LinkedRooms;
 	std::map<RoomDir, ADoor*> Doors;
+
 protected:
 
 private:

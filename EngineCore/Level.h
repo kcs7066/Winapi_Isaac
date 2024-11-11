@@ -90,6 +90,17 @@ public:
 		return MainPawn;
 	}
 
+	AGameMode* GetGameMode()
+	{
+		return GameMode;
+	}
+
+	template<typename ConvertType>
+	ConvertType* GetGameMode()
+	{
+		return dynamic_cast<ConvertType*>(GameMode);
+	}
+
 	template<typename ConvertType>
 	ConvertType* GetPawn()
 	{

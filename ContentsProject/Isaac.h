@@ -2,11 +2,13 @@
 #include <EngineCore/Actor.h>
 #include <EngineCore/ImageManager.h>
 #include <EngineBase/FSMStateManager.h>
+#include <EngineCore/2DCollision.h>
 
 enum class NewPlayerState
 {
 	Idle,
 	Move
+	
 	
 };
 
@@ -36,18 +38,23 @@ public:
 	void Move(float _DeltaTime);
 
 
-    void Attack(float _DeltaTime);
+    void Attack(FVector2D _Dir);
 
+	class USpriteRenderer* HeadRenderer = nullptr;
+	void CollisionEnter(AActor* _ColActor);
+	void CollisionStay(AActor* _ColActor);
+	void CollisionEnd(AActor* _ColActor);
 
 protected:
 
 private:
+	U2DCollision* CollisionComponent;
 	float Speed = 500.0f;
 	class UEngineWinImage* ColImage = nullptr;
-	class USpriteRenderer* HeadRenderer = nullptr;
+	
 	class USpriteRenderer* BodyRenderer = nullptr;
 	UFSMStateManager FSM = UFSMStateManager();
 	int Test = 0;
-
+	float BulletCoolTime = 0.5f;
 };
 
