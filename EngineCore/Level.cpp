@@ -7,17 +7,18 @@
 #include <EnginePlatform/EngineWinImage.h>
 
 #include "SpriteRenderer.h"
+#include "2DCollision.h"
 
 #include "EngineCoreDebug.h"
 
 ULevel::ULevel()
 {
-
 }
 
 ULevel::~ULevel()
 {
 	{
+
 		std::list<AActor*>::iterator StartIter = BeginPlayList.begin();
 		std::list<AActor*>::iterator EndIter = BeginPlayList.end();
 
@@ -47,14 +48,28 @@ ULevel::~ULevel()
 void ULevel::LevelChangeStart()
 {
 	{
-		std::list<AActor*>::iterator StartIter = AllActors.begin();
-		std::list<AActor*>::iterator EndIter = AllActors.end();
-
-		for (; StartIter != EndIter; ++StartIter)
 		{
-			AActor* CurActor = *StartIter;
+			std::list<AActor*>::iterator StartIter = AllActors.begin();
+			std::list<AActor*>::iterator EndIter = AllActors.end();
 
-			CurActor->LevelChangeStart();
+			for (; StartIter != EndIter; ++StartIter)
+			{
+				AActor* CurActor = *StartIter;
+
+				CurActor->LevelChangeStart();
+			}
+		}
+
+		{
+			std::list<AActor*>::iterator StartIter = BeginPlayList.begin();
+			std::list<AActor*>::iterator EndIter = BeginPlayList.end();
+
+			for (; StartIter != EndIter; ++StartIter)
+			{
+				AActor* CurActor = *StartIter;
+
+				CurActor->LevelChangeStart();
+			}
 		}
 	}
 
@@ -63,19 +78,32 @@ void ULevel::LevelChangeStart()
 void ULevel::LevelChangeEnd()
 {
 	{
-		std::list<AActor*>::iterator StartIter = AllActors.begin();
-		std::list<AActor*>::iterator EndIter = AllActors.end();
-
-		for (; StartIter != EndIter; ++StartIter)
 		{
-			AActor* CurActor = *StartIter;
+			std::list<AActor*>::iterator StartIter = AllActors.begin();
+			std::list<AActor*>::iterator EndIter = AllActors.end();
 
-			CurActor->LevelChangeEnd();
+			for (; StartIter != EndIter; ++StartIter)
+			{
+				AActor* CurActor = *StartIter;
+
+				CurActor->LevelChangeEnd();
+			}
+		}
+
+		{
+			std::list<AActor*>::iterator StartIter = BeginPlayList.begin();
+			std::list<AActor*>::iterator EndIter = BeginPlayList.end();
+
+			for (; StartIter != EndIter; ++StartIter)
+			{
+				AActor* CurActor = *StartIter;
+
+				CurActor->LevelChangeEnd();
+			}
 		}
 	}
 
 }
-
 
 void ULevel::Tick(float _DeltaTime)
 {
@@ -92,7 +120,7 @@ void ULevel::Tick(float _DeltaTime)
 
 		BeginPlayList.clear();
 
-
+		// todtjdtl 
 		AActor::ComponentBeginPlay();
 	}
 
@@ -147,36 +175,134 @@ void ULevel::Render(float _DeltaTime)
 
 	}
 
-	UEngineDebug::PrintEngineDebugText();
+	UEngineDebug::PrintEngineDebugRender();
 
 	DoubleBuffering();
 }
 
-void ULevel::Release(float _DeltaTime)
+void ULevel::Collision(float _DeltaTime)
 {
-
-	std::map<int, std::list<class USpriteRenderer*>>::iterator StartOrderIter = Renderers.begin();
-	std::map<int, std::list<class USpriteRenderer*>>::iterator EndOrderIter = Renderers.end();
-
-	for (; StartOrderIter != EndOrderIter; ++StartOrderIter)
+	for (size_t i = 0; i < CollisionLink.size(); i++)
 	{
-		std::list<class USpriteRenderer*>& RendererList = StartOrderIter->second;
+		CollisionLinkData Data = CollisionLink[i];
 
-		std::list<class USpriteRenderer*>::iterator RenderStartIter = RendererList.begin();
-		std::list<class USpriteRenderer*>::iterator RenderEndIter = RendererList.end();
+		int Left = Data.Left;
+		int Right = Data.Right;
 
-		for (; RenderStartIter != RenderEndIter; )
+		std::list<class U2DCollision*>& LeftList = CheckCollisions[Left];
+
+		std::list<class U2DCollision*>& RightList = Collisions[Right];
+
+		std::list<class U2DCollision*>::iterator StartLeftIter = LeftList.begin();
+		std::list<class U2DCollision*>::iterator EndLeftIter = LeftList.end();
+
+		std::list<class U2DCollision*>::iterator StartRightIter = RightList.begin();
+		std::list<class U2DCollision*>::iterator EndRightIter = RightList.end();
+
+		for (; StartLeftIter != EndLeftIter; ++StartLeftIter)
 		{
-			if (false == (*RenderStartIter)->IsDestroy())
+			U2DCollision* LeftCollision = *StartLeftIter;
+
+			if (false == LeftCollision->IsActive())
 			{
-				++RenderStartIter;
 				continue;
 			}
 
-			RenderStartIter = RendererList.erase(RenderStartIter);
+			for (; StartRightIter != EndRightIter; ++StartRightIter)
+			{
+				U2DCollision* RightCollision = *StartRightIter;
+				if (false == RightCollision->IsActive())
+				{
+					continue;
+				}
+
+				LeftCollision->CollisionEventCheck(RightCollision);
+			}
+		}
+	}
+}
+
+
+
+void ULevel::Release(float _DeltaTime)
+{
+
+	// 충돌체 제거
+	{
+		std::map<int, std::list<class U2DCollision*>>::iterator StartOrderIter = Collisions.begin();
+		std::map<int, std::list<class U2DCollision*>>::iterator EndOrderIter = Collisions.end();
+
+		for (; StartOrderIter != EndOrderIter; ++StartOrderIter)
+		{
+			std::list<class U2DCollision*>& CollisionList = StartOrderIter->second;
+
+			std::list<class U2DCollision*>::iterator CollisionStartIter = CollisionList.begin();
+			std::list<class U2DCollision*>::iterator CollisionEndIter = CollisionList.end();
+
+			for (; CollisionStartIter != CollisionEndIter; )
+			{
+				if (false == (*CollisionStartIter)->IsDestroy())
+				{
+					++CollisionStartIter;
+					continue;
+				}
+
+				CollisionStartIter = CollisionList.erase(CollisionStartIter);
+			}
 		}
 	}
 
+	// 이벤트 충돌체 제거
+	{
+		std::map<int, std::list<class U2DCollision*>>::iterator StartOrderIter = CheckCollisions.begin();
+		std::map<int, std::list<class U2DCollision*>>::iterator EndOrderIter = CheckCollisions.end();
+
+		for (; StartOrderIter != EndOrderIter; ++StartOrderIter)
+		{
+			std::list<class U2DCollision*>& CollisionList = StartOrderIter->second;
+
+			std::list<class U2DCollision*>::iterator CollisionStartIter = CollisionList.begin();
+			std::list<class U2DCollision*>::iterator CollisionEndIter = CollisionList.end();
+
+			for (; CollisionStartIter != CollisionEndIter; )
+			{
+				if (false == (*CollisionStartIter)->IsDestroy())
+				{
+					++CollisionStartIter;
+					continue;
+				}
+
+				CollisionStartIter = CollisionList.erase(CollisionStartIter);
+			}
+		}
+	}
+
+	// 랜더러 제거
+	{
+		std::map<int, std::list<class USpriteRenderer*>>::iterator StartOrderIter = Renderers.begin();
+		std::map<int, std::list<class USpriteRenderer*>>::iterator EndOrderIter = Renderers.end();
+
+		for (; StartOrderIter != EndOrderIter; ++StartOrderIter)
+		{
+			std::list<class USpriteRenderer*>& RendererList = StartOrderIter->second;
+
+			std::list<class USpriteRenderer*>::iterator RenderStartIter = RendererList.begin();
+			std::list<class USpriteRenderer*>::iterator RenderEndIter = RendererList.end();
+
+			for (; RenderStartIter != RenderEndIter; )
+			{
+				if (false == (*RenderStartIter)->IsDestroy())
+				{
+					++RenderStartIter;
+					continue;
+				}
+
+				RenderStartIter = RendererList.erase(RenderStartIter);
+			}
+		}
+	}
+
+	// 액터 제거
 	{
 		std::list<AActor*>::iterator StartIter = AllActors.begin();
 		std::list<AActor*>::iterator EndIter = AllActors.end();
@@ -210,6 +336,7 @@ void ULevel::ScreenClear()
 
 void ULevel::DoubleBuffering()
 {
+
 	UEngineWindow& MainWindow = UEngineAPICore::GetCore()->GetMainWindow();
 
 	UEngineWinImage* WindowImage = MainWindow.GetWindowImage();
@@ -230,11 +357,27 @@ void ULevel::PushRenderer(class USpriteRenderer* _Renderer)
 	Renderers[Order].push_back(_Renderer);
 }
 
+void ULevel::PushCollision(U2DCollision* _Collision)
+{
+	int Order = _Collision->GetGroup();
+	Collisions[Order].push_back(_Collision);
+}
+
+std::vector<CollisionLinkData> ULevel::CollisionLink;
+
+void ULevel::PushCheckCollision(class U2DCollision* _Collision)
+{
+	int Order = _Collision->GetGroup();
+	CheckCollisions[Order].push_back(_Collision);
+}
+
 void ULevel::ChangeRenderOrder(class USpriteRenderer* _Renderer, int _PrevOrder)
 {
+;
 
 	Renderers[_PrevOrder].remove(_Renderer);
 
 	Renderers[_Renderer->GetOrder()].push_back(_Renderer);
+
 
 }

@@ -80,6 +80,27 @@ public:
 	{
 		IsActiveValue = !IsActiveValue;
 	}
+
+	bool IsDebug()
+	{
+		return IsDebugValue;
+	}
+
+	void DebugOn()
+	{
+		IsDebugValue = true;
+	}
+
+	void DebugOff()
+	{
+		IsDebugValue = false;
+	}
+
+	void DebugSwitch()
+	{
+		IsDebugValue = !IsDebugValue;
+	}
+
 protected:
 
 private:
@@ -92,4 +113,5 @@ private:
 
 	std::string Name;
 
+	bool IsDebugValue = false;
 };

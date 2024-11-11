@@ -33,9 +33,6 @@
     <ClCompile Include="Player.cpp">
       <Filter>ContentsObject\Global</Filter>
     </ClCompile>
-    <ClCompile Include="Bullet.cpp">
-      <Filter>ContentsObject\Play</Filter>
-    </ClCompile>
     <ClCompile Include="IsaacContentsCore.cpp">
       <Filter>Core</Filter>
     </ClCompile>
@@ -66,6 +63,9 @@
     <ClCompile Include="Door.cpp">
       <Filter>ContentsObject\Play</Filter>
     </ClCompile>
+    <ClCompile Include="Tear.cpp">
+      <Filter>ContentsObject\Play</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PreCompile.h">
@@ -73,9 +73,6 @@
     </ClInclude>
     <ClInclude Include="Player.h">
       <Filter>ContentsObject\Global</Filter>
-    </ClInclude>
-    <ClInclude Include="Bullet.h">
-      <Filter>ContentsObject\Play</Filter>
     </ClInclude>
     <ClInclude Include="IsaacContentsCore.h">
       <Filter>Core</Filter>
@@ -105,6 +102,9 @@
       <Filter>ContentsObject\End</Filter>
     </ClInclude>
     <ClInclude Include="Door.h">
+      <Filter>ContentsObject\Play</Filter>
+    </ClInclude>
+    <ClInclude Include="Tear.h">
       <Filter>ContentsObject\Play</Filter>
     </ClInclude>
   </ItemGroup>

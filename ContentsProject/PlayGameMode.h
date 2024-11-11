@@ -128,7 +128,9 @@ private:
 	void CreateBossRoomPath();
 	void CreateRestRoomPath(int _RoomNumber);
 	ARoom* CreateRoom(std::string_view _RoomName,FVector2D _Pos);
+	void CreateBullet(FVector2D _Dir);
 
+	USpriteRenderer* SpriteRenderer;
 
 	UEngineRandom Random;
 

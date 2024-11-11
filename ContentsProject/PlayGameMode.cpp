@@ -10,6 +10,7 @@
 #include <EngineBase/EngineString.h>
 #include "Isaac.h"
 #include <EngineCore/Level.h>
+#include "Tear.h"
 
 
 
@@ -242,7 +243,23 @@ void APlayGameMode::Tick(float _DeltaTime)
 	{	
 		int a = 0;
 	}
-	if (true == UEngineInput::GetInst().IsDown(VK_NUMPAD0))
+	if (true == UEngineInput::GetInst().IsDown(VK_UP))
+	{
+		CreateBullet(FVector2D::UP);
+	}
+	if (true == UEngineInput::GetInst().IsPress(VK_LEFT))
+	{
+		CreateBullet(FVector2D::LEFT);
+	}
+	if (true == UEngineInput::GetInst().IsPress(VK_DOWN))
+	{
+		CreateBullet(FVector2D::DOWN);
+	}
+	if (true == UEngineInput::GetInst().IsPress(VK_RIGHT))
+	{
+		CreateBullet(FVector2D::RIGHT);
+	}
+	if (true == UEngineInput::GetInst().IsPress(VK_NUMPAD0))
 	{
 		CurRoom = Rooms[0];
 		
@@ -314,7 +331,7 @@ ARoom* APlayGameMode::CreateRoom(std::string_view _RoomName,FVector2D _Pos)
 
 	ARoom* NewRoom = GetWorld()->SpawnActor<ARoom>();
 	NewRoom->SetName(_RoomName);
-	USpriteRenderer* SpriteRenderer = CreateDefaultSubObject<USpriteRenderer>();
+	SpriteRenderer = CreateDefaultSubObject<USpriteRenderer>();
 	SpriteRenderer->SetOrder(ERenderOrder::BACKGROUND);
 
 	
@@ -381,3 +398,9 @@ void APlayGameMode::Link(ARoom* _Room)
 
 }
 
+void APlayGameMode::CreateBullet(FVector2D _Dir)
+{
+	ATear* NewTear = GetWorld()->SpawnActor<ATear>();
+	NewTear->SetActorLocation(GetWorld()->GetPawn()->GetActorLocation());
+	NewTear->Dir = (_Dir);
+}

@@ -5,7 +5,6 @@
 #include "EngineAPICore.h"
 #include <EngineBase/EngineString.h>
 
-#include "Actor.h"
 
 USpriteRenderer::USpriteRenderer()
 {
@@ -167,11 +166,26 @@ void USpriteRenderer::CreateAnimation(std::string_view _AnimationName, std::stri
 	std::vector<int> Indexs;
 	std::vector<float> Times;
 
-	for (size_t i = 0; i < Inter; i++)
+	if (_Start < _End)
 	{
-		Indexs.push_back(_Start);
-		Times.push_back(Time);
-		++_Start;
+		Inter = (_End - _Start) + 1;
+		for (size_t i = 0; i < Inter; i++)
+		{
+			Indexs.push_back(_Start);
+			Times.push_back(Time);
+			++_Start;
+		}
+
+	}
+	else
+	{
+		Inter = (_Start - _End) + 1;
+		for (size_t i = 0; i < Inter; i++)
+		{
+			Indexs.push_back(_End);
+			Times.push_back(Time);
+			++_End;
+		}
 	}
 
 	CreateAnimation(_AnimationName, _SpriteName, Indexs, Times, _Loop);
@@ -288,4 +302,35 @@ void USpriteRenderer::SetAnimationEvent(std::string_view _AnimationName, int _Fr
 void USpriteRenderer::SetCameraEffectScale(float _Effect)
 {
 	CameraEffectScale = _Effect;
+}
+
+void USpriteRenderer::SetPivotType(PivotType _Type)
+{
+	if (PivotType::Center == _Type)
+	{
+		Pivot = FVector2D::ZERO;
+		return;
+	}
+
+	if (nullptr == Sprite)
+	{
+		MSGASSERT("이미지를 기반으로한 피봇설정은 스프라이트가 세팅되지 않은 상태에서는 호출할수 없습니다");
+		return;
+	}
+
+	UEngineSprite::USpriteData CurData = Sprite->GetSpriteData(CurIndex);
+
+	switch (_Type)
+	{
+	case PivotType::Bot:
+		Pivot.X = 0.0f;
+		Pivot.Y -= CurData.Transform.Scale.Y * 0.5f;
+		break;
+	case PivotType::Top:
+		Pivot.X = 0.0f;
+		Pivot.Y += CurData.Transform.Scale.Y * 0.5f;
+		break;
+	default:
+		break;
+	}
 }

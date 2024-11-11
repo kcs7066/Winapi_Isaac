@@ -8,7 +8,6 @@
 AIsaac::AIsaac()
 {
 	SetActorLocation({ 0, 0 });
-
 	{
 		BodyRenderer = CreateDefaultSubObject<USpriteRenderer>();
 		BodyRenderer->SetSprite("Body.png");
@@ -82,6 +81,12 @@ void AIsaac::Tick(float _DeltaTime)
 	{
 		UEngineAPICore::GetCore()->OpenLevel("Title");
 	}
+
+	if (true == UEngineInput::GetInst().IsDown('B'))
+	{
+		UEngineDebug::SwitchIsDebug();
+	}
+
 }
 
 

@@ -1,5 +1,14 @@
 #pragma once
 
+class UEngineMath
+{
+public:
+	static float Sqrt(float _Value)
+	{
+		return ::sqrtf(_Value);
+	}
+};
+
 class FVector2D
 {
 public:
@@ -70,6 +79,16 @@ public:
 		return X == 0.0f || Y == 0.0f;
 	}
 
+	float hX() const
+	{
+		return X * 0.5f;
+	}
+
+	float hY() const
+	{
+		return Y * 0.5f;
+	}
+
 	// 값을 절반으로 바꿔주는 함수
 	FVector2D Half() const
 	{
@@ -78,10 +97,16 @@ public:
 
 	float Length() const
 	{
-		return sqrtf(X * X + Y * Y);
+		return UEngineMath::Sqrt(X * X + Y * Y);
 	}
 
 	class FIntPoint ConvertToPoint() const;
+
+	static FVector2D Normalize(FVector2D _Value)
+	{
+		_Value.Normalize();
+		return _Value;
+	}
 
 	void Normalize()
 	{
@@ -125,6 +150,13 @@ public:
 		return Result;
 	}
 
+	FVector2D operator-() const
+	{
+		FVector2D Result;
+		Result.X = -X;
+		Result.Y = -Y;
+		return Result;
+	}
 
 	FVector2D operator/(int _Value) const
 	{
@@ -159,6 +191,13 @@ public:
 		return *this;
 	}
 
+	FVector2D& operator-=(FVector2D _Other)
+	{
+		X -= _Other.X;
+		Y -= _Other.Y;
+		return *this;
+	}
+
 	//X와Y의 값을 문자열로 표현해주는 함수
 	std::string ToString() const
 	{
@@ -173,22 +212,61 @@ public:
 	}
 };
 
+enum class ECollisionType
+{
+	Point,
+	Rect,
+	CirCle, 
+	Max
+
+};
+
 class FTransform
 {
+private:
+	friend class CollisionFunctionInit;
+
+	static std::function<bool(const FTransform&, const FTransform&)> AllCollisionFunction[static_cast<int>(ECollisionType::Max)][static_cast<int>(ECollisionType::Max)];
+
 public:
+	static bool Collision(ECollisionType _LeftType, const FTransform& _Left, ECollisionType _RightType, const FTransform& _Right);
+
+	static bool RectToRect(const FTransform& _Left, const FTransform& _Right);
+
+	static bool CirCleToCirCle(const FTransform& _Left, const FTransform& _Right);
+
 	FVector2D Scale;
 	FVector2D Location;
 
-	// 왼쪽위
+
 	FVector2D CenterLeftTop() const
 	{
 		return Location - Scale.Half();
 	}
 
-	//오른쪽아래
+	float CenterLeft() const
+	{
+		return Location.X - Scale.hX();
+	}
+
+	float CenterTop() const
+	{
+		return Location.Y - Scale.hY();
+	}
+
 	FVector2D CenterRightBottom() const
 	{
 		return Location + Scale.Half();
+	}
+
+	float CenterRight() const
+	{
+		return Location.X + Scale.hX();
+	}
+
+	float CenterBottom() const
+	{
+		return Location.Y + Scale.hY();
 	}
 };
 
@@ -246,14 +324,6 @@ public:
 
 };
 
-class UEngineMath
-{
-public:
-	static float Sqrt(float _Value)
-	{
-		return ::sqrtf(_Value);
-	}
-};
 
 class UColor
 {

@@ -5,6 +5,13 @@
 #include <map>
 #include "Actor.h"
 
+enum class PivotType
+{
+	Center,
+	Bot,
+	Top,
+};
+
 class USpriteRenderer : public USceneComponent
 {
 public:
@@ -77,21 +84,18 @@ public:
 		return Sprite->GetName();
 	}
 
-	bool IsActive() override
-	{
-		return UObject::IsActive() && GetActor()->IsActive();
-	}
-
-
-	bool IsDestroy() override
-	{
-		return UObject::IsDestroy() || GetActor()->IsDestroy();
-	}
-
 	void SetCameraEffect(bool _Value)
 	{
 		IsCameraEffect = _Value;
 	}
+
+	void SetPivot(FVector2D _Pivot)
+	{
+		Pivot = _Pivot;
+	}
+
+	void SetPivotType(PivotType _Type);
+
 
 	void SetCameraEffectScale(float _Effect);
 	void SetSprite(std::string_view _Name, int _CurIndex = 0);
@@ -103,6 +107,7 @@ public:
 	int CurIndex = 0;
 	bool IsCameraEffect = true;
 	float CameraEffectScale = 1.0f;
+	FVector2D Pivot = FVector2D::ZERO;
 
 	class UEngineSprite* Sprite = nullptr;
 

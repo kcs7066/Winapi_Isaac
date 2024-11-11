@@ -53,6 +53,30 @@ std::vector<class UEngineFile> UEngineDirectory::GetAllFile(bool _IsRecursive )
 	return Result;
 }
 
+std::vector<class UEngineDirectory> UEngineDirectory::GetAllDirectory()
+{
+	std::vector<class UEngineDirectory> Result;
+
+	std::filesystem::directory_iterator Diriter = std::filesystem::directory_iterator(Path);
+
+	while (false == Diriter._At_end())
+	{
+		std::filesystem::path FilePath = *Diriter;
+
+		UEnginePath Path = UEnginePath(FilePath);
+		if (false == Path.IsDirectory())
+		{
+			++Diriter;
+			continue;
+		}
+
+		Result.push_back(UEngineDirectory(FilePath));
+		++Diriter;
+	}
+
+	return Result;
+}
+
 // ?? Recursive°¡ ¹¹Áö
 
 void UEngineDirectory::GetAllFileRecursive(std::filesystem::path _Path
