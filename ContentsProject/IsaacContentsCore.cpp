@@ -43,7 +43,17 @@ void IsaacContentsCore::BeginPlay()
 	UImageManager::GetInst().CuttingSprite("Head.png", { 64, 64 });
 	UImageManager::GetInst().CuttingSprite("Body.png", { 64, 64 });
 	UImageManager::GetInst().CuttingSprite("NormalRoomDoor.png", { 256, 256 });
+	UImageManager::GetInst().CuttingSprite("GoldRoomDoor.png", { 256, 256 });
+	UImageManager::GetInst().CuttingSprite("BossRoomDoor.png", { 256, 256 });
 	UImageManager::GetInst().CuttingSprite("Tear.png", { 64, 64 });
+	UImageManager::GetInst().CuttingSprite("Monster_Fly.png", { 32, 32 });
+	UImageManager::GetInst().CuttingSprite("Monster_Roundworm.png", { 32, 32 });
+	UImageManager::GetInst().CuttingSprite("Monster_Dip_Left.png", { 32, 32 });
+	UImageManager::GetInst().CuttingSprite("Monster_Dip_Right.png", { 32, 32 });
+	UImageManager::GetInst().CuttingSprite("Monster_Spider.png", { 64, 64 });
+
+
+
 
 
 	{

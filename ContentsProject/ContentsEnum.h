@@ -19,5 +19,6 @@ enum class ECollisionGroup
 	Player,
 	Monster,
 	Tear,
+	MonsterTear,
 	Door
 };

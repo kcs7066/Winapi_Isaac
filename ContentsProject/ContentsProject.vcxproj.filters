@@ -25,13 +25,13 @@
     <Filter Include="ContentsObject\End">
       <UniqueIdentifier>{46649ed2-2de2-427c-a35a-ef3081f7ea24}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ContentsObject\Monster">
+      <UniqueIdentifier>{88d851b0-7ba5-45ad-a492-d92340e30654}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PreCompile.cpp">
       <Filter>PreCompile</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>ContentsObject\Global</Filter>
     </ClCompile>
     <ClCompile Include="IsaacContentsCore.cpp">
       <Filter>Core</Filter>
@@ -48,9 +48,6 @@
     <ClCompile Include="Room.cpp">
       <Filter>ContentsObject\Play</Filter>
     </ClCompile>
-    <ClCompile Include="Isaac.cpp">
-      <Filter>ContentsObject\Global</Filter>
-    </ClCompile>
     <ClCompile Include="PlayGameMode.cpp">
       <Filter>ContentsObject\Play</Filter>
     </ClCompile>
@@ -66,13 +63,25 @@
     <ClCompile Include="Tear.cpp">
       <Filter>ContentsObject\Play</Filter>
     </ClCompile>
+    <ClCompile Include="Isaac.cpp">
+      <Filter>ContentsObject\Play</Filter>
+    </ClCompile>
+    <ClCompile Include="PurpleFly.cpp">
+      <Filter>ContentsObject\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="RoundWorm.cpp">
+      <Filter>ContentsObject\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="MonsterTear.cpp">
+      <Filter>ContentsObject\Play</Filter>
+    </ClCompile>
+    <ClCompile Include="Dip.cpp">
+      <Filter>ContentsObject\Monster</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PreCompile.h">
       <Filter>PreCompile</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>ContentsObject\Global</Filter>
     </ClInclude>
     <ClInclude Include="IsaacContentsCore.h">
       <Filter>Core</Filter>
@@ -89,9 +98,6 @@
     <ClInclude Include="Room.h">
       <Filter>ContentsObject\Play</Filter>
     </ClInclude>
-    <ClInclude Include="Isaac.h">
-      <Filter>ContentsObject\Global</Filter>
-    </ClInclude>
     <ClInclude Include="PlayGameMode.h">
       <Filter>ContentsObject\Play</Filter>
     </ClInclude>
@@ -106,6 +112,21 @@
     </ClInclude>
     <ClInclude Include="Tear.h">
       <Filter>ContentsObject\Play</Filter>
+    </ClInclude>
+    <ClInclude Include="Isaac.h">
+      <Filter>ContentsObject\Play</Filter>
+    </ClInclude>
+    <ClInclude Include="PurpleFly.h">
+      <Filter>ContentsObject\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="RoundWorm.h">
+      <Filter>ContentsObject\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="MonsterTear.h">
+      <Filter>ContentsObject\Play</Filter>
+    </ClInclude>
+    <ClInclude Include="Dip.h">
+      <Filter>ContentsObject\Monster</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

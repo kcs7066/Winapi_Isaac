@@ -12,7 +12,9 @@
 #include <EngineCore/Level.h>
 #include "Tear.h"
 #include <EngineCore/2DCollision.h>
-
+#include "PurpleFly.h"
+#include "RoundWorm.h"
+#include "Dip.h"
 
 
 APlayGameMode::APlayGameMode()
@@ -206,14 +208,14 @@ void APlayGameMode::BeginPlay()
 	CreateRestRoomPath(6);
 	CreateRestRoomPath(7);
 
-	CreateRoom("Room0",RoomBind[0]);
+	CreateRoom("FirstRoom",RoomBind[0]);
 	CreateRoom("Room1", RoomBind[1]);
 	CreateRoom("Room2", RoomBind[2]);
 	CreateRoom("Room3", RoomBind[3]);
-	CreateRoom("Room4", RoomBind[4]);
-	CreateRoom("Room5", RoomBind[5]);
-	CreateRoom("Room6", RoomBind[6]);
-	CreateRoom("Room7", RoomBind[7]);
+	CreateRoom("BossRoom", RoomBind[4], RoomType::BOSS);
+	CreateRoom("AdditionalRoom1", RoomBind[5]);
+	CreateRoom("AdditionalRoom2", RoomBind[6]);
+	CreateRoom("GoldRoom", RoomBind[7], RoomType::GOLD);
 
 	Link(Rooms[0]);
 	Link(Rooms[1]);
@@ -238,28 +240,24 @@ void APlayGameMode::Tick(float _DeltaTime)
 {
 	Super::Tick(_DeltaTime);
 
-	//UEngineDebug::CoreOutPutString("Room : " + APlayGameMode::CurRoom->GetName());
+	UEngineDebug::CoreOutPutString("Room : " + APlayGameMode::CurRoom->GetName());
 
-	if (true == UEngineInput::GetInst().IsDown('Q'))
+	if (true == UEngineInput::GetInst().IsDown('Z'))
 	{	
-		int a = 0;
+		CurRoom -> MonsterNumber = 0;
 	}
-	//if (true == UEngineInput::GetInst().IsDown(VK_UP))
-	//{
-	//	CreateBullet(FVector2D::UP);
-	//}
-	//if (true == UEngineInput::GetInst().IsPress(VK_LEFT))
-	//{
-	//	CreateBullet(FVector2D::LEFT);
-	//}
-	//if (true == UEngineInput::GetInst().IsPress(VK_DOWN))
-	//{
-	//	CreateBullet(FVector2D::DOWN);
-	//}
-	//if (true == UEngineInput::GetInst().IsPress(VK_RIGHT))
-	//{
-	//	CreateBullet(FVector2D::RIGHT);
-	//}
+
+	if (true == UEngineInput::GetInst().IsDown('X'))
+	{
+		ARoundWorm* RoundWorm = GetWorld()->SpawnActor<ARoundWorm>();
+	}
+
+	if (true == UEngineInput::GetInst().IsDown('C'))
+	{
+		ADip* Dip = GetWorld()->SpawnActor<ADip>();
+	}
+
+
 	if (true == UEngineInput::GetInst().IsPress(VK_NUMPAD0))
 	{
 		CurRoom = Rooms[0];
@@ -313,7 +311,7 @@ void APlayGameMode::Tick(float _DeltaTime)
 			RoomMoveCameraTime = 0.0f;
 			PrevRoom = CurRoom;
 			GetWorld()->SetCameraPos({ CurRoom->RoomPos.X - 480.0f ,CurRoom->RoomPos.Y - 270.0f });
-			GetWorld()->GetPawn()->SetActorLocation(CurRoom->RoomPos);
+			//GetWorld()->GetPawn()->SetActorLocation(CurRoom->RoomPos);
 		}
 
 	
@@ -323,23 +321,20 @@ void APlayGameMode::Tick(float _DeltaTime)
 
 
 
-void APlayGameMode::CreateRoom(std::string_view _RoomName,FVector2D _Pos)
+void APlayGameMode::CreateRoom(std::string_view _RoomName,FVector2D _Pos, RoomType _Type)
 {
 
 
 	ARoom* NewRoom = GetWorld()->SpawnActor<ARoom>();
 	NewRoom->SetName(_RoomName);
-	USpriteRenderer* SpriteRenderer = CreateDefaultSubObject<USpriteRenderer>();
-	SpriteRenderer->SetOrder(ERenderOrder::BACKGROUND);
-	SpriteRenderer->SetSprite("Room_01.png");
-	FVector2D MapScale = SpriteRenderer->SetSpriteScale(1.0f);
-	NewRoom->NomalizedRoomPos = _Pos;
-	NewRoom->RoomPos = { MapScale.X * _Pos.X , MapScale.Y * _Pos.Y };
-	SpriteRenderer->SetComponentLocation(NewRoom->RoomPos);
-
-
-	Rooms.insert({ RoomNumber,NewRoom });
 	
+	
+	NewRoom->NomalizedRoomPos = _Pos;
+	NewRoom->RoomPos = { 960.0f * _Pos.X , 540.0f * _Pos.Y };
+	NewRoom->RoomRenderer->SetComponentLocation(NewRoom->RoomPos);
+
+
+	Rooms.insert({ RoomNumber,NewRoom });	
 	RoomNumber++;
 
 	

@@ -3,6 +3,7 @@
 #include <EngineBase/EngineMath.h>
 
 #include "EngineSprite.h"
+#include <EngineBase/TimeEvent.h>
 
 class AActor : public UObject
 {
@@ -69,6 +70,7 @@ public:
 
 
 protected:
+	UTimeEvent TimeEventer;
 
 private:
 	static void ComponentBeginPlay();
@@ -77,6 +79,7 @@ private:
 	static std::list<class UActorComponent*> ComponentList;
 
 	void ReleaseCheck(float _DeltaTime) override;
+	void ReleaseTimeCheck(float _DeltaTime) override;
 
 	class ULevel* World = nullptr;
 	FTransform Transform;

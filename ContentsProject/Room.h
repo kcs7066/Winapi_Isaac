@@ -2,7 +2,6 @@
 #include <EngineCore/Actor.h>
 #include <EngineCore/SpriteRenderer.h>
 #include <EngineCore/EngineAPICore.h>
-#include "Player.h"
 #include "Door.h"
 
 enum class RoomDir
@@ -15,9 +14,11 @@ enum class RoomDir
 	
 };
 
-enum class RoomValue
+enum class RoomType
 {
-	RoomQUANTITY = 8
+	NORMAL,
+	GOLD,
+	BOSS
 };
 
 class ARoom : public AActor
@@ -33,29 +34,14 @@ public:
 	ARoom& operator=(const ARoom& _Other) = delete;
 	ARoom& operator=(ARoom&& _Other) noexcept = delete;
 
-	RoomDir ReverseDir(RoomDir _Dir)
-	{
-		switch (_Dir)
-		{
-		case RoomDir::LEFT:
-			return RoomDir::RIGHT;
-			break;
-		case RoomDir::RIGHT:
-			return RoomDir::LEFT;
-			break;
-		case RoomDir::UP:
-			return RoomDir::DOWN;
-			break;
-		case RoomDir::DOWN:
-			return RoomDir::UP;
-			break;
-		default:
-			return RoomDir::NONE;
-			break;
-		}
-	}
+	void BeginPlay() override;
+	void Tick(float _DeltaTime) override;
+
+
 
 	void CreateDoor(RoomDir _Dir, FVector2D _Pos, ARoom* _LinkRoom);
+
+
 
 	FVector2D NomalizedRoomPos;
 	FVector2D RoomPos;
@@ -63,11 +49,19 @@ public:
 	std::map<RoomDir, ARoom*> LinkedRooms;
 	std::map<RoomDir, ADoor*> Doors;
 
+	USpriteRenderer* RoomRenderer;
+
+	RoomType Type = RoomType::NORMAL;
+
+	int MonsterNumber = 1;
+
 protected:
 
 private:
 
 	FVector2D Size = UEngineAPICore::GetCore()->GetMainWindow().GetWindowSize();
+
+	
 
 }; 
 

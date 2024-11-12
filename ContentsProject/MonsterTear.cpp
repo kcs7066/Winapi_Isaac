@@ -1,25 +1,24 @@
 #include "PreCompile.h"
-#include "Tear.h"
+#include "MonsterTear.h"
 #include <EngineCore/SpriteRenderer.h>
-#include "Isaac.h"
 #include "ContentsEnum.h"
 
-ATear::ATear()
-{	
-	
-    {
+AMonsterTear::AMonsterTear()
+{
+
+	{
 		SpriteRenderer = CreateDefaultSubObject<USpriteRenderer>();
 		SpriteRenderer->SetSprite("Tear.png");
 		SpriteRenderer->SetComponentScale({ 100, 100 });
-		SpriteRenderer->CreateAnimation("Tear_Fly", "Tear.png", 0, 4, 0.1f);
-		SpriteRenderer->ChangeAnimation("Tear_Fly");
+		SpriteRenderer->CreateAnimation("MonsterTear_Fly", "Tear.png", 13, 17, 0.1f);
+		SpriteRenderer->ChangeAnimation("MonsterTear_Fly");
 	}
 
 	{
 		CollisionComponent = CreateDefaultSubObject<U2DCollision>();
 		CollisionComponent->SetComponentLocation({ 0, 0 });
 		CollisionComponent->SetComponentScale({ 30, 30 });
-		CollisionComponent->SetCollisionGroup(ECollisionGroup::Tear);
+		CollisionComponent->SetCollisionGroup(ECollisionGroup::MonsterTear);
 		CollisionComponent->SetCollisionType(ECollisionType::CirCle);
 
 		DebugOn();
@@ -27,17 +26,17 @@ ATear::ATear()
 
 }
 
-ATear::~ATear()
+AMonsterTear::~AMonsterTear()
 {
 }
 
-void ATear::BeginPlay()
+void AMonsterTear::BeginPlay()
 {
 	AActor::BeginPlay();
 }
-void ATear::Tick(float _DeltaTime)
+void AMonsterTear::Tick(float _DeltaTime)
 {
 	Super::Tick(_DeltaTime);
-	AddActorLocation(Dir * _DeltaTime * 300.0f);
+	AddActorLocation(Dir * _DeltaTime * BulletSpeed);
 	Destroy(2.0f);
 }

@@ -2,16 +2,17 @@
 #include "Door.h"
 #include "ContentsEnum.h"
 
-#include <EngineCore/SpriteRenderer.h>
+
 
 ADoor::ADoor()
 {
 
 	
-	USpriteRenderer* DoorRenderer = CreateDefaultSubObject<USpriteRenderer>();
+	DoorRenderer = CreateDefaultSubObject<USpriteRenderer>();
 	DoorRenderer->SetOrder(ERenderOrder::DOOR);
 	DoorRenderer->SetSprite("NormalRoomDoor.png");
 	DoorRenderer->SetSpriteScale(1.0f);
+
 
 	
 	CollisionComponent = CreateDefaultSubObject<U2DCollision>();
@@ -19,9 +20,38 @@ ADoor::ADoor()
 	CollisionComponent->SetComponentScale({ 50, 70 });
 	CollisionComponent->SetCollisionGroup(ECollisionGroup::Door);
 	CollisionComponent->SetCollisionType(ECollisionType::Rect);
+
+	DebugOn();
 }
 
 ADoor::~ADoor()
 {
 }
 
+void ADoor::DoorOpen()
+{
+	switch (Dir)
+	{
+	case DoorDir::NONE:
+		break;
+	case DoorDir::UP:
+		DoorRenderer->CreateAnimation("UpNormalRoomDoor_Open", "NormalRoomDoor.png", 2, 2, 0.1f);
+		DoorRenderer->ChangeAnimation("UpNormalRoomDoor_Open");
+		break;
+	case DoorDir::RIGHT:
+		DoorRenderer->CreateAnimation("RightNormalRoomDoor_Open", "NormalRoomDoor.png", 1, 1, 0.1f);
+		DoorRenderer->ChangeAnimation("RightNormalRoomDoor_Open");
+		break;
+	case DoorDir::DOWN:
+		DoorRenderer->CreateAnimation("DownNormalRoomDoor_Open", "NormalRoomDoor.png", 3, 3, 0.1f);
+		DoorRenderer->ChangeAnimation("DownNormalRoomDoor_Open");
+		break;
+	case DoorDir::LEFT:
+		DoorRenderer->CreateAnimation("LeftNormalRoomDoor_Open", "NormalRoomDoor.png", 0, 0, 0.1f);
+		DoorRenderer->ChangeAnimation("LeftNormalRoomDoor_Open");
+		break;
+	default:
+		break;
+	}
+
+}

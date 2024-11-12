@@ -78,7 +78,7 @@ AIsaac::~AIsaac()
 void AIsaac::BeginPlay()
 {
 	Super::BeginPlay();
-	GetWorld()->SetCameraToMainPawn(true);
+	GetWorld()->SetCameraToMainPawn(false);
 	
 
 	
@@ -107,7 +107,6 @@ void AIsaac::BeginPlay()
 void AIsaac::Tick(float _DeltaTime)
 {
 	Super::Tick(_DeltaTime);
-	FSM.Update(_DeltaTime);
 	UEngineDebug::CoreOutPutString("FPS : " + std::to_string(1.0f / _DeltaTime));
 	UEngineDebug::CoreOutPutString("PlayerPos : " + GetActorLocation().ToString());
 
@@ -203,11 +202,34 @@ void AIsaac::Move(float _DeltaTime)
 
 	AActor* Result = CollisionComponent->CollisionOnce(ECollisionGroup::Door);
 
-	Result = dynamic_cast<ADoor*>(Result);
+	APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
+
 	if (nullptr != Result)
 	{
-		APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
-     	//PlayGameMode->CurRoom = Result->LinkedRoom;
+		ADoor* NewResult = dynamic_cast<ADoor*>(Result);
+
+		
+     	PlayGameMode->CurRoom = NewResult->LinkedRoom;
+
+		switch (NewResult->Dir)
+		{
+		case DoorDir::UP:
+			this->AddActorLocation({0,-250});
+			break;
+		case DoorDir::RIGHT:
+			this->AddActorLocation({ 300,0 });
+			break;
+		case DoorDir::DOWN:
+			this->AddActorLocation({ 0,250 });
+			break;
+		case DoorDir::LEFT:
+			this->AddActorLocation({ -300,0 });
+			break;
+
+		default:
+			break;
+		}
+
 	}
 
 	if (false == UEngineInput::GetInst().IsPress('A') &&
@@ -218,8 +240,21 @@ void AIsaac::Move(float _DeltaTime)
 		FSM.ChangeState(NewPlayerState::Idle);
 		return;
 	}
-	AddActorLocation(Vector * _DeltaTime * Speed);
 
+	FVector2D Location = GetActorLocation() += Vector * _DeltaTime * Speed;
+
+	if (PlayGameMode->CurRoom->RoomPos.X - Location.X > 340.0f ||
+		PlayGameMode->CurRoom->RoomPos.X - Location.X < -340.0f ||
+		PlayGameMode->CurRoom->RoomPos.Y - Location.Y > 170.0f ||
+		PlayGameMode->CurRoom->RoomPos.Y - Location.Y < -170.0f)
+	{
+
+	}
+	
+	else
+	{
+		AddActorLocation(Vector * _DeltaTime * Speed);
+	}
 }
 
 void AIsaac::Attack(FVector2D _Dir)

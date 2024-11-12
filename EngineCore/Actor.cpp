@@ -69,6 +69,8 @@ void AActor::Tick(float _DeltaTime)
 		UEngineDebug::CoreDebugRender(Trans, UEngineDebug::EDebugPosType::Circle);
 	}
 
+	TimeEventer.Update(_DeltaTime);
+
 	std::list<class UActorComponent*>::iterator StartIter = Components.begin();
 	std::list<class UActorComponent*>::iterator EndIter = Components.end();
 
@@ -78,6 +80,20 @@ void AActor::Tick(float _DeltaTime)
 	}
 
 }
+
+void AActor::ReleaseTimeCheck(float _DeltaTime)
+{
+	UObject::ReleaseTimeCheck(_DeltaTime);
+
+	std::list<UActorComponent*>::iterator StartIter = Components.begin();
+	std::list<UActorComponent*>::iterator EndIter = Components.end();
+	for (; StartIter != EndIter; ++StartIter)
+	{
+		UActorComponent* Component = *StartIter;
+		Component->ReleaseTimeCheck(_DeltaTime);
+	}
+}
+
 
 void AActor::ReleaseCheck(float _DeltaTime)
 {

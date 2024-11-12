@@ -3,18 +3,18 @@
 #include <EngineBase/EngineMath.h>
 #include <EngineCore/2DCollision.h>
 
-class ATear : public AActor
+class AMonsterTear : public AActor
 {
 public:
 	// constrcuter destructer
-	ATear();
-	~ATear();
+	AMonsterTear();
+	~AMonsterTear();
 
 	// delete Function
-	ATear(const ATear& _Other) = delete;
-	ATear(ATear&& _Other) noexcept = delete;
-	ATear& operator=(const ATear& _Other) = delete;
-	ATear& operator=(ATear&& _Other) noexcept = delete;
+	AMonsterTear(const AMonsterTear& _Other) = delete;
+	AMonsterTear(AMonsterTear&& _Other) noexcept = delete;
+	AMonsterTear& operator=(const AMonsterTear& _Other) = delete;
+	AMonsterTear& operator=(AMonsterTear&& _Other) noexcept = delete;
 	FVector2D Dir = FVector2D::ZERO;
 
 protected:
@@ -26,5 +26,5 @@ private:
 	class USpriteRenderer* SpriteRenderer;
 	U2DCollision* CollisionComponent;
 
-	float BulletSpeed = 500.0f;
+	float BulletSpeed = 1.0f;
 };

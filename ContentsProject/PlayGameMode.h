@@ -128,7 +128,7 @@ private:
 
 	void CreateBossRoomPath();
 	void CreateRestRoomPath(int _RoomNumber);
-	void CreateRoom(std::string_view _RoomName,FVector2D _Pos);
+	void CreateRoom(std::string_view _RoomName,FVector2D _Pos,RoomType _Type = RoomType::NORMAL);
 
 	USpriteRenderer* SpriteRenderer;
 
