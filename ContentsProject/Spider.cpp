@@ -1,12 +1,11 @@
 #include "PreCompile.h"
-#include "Dip.h"
+#include "Spider.h"
 #include "ContentsEnum.h"
 #include <EnginePlatform/EngineInput.h>
 #include <EngineBase/EngineMath.h>
 #include "PlayGameMode.h"
 
-
-ADip::ADip()
+ASpider::ASpider()
 {
 	SetActorLocation({ 200, 0 });
 
@@ -33,14 +32,14 @@ ADip::ADip()
 
 	DebugOn();
 
-
+	//TimeEventer.PushEvent(1.0f, std::bind(&ADip::TimeEvent, this), true);
 }
 
-ADip::~ADip()
+ASpider::~ASpider()
 {
 }
 
-void ADip::BeginPlay()
+void ASpider::BeginPlay()
 {
 	Super::BeginPlay();
 
@@ -73,13 +72,9 @@ void ADip::BeginPlay()
 	);
 
 	FSM.ChangeState(DipState::IdleRight);
-
-	RandomDir = { Random.Randomfloat(-1.0f, 1.0f) ,Random.Randomfloat(-1.0f, 1.0f) };
-
-	RandomDir.Normalize();
 }
 
-void ADip::Tick(float _DeltaTime)
+void ASpider::Tick(float _DeltaTime)
 {
 	Super::Tick(_DeltaTime);
 
@@ -88,7 +83,7 @@ void ADip::Tick(float _DeltaTime)
 	FSM.Update(_DeltaTime);
 }
 
-void ADip::Idle(float _DeltaTime)
+void ASpider::Idle(float _DeltaTime)
 {
 	DelayTime += _DeltaTime;
 
@@ -99,7 +94,7 @@ void ADip::Idle(float _DeltaTime)
 	}
 }
 
-void ADip::Move(float _DeltaTime)
+void ASpider::Move(float _DeltaTime)
 {
 	DelayTime += _DeltaTime;
 
@@ -108,25 +103,25 @@ void ADip::Move(float _DeltaTime)
 
 	if (PlayGameMode->CurRoom->RoomPos.X - NewLocation.X > 340.0f)
 	{
-		RandomDir.X *= (- 1.0f);
+		RandomDir.X *= (-1.0f);
 		AddActorLocation(RandomDir * _DeltaTime * Speed);
 	}
 
 	else if (PlayGameMode->CurRoom->RoomPos.X - NewLocation.X < -340.0f)
 	{
-		RandomDir.X *= (- 1.0f);
+		RandomDir.X *= (-1.0f);
 		AddActorLocation(RandomDir * _DeltaTime * Speed);
 	}
 
 	else if (PlayGameMode->CurRoom->RoomPos.Y - NewLocation.Y > 170.0f)
 	{
-		RandomDir.Y *= (- 1.0f);
+		RandomDir.Y *= (-1.0f);
 		AddActorLocation(RandomDir * _DeltaTime * Speed);
 	}
 
-	else if(PlayGameMode->CurRoom->RoomPos.Y - NewLocation.Y < -170.0f)
+	else if (PlayGameMode->CurRoom->RoomPos.Y - NewLocation.Y < -170.0f)
 	{
-		RandomDir.Y *= (- 1.0f);
+		RandomDir.Y *= (-1.0f);
 		AddActorLocation(RandomDir * _DeltaTime * Speed);
 	}
 
@@ -134,7 +129,7 @@ void ADip::Move(float _DeltaTime)
 	{
 		AddActorLocation(RandomDir * _DeltaTime * Speed);
 	}
-	
+
 	if (DelayTime > 1.0f)
 	{
 		RandomDir = { Random.Randomfloat(-1.0f, 1.0f) ,Random.Randomfloat(-1.0f, 1.0f) };
