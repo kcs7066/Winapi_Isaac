@@ -55,7 +55,7 @@ void IsaacContentsCore::BeginPlay()
 	UImageManager::GetInst().CuttingSprite("Monster_LevelTwoSpiderSmall.png", { 48, 32 });
 	UImageManager::GetInst().CuttingSprite("Boss_Monstro.png", { 128, 128 });
 	UImageManager::GetInst().CuttingSprite("Structure_Rock.png", { 32, 32 });
-
+	UImageManager::GetInst().CuttingSprite("Structure_Poop_1.png", { 32, 32 });
 
 
 

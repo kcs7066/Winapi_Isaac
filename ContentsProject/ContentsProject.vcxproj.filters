@@ -111,6 +111,9 @@
     <ClCompile Include="Map.cpp">
       <Filter>ContentsObject\Play</Filter>
     </ClCompile>
+    <ClCompile Include="Poop.cpp">
+      <Filter>ContentsObject\Structure</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PreCompile.h">
@@ -190,6 +193,9 @@
     </ClInclude>
     <ClInclude Include="Map.h">
       <Filter>ContentsObject\Play</Filter>
+    </ClInclude>
+    <ClInclude Include="Poop.h">
+      <Filter>ContentsObject\Structure</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

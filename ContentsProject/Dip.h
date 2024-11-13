@@ -34,7 +34,7 @@ public:
 
 
 protected:
-	void TimeEvent();
+
 
 private:
 

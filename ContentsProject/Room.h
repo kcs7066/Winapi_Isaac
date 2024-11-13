@@ -53,9 +53,13 @@ public:
 
 	RoomType Type = RoomType::NORMAL;
 
-	int MonsterNumber = 1;
+	int MonsterNumber = 0;
 
 	int SpiderNumber = 0;
+
+	int CanSpawnNumber = 1;
+
+	bool RoomClear = true;
 
 protected:
 

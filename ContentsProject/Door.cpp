@@ -55,3 +55,31 @@ void ADoor::DoorOpen()
 	}
 
 }
+
+void ADoor::DoorClose()
+{
+	switch (Dir)
+	{
+	case DoorDir::NONE:
+		break;
+	case DoorDir::UP:
+		DoorRenderer->CreateAnimation("UpNormalRoomDoor_Close", "NormalRoomDoor.png", 6, 6, 0.1f);
+		DoorRenderer->ChangeAnimation("UpNormalRoomDoor_Close");
+		break;
+	case DoorDir::RIGHT:
+		DoorRenderer->CreateAnimation("RightNormalRoomDoor_Close", "NormalRoomDoor.png", 5, 5, 0.1f);
+		DoorRenderer->ChangeAnimation("RightNormalRoomDoor_Close");
+		break;
+	case DoorDir::DOWN:
+		DoorRenderer->CreateAnimation("DownNormalRoomDoor_Close", "NormalRoomDoor.png", 7, 7, 0.1f);
+		DoorRenderer->ChangeAnimation("DownNormalRoomDoor_Close");
+		break;
+	case DoorDir::LEFT:
+		DoorRenderer->CreateAnimation("LeftNormalRoomDoor_Close", "NormalRoomDoor.png", 4, 4, 0.1f);
+		DoorRenderer->ChangeAnimation("LeftNormalRoomDoor_Close");
+		break;
+	default:
+		break;
+	}
+
+}

@@ -200,36 +200,42 @@ void AIsaac::Move(float _DeltaTime)
 		Vector += FVector2D::UP;
 	}
 
-	AActor* Result = CollisionComponent->CollisionOnce(ECollisionGroup::Door);
-
 	APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
 
-	if (nullptr != Result)
+	if (true == PlayGameMode->CurRoom->RoomClear)
+
+
 	{
-		ADoor* NewResult = dynamic_cast<ADoor*>(Result);
+		AActor* Result = CollisionComponent->CollisionOnce(ECollisionGroup::Door);
 
-		
-     	PlayGameMode->CurRoom = NewResult->LinkedRoom;
 
-		switch (NewResult->Dir)
+		if (nullptr != Result)
 		{
-		case DoorDir::UP:
-			this->AddActorLocation({0,-250});
-			break;
-		case DoorDir::RIGHT:
-			this->AddActorLocation({ 300,0 });
-			break;
-		case DoorDir::DOWN:
-			this->AddActorLocation({ 0,250 });
-			break;
-		case DoorDir::LEFT:
-			this->AddActorLocation({ -300,0 });
-			break;
+			ADoor* NewResult = dynamic_cast<ADoor*>(Result);
 
-		default:
-			break;
+
+			PlayGameMode->CurRoom = NewResult->LinkedRoom;
+
+			switch (NewResult->Dir)
+			{
+			case DoorDir::UP:
+				this->AddActorLocation({ 0,-250 });
+				break;
+			case DoorDir::RIGHT:
+				this->AddActorLocation({ 300,0 });
+				break;
+			case DoorDir::DOWN:
+				this->AddActorLocation({ 0,250 });
+				break;
+			case DoorDir::LEFT:
+				this->AddActorLocation({ -300,0 });
+				break;
+
+			default:
+				break;
+			}
+
 		}
-
 	}
 
 	if (false == UEngineInput::GetInst().IsPress('A') &&

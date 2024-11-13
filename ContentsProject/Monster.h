@@ -22,6 +22,12 @@ public:
 
 	float Hp = 1.0f;
 
+	//void SetSeed()
+	//{
+	//	Random
+	//}
+
+	//UEngineRandom Random;
 
 protected:
 

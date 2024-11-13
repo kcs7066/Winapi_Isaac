@@ -58,6 +58,8 @@ void ARedFly::Tick(float _DeltaTime)
 	FSM.Update(_DeltaTime);
 	if (true == DeathCheck())
 	{
+		APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
+		PlayGameMode->CurRoom->MonsterNumber--;
 		Destroy();
 	}
 

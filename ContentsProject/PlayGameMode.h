@@ -4,6 +4,8 @@
 #include <EngineCore/GameMode.h>
 #include "Room.h"
 #include "Door.h"
+#include "Monster.h"
+
 #include <EngineBase/EngineRandom.h>
 
 
@@ -129,6 +131,24 @@ private:
 	void CreateBossRoomPath();
 	void CreateRestRoomPath(int _RoomNumber);
 	void CreateRoom(std::string_view _RoomName,FVector2D _Pos,RoomType _Type = RoomType::NORMAL);
+
+	template<typename ActorType>
+	void SetMonster(FVector2D _Pos)
+	{
+		CurRoom->MonsterNumber++;
+		ActorType* NewActor = GetWorld()->SpawnActor<ActorType>();
+		NewActor->SetActorLocation(_Pos);
+	
+	}
+
+	template<typename ActorType>
+	void SetStructure(FVector2D _Pos)
+	{
+		ActorType* NewActor = GetWorld()->SpawnActor<ActorType>();
+		NewActor->SetActorLocation(_Pos);
+	}
+
+	void CreateMap();
 
 	USpriteRenderer* SpriteRenderer;
 

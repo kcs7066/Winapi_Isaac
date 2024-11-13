@@ -70,6 +70,8 @@ void ABabyLongLegs::Tick(float _DeltaTime)
 
 	if (true == DeathCheck())
 	{
+		APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
+		PlayGameMode->CurRoom->MonsterNumber--;
 		Destroy();
 	}
 }

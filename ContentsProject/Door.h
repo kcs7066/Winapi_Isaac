@@ -34,6 +34,7 @@ public:
 	ADoor& operator=(ADoor&& _Other) noexcept = delete;
 
 	void DoorOpen();
+	void DoorClose();
 
 
 	class ARoom* LinkedRoom = nullptr;

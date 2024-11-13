@@ -28,7 +28,7 @@ void ARoom::Tick(float _DeltaTime)
 {
 	Super::Tick(_DeltaTime);
 
-	if (0 == MonsterNumber)
+	if (0==MonsterNumber)
 	{
 		std::map<RoomDir, ADoor*>::iterator StartIter = Doors.begin();
 		std::map<RoomDir, ADoor*>::iterator EndIter = Doors.end();
@@ -37,7 +37,21 @@ void ARoom::Tick(float _DeltaTime)
 		{
 			StartIter->second->DoorOpen();
 		}
+		RoomClear = true;
 	}
+
+	else
+	{
+		std::map<RoomDir, ADoor*>::iterator StartIter = Doors.begin();
+		std::map<RoomDir, ADoor*>::iterator EndIter = Doors.end();
+
+		for (; StartIter != EndIter; ++StartIter)
+		{
+			StartIter->second->DoorClose();
+		}
+		RoomClear = false;
+	}
+
 }
 
 void ARoom::CreateDoor(RoomDir _Dir, FVector2D _Pos, ARoom* _LinkRoom)

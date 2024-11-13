@@ -1,16 +1,16 @@
 #include "PreCompile.h"
-#include "Rock.h"
+#include "Poop.h"
 #include "ContentsEnum.h"
 
-ARock::ARock()
+APoop::APoop()
 {
 	SetActorLocation({ 200, 0 });
 
 	{
-		RockRenderer = CreateDefaultSubObject<USpriteRenderer>();
-		RockRenderer->SetComponentScale({ 75, 75 });
-		RockRenderer->CreateAnimation("Idle_Rock", "Structure_Rock.png", 0, 0, 0.1f);
-		RockRenderer->ChangeAnimation("Idle_Rock");
+		PoopRenderer = CreateDefaultSubObject<USpriteRenderer>();
+		PoopRenderer->SetComponentScale({ 75, 75 });
+		PoopRenderer->CreateAnimation("Idle_Poop", "Structure_Poop_1.png", 0, 0, 0.1f);
+		PoopRenderer->ChangeAnimation("Idle_Poop");
 	}
 
 
@@ -24,7 +24,7 @@ ARock::ARock()
 	DebugOn();
 }
 
-ARock::~ARock()
+APoop::~APoop()
 {
 }
 
