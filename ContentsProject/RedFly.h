@@ -3,26 +3,27 @@
 #include <EngineCore/SpriteRenderer.h>
 #include <EngineBase/FSMStateManager.h>
 #include <EngineCore/2DCollision.h>
+#include <EngineBase/EngineRandom.h>
 
-enum class NewMonsterState
+enum class  RedFlyState
 {
 	Idle,
 	Move
 
 };
 
-class APurpleFly : public AMonster
+class ARedFly : public AMonster
 {
 public:
 	// constrcuter destructer
-	APurpleFly();
-	~APurpleFly();
+	ARedFly();
+	~ARedFly();
 
 	// delete Function
-	APurpleFly(const APurpleFly& _Other) = delete;
-	APurpleFly(APurpleFly&& _Other) noexcept = delete;
-	APurpleFly& operator=(const APurpleFly& _Other) = delete;
-	APurpleFly& operator=(APurpleFly&& _Other) noexcept = delete;
+	ARedFly(const ARedFly& _Other) = delete;
+	ARedFly(ARedFly&& _Other) noexcept = delete;
+	ARedFly& operator=(const ARedFly& _Other) = delete;
+	ARedFly& operator=(ARedFly&& _Other) noexcept = delete;
 
 	void BeginPlay() override;
 	void Tick(float _DeltaTime) override;
@@ -33,11 +34,15 @@ public:
 protected:
 
 private:
+
+	FVector2D Dir;
+
 	U2DCollision* CollisionComponent;
-	float Speed = 500.0f;
-	class USpriteRenderer* PurpleFlyRenderer = nullptr;
+	float Speed = 100.0f;
+	class USpriteRenderer* RedFlyRenderer = nullptr;
+	
 
 	UFSMStateManager FSM = UFSMStateManager();
+	
 
 };
-

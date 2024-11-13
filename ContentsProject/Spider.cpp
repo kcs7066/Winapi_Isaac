@@ -2,7 +2,6 @@
 #include "Spider.h"
 #include "ContentsEnum.h"
 #include <EnginePlatform/EngineInput.h>
-#include <EngineBase/EngineMath.h>
 #include "PlayGameMode.h"
 
 ASpider::ASpider()
@@ -10,29 +9,29 @@ ASpider::ASpider()
 	SetActorLocation({ 200, 0 });
 
 	{
-		DipRenderer = CreateDefaultSubObject<USpriteRenderer>();
-		DipRenderer->SetComponentScale({ 100, 100 });
+		SpiderRenderer = CreateDefaultSubObject<USpriteRenderer>();
+		SpiderRenderer->SetComponentScale({ 100, 100 });
 
-		DipRenderer->CreateAnimation("Idle_Dip_Left", "Monster_Dip_Left.png", 0, 1, 0.1f);
-		DipRenderer->CreateAnimation("Idle_Dip_Right", "Monster_Dip_Right.png", 0, 1, 0.1f);
-		DipRenderer->CreateAnimation("Move_Dip_Left", "Monster_Dip_Left.png", 0, 4, 0.1f);
-		DipRenderer->CreateAnimation("Move_Dip_Right", "Monster_Dip_Right.png", 0, 4, 0.1f);
+		SpiderRenderer->CreateAnimation("Idle_Spider", "Monster_Spider.png", 0, 0, 0.1f);
+		SpiderRenderer->CreateAnimation("Move_Spider_Right", "Monster_Spider.png", 2, 3, 0.1f);
+		SpiderRenderer->CreateAnimation("Move_Spider_Left", "Monster_Spider.png", 6, 7, 0.1f);
+		SpiderRenderer->CreateAnimation("Move_Spider_Up", "Monster_Spider.png", 4, 5, 0.1f);
+		SpiderRenderer->CreateAnimation("Move_Spider_Down", "Monster_Spider.png", 0, 1, 0.1f);
 
 
-		DipRenderer->ChangeAnimation("Idle_Dip_Right");
+		SpiderRenderer->ChangeAnimation("Idle_Spider");
 	}
 
 
 
 	CollisionComponent = CreateDefaultSubObject<U2DCollision>();
 	CollisionComponent->SetComponentLocation({ 0, 0 });
-	CollisionComponent->SetComponentScale({ 50, 70 });
+	CollisionComponent->SetComponentScale({ 30, 15 });
 	CollisionComponent->SetCollisionGroup(ECollisionGroup::Monster);
 	CollisionComponent->SetCollisionType(ECollisionType::Rect);
 
 	DebugOn();
 
-	//TimeEventer.PushEvent(1.0f, std::bind(&ADip::TimeEvent, this), true);
 }
 
 ASpider::~ASpider()
@@ -43,35 +42,29 @@ void ASpider::BeginPlay()
 {
 	Super::BeginPlay();
 
-	FSM.CreateState(DipState::IdleRight, std::bind(&ADip::Idle, this, std::placeholders::_1),
+	FSM.CreateState(SpiderState::Idle, std::bind(&ASpider::Idle, this, std::placeholders::_1),
 		[this]()
 		{
-			DipRenderer->ChangeAnimation("Idle_Dip_Right");
+			SpiderRenderer->ChangeAnimation("Idle_Spider");
 		}
 	);
 
-	FSM.CreateState(DipState::IdleLeft, std::bind(&ADip::Idle, this, std::placeholders::_1),
+
+	FSM.CreateState(SpiderState::MoveLeft, std::bind(&ASpider::Move, this, std::placeholders::_1),
 		[this]()
 		{
-			DipRenderer->ChangeAnimation("Idle_Dip_Left");
+			SpiderRenderer->ChangeAnimation("Move_Spider_Left");
 		}
 	);
 
-	FSM.CreateState(DipState::MoveLeft, std::bind(&ADip::Move, this, std::placeholders::_1),
+	FSM.CreateState(SpiderState::MoveRight, std::bind(&ASpider::Move, this, std::placeholders::_1),
 		[this]()
 		{
-			DipRenderer->ChangeAnimation("Move_Dip_Left");
+			SpiderRenderer->ChangeAnimation("Move_Spider_Right");
 		}
 	);
 
-	FSM.CreateState(DipState::MoveRight, std::bind(&ADip::Move, this, std::placeholders::_1),
-		[this]()
-		{
-			DipRenderer->ChangeAnimation("Move_Dip_Right");
-		}
-	);
-
-	FSM.ChangeState(DipState::IdleRight);
+	FSM.ChangeState(SpiderState::Idle);
 }
 
 void ASpider::Tick(float _DeltaTime)
@@ -81,15 +74,21 @@ void ASpider::Tick(float _DeltaTime)
 	DelayTime += _DeltaTime;
 
 	FSM.Update(_DeltaTime);
+
+	if (true == DeathCheck())
+	{
+		Destroy();
+	}
+
 }
 
 void ASpider::Idle(float _DeltaTime)
 {
 	DelayTime += _DeltaTime;
 
-	if (DelayTime > 1.6f)
+	if (DelayTime > 1.0f)
 	{
-		FSM.ChangeState(DipState::MoveRight);
+		FSM.ChangeState(SpiderState::MoveRight);
 		DelayTime = 0.0f;
 	}
 }
@@ -101,28 +100,13 @@ void ASpider::Move(float _DeltaTime)
 	FVector2D NewLocation = GetActorLocation() += RandomDir * _DeltaTime * Speed;
 	APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
 
-	if (PlayGameMode->CurRoom->RoomPos.X - NewLocation.X > 340.0f)
+	if (PlayGameMode->CurRoom->RoomPos.X - NewLocation.X > 340.0f||
+		PlayGameMode->CurRoom->RoomPos.X - NewLocation.X < -340.0f||
+		PlayGameMode->CurRoom->RoomPos.Y - NewLocation.Y > 170.0f||
+		PlayGameMode->CurRoom->RoomPos.Y - NewLocation.Y < -170.0f
+		)
 	{
-		RandomDir.X *= (-1.0f);
-		AddActorLocation(RandomDir * _DeltaTime * Speed);
-	}
 
-	else if (PlayGameMode->CurRoom->RoomPos.X - NewLocation.X < -340.0f)
-	{
-		RandomDir.X *= (-1.0f);
-		AddActorLocation(RandomDir * _DeltaTime * Speed);
-	}
-
-	else if (PlayGameMode->CurRoom->RoomPos.Y - NewLocation.Y > 170.0f)
-	{
-		RandomDir.Y *= (-1.0f);
-		AddActorLocation(RandomDir * _DeltaTime * Speed);
-	}
-
-	else if (PlayGameMode->CurRoom->RoomPos.Y - NewLocation.Y < -170.0f)
-	{
-		RandomDir.Y *= (-1.0f);
-		AddActorLocation(RandomDir * _DeltaTime * Speed);
 	}
 
 	else
@@ -136,7 +120,7 @@ void ASpider::Move(float _DeltaTime)
 
 		RandomDir.Normalize();
 
-		FSM.ChangeState(DipState::IdleRight);
+		FSM.ChangeState(SpiderState::Idle);
 		DelayTime = 0.0f;
 	}
 

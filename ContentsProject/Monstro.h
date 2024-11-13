@@ -5,47 +5,49 @@
 #include <EngineCore/2DCollision.h>
 #include <EngineBase/EngineRandom.h>
 
-enum class RoundWormState
+enum class MonstroState
 {
 	Idle,
+	Move,
 	Attack,
-	Idle2,
-	Move
+	Jump
 
 };
 
-class ARoundWorm : public AMonster
+class AMonstro : public AMonster
 {
 public:
 	// constrcuter destructer
-	ARoundWorm();
-	~ARoundWorm();
+	AMonstro();
+	~AMonstro();
 
 	// delete Function
-	ARoundWorm(const ARoundWorm& _Other) = delete;
-	ARoundWorm(ARoundWorm&& _Other) noexcept = delete;
-	ARoundWorm& operator=(const ARoundWorm& _Other) = delete;
-	ARoundWorm& operator=(ARoundWorm&& _Other) noexcept = delete;
+	AMonstro(const AMonstro& _Other) = delete;
+	AMonstro(AMonstro&& _Other) noexcept = delete;
+	AMonstro& operator=(const AMonstro& _Other) = delete;
+	AMonstro& operator=(AMonstro&& _Other) noexcept = delete;
 
 	void BeginPlay() override;
 	void Tick(float _DeltaTime) override;
 
 	void Idle(float _DeltaTime);
-	void Attack(float _DeltaTime);
-	void Idle2(float _DeltaTime);
 	void Move(float _DeltaTime);
-	
+	void Attack(float _DeltaTime);
+	void Jump(float _DeltaTime);
+
 
 protected:
 
 private:
-	float BulletCoolTime = 0.5f;
+	float BulletCoolTime = 1.5f;
 
 	float DelayTime = 0.0f;
 
 	U2DCollision* CollisionComponent;
-	float Speed = 500.0f;
-	class USpriteRenderer* RoundWormRenderer = nullptr;
+	float Speed = 300.0f;
+	class USpriteRenderer* MonstroRenderer = nullptr;
+
+	FVector2D Dir;
 
 	UFSMStateManager FSM = UFSMStateManager();
 	UEngineRandom Random;

@@ -15,6 +15,12 @@
 #include "PurpleFly.h"
 #include "RoundWorm.h"
 #include "Dip.h"
+#include "Spider.h"
+#include "BabyLongLegs.h"
+#include "LevelTwoSpiderSmall.h"
+#include "Fly.h"
+#include "RedFly.h"
+#include "Monstro.h"
 
 
 APlayGameMode::APlayGameMode()
@@ -247,16 +253,45 @@ void APlayGameMode::Tick(float _DeltaTime)
 		CurRoom -> MonsterNumber = 0;
 	}
 
-	if (true == UEngineInput::GetInst().IsDown('X'))
+	if (true == UEngineInput::GetInst().IsDown('1'))
 	{
-		ARoundWorm* RoundWorm = GetWorld()->SpawnActor<ARoundWorm>();
+		ALevelTwoSpiderSmall* Monster = GetWorld()->SpawnActor<ALevelTwoSpiderSmall>();
 	}
 
-	if (true == UEngineInput::GetInst().IsDown('C'))
+	if (true == UEngineInput::GetInst().IsDown('2'))
 	{
-		ADip* Dip = GetWorld()->SpawnActor<ADip>();
+		ABabyLongLegs* Monster = GetWorld()->SpawnActor<ABabyLongLegs>();
 	}
 
+	if (true == UEngineInput::GetInst().IsDown('3'))
+	{
+		ADip* Monster = GetWorld()->SpawnActor<ADip>();
+	}
+
+	if (true == UEngineInput::GetInst().IsDown('4'))
+	{
+		ARoundWorm* Monster = GetWorld()->SpawnActor<ARoundWorm>();
+	}
+
+	if (true == UEngineInput::GetInst().IsDown('5'))
+	{
+		AFly* Monster = GetWorld()->SpawnActor<AFly>();
+	}
+
+	if (true == UEngineInput::GetInst().IsDown('6'))
+	{
+		ARedFly* Monster = GetWorld()->SpawnActor<ARedFly>();
+	}
+
+	if (true == UEngineInput::GetInst().IsDown('7'))
+	{
+		AMonstro* Monster = GetWorld()->SpawnActor<AMonstro>();
+	}
+
+	if (true == UEngineInput::GetInst().IsDown('8'))
+	{
+		ASpider* Monster = GetWorld()->SpawnActor<ASpider>();
+	}
 
 	if (true == UEngineInput::GetInst().IsPress(VK_NUMPAD0))
 	{

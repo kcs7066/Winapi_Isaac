@@ -23,7 +23,7 @@ ARoundWorm::ARoundWorm()
 
 	CollisionComponent = CreateDefaultSubObject<U2DCollision>();
 	CollisionComponent->SetComponentLocation({ 0, 0 });
-	CollisionComponent->SetComponentScale({ 50, 70 });
+	CollisionComponent->SetComponentScale({ 50, 90 });
 	CollisionComponent->SetCollisionGroup(ECollisionGroup::Monster);
 	CollisionComponent->SetCollisionType(ECollisionType::Rect);
 
@@ -77,6 +77,10 @@ void ARoundWorm::Tick(float _DeltaTime)
 	Super::Tick(_DeltaTime);
 	FSM.Update(_DeltaTime);
 	BulletCoolTime -= _DeltaTime;
+	if (true == DeathCheck())
+	{
+		Destroy();
+	}
 }
 
 

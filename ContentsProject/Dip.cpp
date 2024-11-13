@@ -27,7 +27,7 @@ ADip::ADip()
 
 	CollisionComponent = CreateDefaultSubObject<U2DCollision>();
 	CollisionComponent->SetComponentLocation({ 0, 0 });
-	CollisionComponent->SetComponentScale({ 50, 70 });
+	CollisionComponent->SetComponentScale({ 50, 60 });
 	CollisionComponent->SetCollisionGroup(ECollisionGroup::Monster);
 	CollisionComponent->SetCollisionType(ECollisionType::Rect);
 
@@ -86,6 +86,11 @@ void ADip::Tick(float _DeltaTime)
 	DelayTime += _DeltaTime;
 
 	FSM.Update(_DeltaTime);
+
+	if (true == DeathCheck())
+	{
+		Destroy();
+	}
 }
 
 void ADip::Idle(float _DeltaTime)

@@ -243,10 +243,10 @@ void AIsaac::Move(float _DeltaTime)
 
 	FVector2D Location = GetActorLocation() += Vector * _DeltaTime * Speed;
 
-	if (PlayGameMode->CurRoom->RoomPos.X - Location.X > 340.0f ||
-		PlayGameMode->CurRoom->RoomPos.X - Location.X < -340.0f ||
-		PlayGameMode->CurRoom->RoomPos.Y - Location.Y > 170.0f ||
-		PlayGameMode->CurRoom->RoomPos.Y - Location.Y < -170.0f)
+	if (PlayGameMode->CurRoom->RoomPos.X - Location.X > 338.0f ||
+		PlayGameMode->CurRoom->RoomPos.X - Location.X < -338.0f ||
+		PlayGameMode->CurRoom->RoomPos.Y - Location.Y > 182.0f ||
+		PlayGameMode->CurRoom->RoomPos.Y - Location.Y < -182.0f)
 	{
 
 	}

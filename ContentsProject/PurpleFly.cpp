@@ -56,6 +56,10 @@ void APurpleFly::Tick(float _DeltaTime)
 {
 	Super::Tick(_DeltaTime);
 	FSM.Update(_DeltaTime);
+	if (true == DeathCheck())
+	{
+		Destroy();
+	}
 }
 
 

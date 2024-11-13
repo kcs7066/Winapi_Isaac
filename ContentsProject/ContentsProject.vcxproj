@@ -146,6 +146,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="BabyLongLegs.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="ContentsEnum.h">
       <SubType>
       </SubType>
@@ -166,12 +170,32 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="Fly.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="Isaac.h">
       <SubType>
       </SubType>
     </ClInclude>
     <ClInclude Include="IsaacContentsCore.h" />
+    <ClInclude Include="LevelTwoSpiderSmall.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Map.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Monster.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="MonsterTear.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Monstro.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -184,11 +208,24 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="RedFly.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Rock.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="Room.h">
       <SubType>
       </SubType>
     </ClInclude>
     <ClInclude Include="RoundWorm.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Spider.h" />
+    <ClInclude Include="Structure.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -206,6 +243,10 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BabyLongLegs.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="ContentsEnum.cpp">
       <SubType>
       </SubType>
@@ -226,12 +267,32 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="Fly.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="Isaac.cpp">
       <SubType>
       </SubType>
     </ClCompile>
     <ClCompile Include="IsaacContentsCore.cpp" />
+    <ClCompile Include="LevelTwoSpiderSmall.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Map.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Monster.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="MonsterTear.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Monstro.cpp">
       <SubType>
       </SubType>
     </ClCompile>
@@ -246,11 +307,24 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="RedFly.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Rock.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="Room.cpp">
       <SubType>
       </SubType>
     </ClCompile>
     <ClCompile Include="RoundWorm.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Spider.cpp" />
+    <ClCompile Include="Structure.cpp">
       <SubType>
       </SubType>
     </ClCompile>

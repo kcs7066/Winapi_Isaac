@@ -5,33 +5,30 @@
 #include <EngineCore/2DCollision.h>
 #include <EngineBase/EngineRandom.h>
 
-enum class SpiderState
+enum class BabyLongLegsState
 {
-	Idle,
-	MoveRight,
-	MoveLeft
+	Move,
+	Attack
 };
 
-class ASpider : public AMonster
+class ABabyLongLegs : public AMonster
 {
 public:
 	// constrcuter destructer
-	ASpider();
-	~ASpider();
+	ABabyLongLegs();
+	~ABabyLongLegs();
 
 	// delete Function
-	ASpider(const ASpider& _Other) = delete;
-	ASpider(ASpider&& _Other) noexcept = delete;
-	ASpider& operator=(const ASpider& _Other) = delete;
-	ASpider& operator=(ASpider&& _Other) noexcept = delete;
+	ABabyLongLegs(const ABabyLongLegs& _Other) = delete;
+	ABabyLongLegs(ABabyLongLegs&& _Other) noexcept = delete;
+	ABabyLongLegs& operator=(const ABabyLongLegs& _Other) = delete;
+	ABabyLongLegs& operator=(ABabyLongLegs&& _Other) noexcept = delete;
 
 	void BeginPlay() override;
 	void Tick(float _DeltaTime) override;
 
-	void Idle(float _DeltaTime);
+	void Attack(float _DeltaTime);
 	void Move(float _DeltaTime);
-
-	
 
 protected:
 
@@ -42,9 +39,9 @@ private:
 	UFSMStateManager FSM = UFSMStateManager();
 	U2DCollision* CollisionComponent;
 	float Speed = 300.0f;
-	class USpriteRenderer* SpiderRenderer = nullptr;
-	FVector2D RandomDir = { 0,0 };
+	class USpriteRenderer* BabyLongLegsRenderer = nullptr;
+	FVector2D Dir = { 0,0 };
 
-	UEngineRandom Random;
+	
 
 };

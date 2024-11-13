@@ -45,6 +45,8 @@ public:
 	void CollisionStay(AActor* _ColActor);
 	void CollisionEnd(AActor* _ColActor);
 
+	void DirCheck();
+
 protected:
 
 private:
@@ -52,6 +54,8 @@ private:
 	float Speed = 500.0f;
 	class UEngineWinImage* ColImage = nullptr;
 	
+	std::string DirString = "_Right";
+
 	class USpriteRenderer* BodyRenderer = nullptr;
 	UFSMStateManager FSM = UFSMStateManager();
 	int Test = 0;

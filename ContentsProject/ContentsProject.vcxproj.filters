@@ -28,6 +28,9 @@
     <Filter Include="ContentsObject\Monster">
       <UniqueIdentifier>{88d851b0-7ba5-45ad-a492-d92340e30654}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ContentsObject\Structure">
+      <UniqueIdentifier>{d2c67f18-59b7-435a-a730-50f9f0e5020a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PreCompile.cpp">
@@ -78,6 +81,36 @@
     <ClCompile Include="Dip.cpp">
       <Filter>ContentsObject\Monster</Filter>
     </ClCompile>
+    <ClCompile Include="Spider.cpp">
+      <Filter>ContentsObject\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="BabyLongLegs.cpp">
+      <Filter>ContentsObject\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelTwoSpiderSmall.cpp">
+      <Filter>ContentsObject\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="Fly.cpp">
+      <Filter>ContentsObject\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="RedFly.cpp">
+      <Filter>ContentsObject\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="Monstro.cpp">
+      <Filter>ContentsObject\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="Monster.cpp">
+      <Filter>ContentsObject\Global</Filter>
+    </ClCompile>
+    <ClCompile Include="Structure.cpp">
+      <Filter>ContentsObject\Global</Filter>
+    </ClCompile>
+    <ClCompile Include="Rock.cpp">
+      <Filter>ContentsObject\Structure</Filter>
+    </ClCompile>
+    <ClCompile Include="Map.cpp">
+      <Filter>ContentsObject\Play</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PreCompile.h">
@@ -127,6 +160,36 @@
     </ClInclude>
     <ClInclude Include="Dip.h">
       <Filter>ContentsObject\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="Spider.h">
+      <Filter>ContentsObject\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="BabyLongLegs.h">
+      <Filter>ContentsObject\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelTwoSpiderSmall.h">
+      <Filter>ContentsObject\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="Fly.h">
+      <Filter>ContentsObject\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="RedFly.h">
+      <Filter>ContentsObject\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="Monstro.h">
+      <Filter>ContentsObject\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="Monster.h">
+      <Filter>ContentsObject\Global</Filter>
+    </ClInclude>
+    <ClInclude Include="Structure.h">
+      <Filter>ContentsObject\Global</Filter>
+    </ClInclude>
+    <ClInclude Include="Rock.h">
+      <Filter>ContentsObject\Structure</Filter>
+    </ClInclude>
+    <ClInclude Include="Map.h">
+      <Filter>ContentsObject\Play</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

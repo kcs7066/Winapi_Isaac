@@ -55,6 +55,8 @@ public:
 
 	int MonsterNumber = 1;
 
+	int SpiderNumber = 0;
+
 protected:
 
 private:

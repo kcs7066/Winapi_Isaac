@@ -3,6 +3,8 @@
 #include <EngineCore/SpriteRenderer.h>
 #include "Isaac.h"
 #include "ContentsEnum.h"
+#include "PlayGameMode.h"
+#include "Monster.h"
 
 ATear::ATear()
 {	
@@ -39,5 +41,15 @@ void ATear::Tick(float _DeltaTime)
 {
 	Super::Tick(_DeltaTime);
 	AddActorLocation(Dir * _DeltaTime * 300.0f);
-	Destroy(2.0f);
+	
+	AActor* Result = CollisionComponent->CollisionOnce(ECollisionGroup::Monster);
+
+	if (nullptr != Result)
+	{
+		AMonster* NewResult = dynamic_cast<AMonster*>(Result);
+
+		NewResult->Hp -= 100.0f;
+
+		Destroy();
+	}
 }
