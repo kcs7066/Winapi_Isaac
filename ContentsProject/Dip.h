@@ -10,7 +10,8 @@ enum class DipState
     IdleRight,
 	IdleLeft,
 	MoveRight,
-	MoveLeft
+	MoveLeft,
+	Die
 };
 
 class ADip : public AMonster
@@ -31,21 +32,14 @@ public:
 
 	void Idle(float _DeltaTime);
 	void Move(float _DeltaTime);
-
+	void Die(float _DeltaTime);
 
 protected:
 
 
 private:
 
-	float DelayTime = 0.0f;
-
-	UFSMStateManager FSM = UFSMStateManager();
-	U2DCollision* CollisionComponent;
 	float Speed = 300.0f;
-	class USpriteRenderer* DipRenderer = nullptr;
 	FVector2D RandomDir = { 0,0 };
-
 	UEngineRandom Random;
-
 };

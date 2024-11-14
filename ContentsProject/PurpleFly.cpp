@@ -10,22 +10,26 @@ APurpleFly::APurpleFly()
 	SetActorLocation({ 200, 0 });
 
 	{
-		PurpleFlyRenderer = CreateDefaultSubObject<USpriteRenderer>();
-		PurpleFlyRenderer->SetSprite("Monster_Fly.png");
-		PurpleFlyRenderer->SetComponentScale({ 100, 100 });
-		PurpleFlyRenderer->CreateAnimation("Idle_PurpleFly", "Monster_Fly.png", 12,13, 0.1f);
-		PurpleFlyRenderer->ChangeAnimation("Idle_PurpleFly");
+		MonsterRenderer = CreateDefaultSubObject<USpriteRenderer>();
+		MonsterRenderer->SetSprite("Monster_Fly.png");
+		MonsterRenderer->SetComponentScale({ 100, 100 });
+		MonsterRenderer->CreateAnimation("Move_PurpleFly", "Monster_Fly.png", 12,13, 0.1f);
+		MonsterRenderer->CreateAnimation("Die_PurpleFly", "BloodPoof.png", 0, 10, 0.1f);
+
+		MonsterRenderer->ChangeAnimation("Move_PurpleFly");
+
 	}
 
 
 
 	CollisionComponent = CreateDefaultSubObject<U2DCollision>();
-	CollisionComponent->SetComponentLocation({ 0, 0 });
 	CollisionComponent->SetComponentScale({ 50, 70 });
 	CollisionComponent->SetCollisionGroup(ECollisionGroup::Monster);
 	CollisionComponent->SetCollisionType(ECollisionType::Rect);
 
 	DebugOn();
+
+	SetHp(5.0f);
 }
 
 APurpleFly::~APurpleFly()
@@ -36,77 +40,68 @@ void APurpleFly::BeginPlay()
 {
 	Super::BeginPlay();
 
-
-
-	FSM.CreateState(NewMonsterState::Idle, std::bind(&APurpleFly::Idle, this, std::placeholders::_1),
+	FSM.CreateState(PurpleFlyState::Move, std::bind(&APurpleFly::Move, this, std::placeholders::_1),
 		[this]()
 		{
 		}
 	);
 
-	FSM.CreateState(NewMonsterState::Move, std::bind(&APurpleFly::Move, this, std::placeholders::_1),
+	FSM.CreateState(PurpleFlyState::Die, std::bind(&APurpleFly::Die, this, std::placeholders::_1),
 		[this]()
 		{
+			MonsterRenderer->ChangeAnimation("Die_PurpleFly");
 		}
 	);
 
-	FSM.ChangeState(NewMonsterState::Idle);
+	FSM.ChangeState(PurpleFlyState::Move);
 }
 
 void APurpleFly::Tick(float _DeltaTime)
 {
 	Super::Tick(_DeltaTime);
 	FSM.Update(_DeltaTime);
-	if (true == DeathCheck())
-	{
-		APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
-		PlayGameMode->CurRoom->MonsterNumber--;
-		Destroy();
-	}
 }
-
-
-
-void APurpleFly::Idle(float _DeltaTime)
-{
-	//if ()
-	{
-		//FSM.ChangeState(NewPlayerState::Move);
-		return;
-	}
-}
-
-
-
 
 void APurpleFly::Move(float _DeltaTime)
 {
-	FVector2D Vector = FVector2D::ZERO;
 
-	//if ()
-	{
-		Vector += FVector2D::RIGHT;
-	}
 
-	//if ()
+	DelayTime += _DeltaTime;
+
+	if (this->Hp <= 0.0f)
 	{
-		Vector += FVector2D::LEFT;
-	}
-	//if ()
-	{
-		Vector += FVector2D::DOWN;
-	}
-	//if ()
-	{
-		Vector += FVector2D::UP;
+		APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
+		PlayGameMode->CurRoom->MonsterNumber--;
+		DelayTime = 0.0f;
+		FSM.ChangeState(PurpleFlyState::Die);
 	}
 
 
-	//if ()
-	{
-		FSM.ChangeState(NewMonsterState::Idle);
-		return;
-	}
-	AddActorLocation(Vector * _DeltaTime * Speed);
+	FVector2D NewLocation = GetActorLocation() += Dir * _DeltaTime * Speed;
+	APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
 
+	if (PlayGameMode->CurRoom->RoomPos.X - NewLocation.X > 338.0f ||
+		PlayGameMode->CurRoom->RoomPos.X - NewLocation.X < -338.0f ||
+		PlayGameMode->CurRoom->RoomPos.Y - NewLocation.Y > 182.0f ||
+		PlayGameMode->CurRoom->RoomPos.Y - NewLocation.Y < -182.0f
+		)
+	{
+
+	}
+
+	else
+	{
+		AddActorLocation(Dir * _DeltaTime * Speed);
+	}
+
+}
+
+void APurpleFly::Die(float _DeltaTime)
+{
+	DelayTime += _DeltaTime;
+
+	if (DelayTime > 1.1f)
+	{
+		Destroy();
+	}
 }

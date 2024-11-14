@@ -10,6 +10,7 @@ enum class ERenderOrder
 
 	DOOR = -500,
 
+	SHADOW = -1,
 	PLAYER = 0,
 	UI = 10000
 };

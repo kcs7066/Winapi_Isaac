@@ -9,7 +9,8 @@ enum class LevelTwoSpiderSmallState
 {
 	Idle,
 	Move,
-	Jump
+	Jump,
+	Die
 
 };
 
@@ -32,18 +33,14 @@ public:
 	void Idle(float _DeltaTime);
 	void Move(float _DeltaTime);
 	void Jump(float _DeltaTime);
+	void Die(float _DeltaTime);
 
 
 protected:
 
 private:
 
-	float DelayTime = 0.0f;
-
-	UFSMStateManager FSM = UFSMStateManager();
-	U2DCollision* CollisionComponent;
 	float Speed = 300.0f;
-	class USpriteRenderer* LevelTwoSpiderSmallRenderer = nullptr;
 	FVector2D Dir = { 0,0 };
 	UEngineRandom Random;
 

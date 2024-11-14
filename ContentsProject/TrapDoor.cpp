@@ -40,6 +40,7 @@ void ATrapDoor::Tick(float _DeltaTime)
 			AIsaac* NewResult = dynamic_cast<AIsaac*>(Result);
 
 			UEngineAPICore::GetCore()->OpenLevel("Title");
+			Destroy();
 		}
 	
 

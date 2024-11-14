@@ -11,25 +11,25 @@ ABabyLongLegs::ABabyLongLegs()
 	SetActorLocation({ 200, 0 });
 
 	{
-		BabyLongLegsRenderer = CreateDefaultSubObject<USpriteRenderer>();
-		BabyLongLegsRenderer->SetComponentScale({ 300, 300 });
+		MonsterRenderer = CreateDefaultSubObject<USpriteRenderer>();
+		MonsterRenderer->SetComponentScale({ 300, 300 });
 
-		BabyLongLegsRenderer->CreateAnimation("Move_BabyLongLegs", "Monster_BabyLongLegs.png", 0, 4, 0.1f);
-		BabyLongLegsRenderer->CreateAnimation("Attack_BabyLongLegs", "Monster_BabyLongLegs.png", 5, 7, 0.1f);
-
-		BabyLongLegsRenderer->ChangeAnimation("Move_BabyLongLegs");
+		MonsterRenderer->CreateAnimation("Move_BabyLongLegs", "Monster_BabyLongLegs.png", 0, 4, 0.1f);
+		MonsterRenderer->CreateAnimation("Attack_BabyLongLegs", "Monster_BabyLongLegs.png", 5, 7, 0.1f);
+		MonsterRenderer->CreateAnimation("Die_BabyLongLegs", "BloodPoof.png", 0, 10, 0.1f);
+		MonsterRenderer->ChangeAnimation("Move_BabyLongLegs");
 	}
 
 
 
 	CollisionComponent = CreateDefaultSubObject<U2DCollision>();
-	CollisionComponent->SetComponentLocation({ 0, -50 });
 	CollisionComponent->SetComponentScale({ 84, 100 });
 	CollisionComponent->SetCollisionGroup(ECollisionGroup::Monster);
 	CollisionComponent->SetCollisionType(ECollisionType::Rect);
 
 	DebugOn();
 
+	SetHp(16.0f);
 }
 
 ABabyLongLegs::~ABabyLongLegs()
@@ -43,7 +43,7 @@ void ABabyLongLegs::BeginPlay()
 	FSM.CreateState(BabyLongLegsState::Move, std::bind(&ABabyLongLegs::Move, this, std::placeholders::_1),
 		[this]()
 		{
-			BabyLongLegsRenderer->ChangeAnimation("Move_BabyLongLegs");
+			MonsterRenderer->ChangeAnimation("Move_BabyLongLegs");
 		}
 	);
 
@@ -51,11 +51,16 @@ void ABabyLongLegs::BeginPlay()
 	FSM.CreateState(BabyLongLegsState::Attack, std::bind(&ABabyLongLegs::Attack, this, std::placeholders::_1),
 		[this]()
 		{
-			BabyLongLegsRenderer->ChangeAnimation("Attack_BabyLongLegs");
+			MonsterRenderer->ChangeAnimation("Attack_BabyLongLegs");
 		}
 	);
 
-
+	FSM.CreateState(BabyLongLegsState::Die, std::bind(&ABabyLongLegs::Die, this, std::placeholders::_1),
+		[this]()
+		{
+			MonsterRenderer->ChangeAnimation("Die_BabyLongLegs");
+		}
+	);
 
 	FSM.ChangeState(BabyLongLegsState::Move);
 }
@@ -63,17 +68,7 @@ void ABabyLongLegs::BeginPlay()
 void ABabyLongLegs::Tick(float _DeltaTime)
 {
 	Super::Tick(_DeltaTime);
-
-	DelayTime += _DeltaTime;
-
 	FSM.Update(_DeltaTime);
-
-	if (true == DeathCheck())
-	{
-		APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
-		PlayGameMode->CurRoom->MonsterNumber--;
-		Destroy();
-	}
 }
 	
 	
@@ -84,6 +79,14 @@ void ABabyLongLegs::Tick(float _DeltaTime)
 void ABabyLongLegs::Attack(float _DeltaTime)
 {
 	DelayTime += _DeltaTime;
+
+	if (this->Hp <= 0.0f)
+	{
+		APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
+		PlayGameMode->CurRoom->MonsterNumber--;
+		DelayTime = 0.0f;
+		FSM.ChangeState(BabyLongLegsState::Die);
+	}
 
 	if (DelayTime > 0.3f)
 	{
@@ -104,6 +107,22 @@ void ABabyLongLegs::Move(float _DeltaTime)
 {
 	DelayTime += _DeltaTime;
 	
+	if (this->Hp <= 0.0f)
+	{
+		APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
+		PlayGameMode->CurRoom->MonsterNumber--;
+		DelayTime = 0.0f;
+		FSM.ChangeState(BabyLongLegsState::Die);
+	}
+
+	if (this->Hp <= 0.0f)
+	{
+		APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
+		PlayGameMode->CurRoom->MonsterNumber--;
+		DelayTime = 0.0f;
+		FSM.ChangeState(BabyLongLegsState::Die);
+	}
+
 	Dir = GetActorLocation() - GetWorld()->GetPawn()->GetActorLocation();
 	Dir.Normalize();
 
@@ -131,4 +150,14 @@ void ABabyLongLegs::Move(float _DeltaTime)
 		DelayTime = 0.0f;
 	}
 
+}
+
+void ABabyLongLegs::Die(float _DeltaTime)
+{
+	DelayTime += _DeltaTime;
+
+	if (DelayTime > 1.1f)
+	{
+		Destroy();
+	}
 }

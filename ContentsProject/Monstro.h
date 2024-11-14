@@ -10,7 +10,8 @@ enum class MonstroState
 	Idle,
 	Move,
 	Attack,
-	Jump
+	Jump,
+	Die
 
 };
 
@@ -34,22 +35,15 @@ public:
 	void Move(float _DeltaTime);
 	void Attack(float _DeltaTime);
 	void Jump(float _DeltaTime);
+	void Die(float _DeltaTime);
 
 
 protected:
 
 private:
 	float BulletCoolTime = 1.5f;
-
-	float DelayTime = 0.0f;
-
-	U2DCollision* CollisionComponent;
 	float Speed = 300.0f;
-	class USpriteRenderer* MonstroRenderer = nullptr;
-
 	FVector2D Dir;
-
-	UFSMStateManager FSM = UFSMStateManager();
 	UEngineRandom Random;
 
 };

@@ -3,6 +3,7 @@
 #include <EngineCore/ImageManager.h>
 #include <EngineBase/FSMStateManager.h>
 #include <EngineCore/2DCollision.h>
+#include <EngineBase/EngineMath.h>
 
 enum class NewPlayerState
 {
@@ -45,7 +46,11 @@ public:
 	void CollisionStay(AActor* _ColActor);
 	void CollisionEnd(AActor* _ColActor);
 
+	bool CanMove = true;
+
 	void DirCheck();
+
+	float Damage = 100.0f;
 
 protected:
 
@@ -57,6 +62,7 @@ private:
 	std::string DirString = "_Right";
 
 	class USpriteRenderer* BodyRenderer = nullptr;
+	class USpriteRenderer* ShadowRenderer = nullptr;
 	UFSMStateManager FSM = UFSMStateManager();
 	int Test = 0;
 	float BulletCoolTime = 0.5f;

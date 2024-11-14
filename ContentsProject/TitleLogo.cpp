@@ -9,7 +9,6 @@ TitleLogo::TitleLogo()
 	USpriteRenderer* SpriteRenderer = CreateDefaultSubObject<USpriteRenderer>();
 	SpriteRenderer->SetOrder(ERenderOrder::BACKGROUND);
 	
-	SpriteRenderer->SetSprite("Title");
 	SpriteRenderer->CreateAnimation("TitleAnimation", "Title", 0, 1, 0.1f,true);
 	SpriteRenderer->ChangeAnimation("TitleAnimation");
 

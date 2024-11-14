@@ -252,10 +252,16 @@ void APlayGameMode::Tick(float _DeltaTime)
 
 	UEngineDebug::CoreOutPutString("Room : " + APlayGameMode::CurRoom->GetName());
 
+	if (true == UEngineInput::GetInst().IsDown('B'))
+	{
+		UEngineDebug::SwitchIsDebug();
+	}
+
 	if (true == UEngineInput::GetInst().IsDown('R'))
 	{
 		UEngineAPICore::GetCore()->OpenLevel("Title");
 	}
+
 
 	if (true == UEngineInput::GetInst().IsDown('1'))
 	{
@@ -333,6 +339,8 @@ void APlayGameMode::Tick(float _DeltaTime)
 
 	if (CurRoom != PrevRoom)
 	{
+		AIsaac* Ptr = GetWorld()->GetPawn<AIsaac>();
+
 
 		RoomMoveCameraTime += _DeltaTime * 5;
 		FVector2D Size = UEngineAPICore::GetCore()->GetMainWindow().GetWindowSize();
@@ -347,8 +355,10 @@ void APlayGameMode::Tick(float _DeltaTime)
 
 		if (1.0f <= RoomMoveCameraTime)
 		{
+			AIsaac* Ptr = GetWorld()->GetPawn<AIsaac>();
 			RoomMoveCameraTime = 0.0f;
 			PrevRoom = CurRoom;
+
 			GetWorld()->SetCameraPos({ CurRoom->RoomPos.X - 480.0f ,CurRoom->RoomPos.Y - 270.0f });
 			//GetWorld()->GetPawn()->SetActorLocation(CurRoom->RoomPos);
 			if (1 == CurRoom->CanSpawnNumber)
@@ -358,7 +368,15 @@ void APlayGameMode::Tick(float _DeltaTime)
 				CurRoom->CanSpawnNumber--;
 				
 			}
-			int a = 0;
+
+			if (nullptr != Ptr)
+			{
+				Ptr->CanMove = true;
+			}
+			else {
+				int a = 0;
+			}
+			
 		}
 
 		
@@ -427,6 +445,8 @@ void APlayGameMode::CreateMap()
 	if (Rooms[4] == CurRoom)
 	{
 		SetMonster<AMonstro>({ CurRoom->RoomPos.X + 52.0f * (0.0f), CurRoom->RoomPos.Y - 52.0f * (0.0f) });
+		SetMonster <ARedFly> ({ CurRoom->RoomPos.X + 52.0f * (2.0f), CurRoom->RoomPos.Y - 52.0f * (0.0f) });
+		SetMonster<ARedFly>({ CurRoom->RoomPos.X + 52.0f * (-2.0f), CurRoom->RoomPos.Y - 52.0f * (0.0f) });
 	}
 	else
 	{
@@ -466,6 +486,11 @@ void APlayGameMode::CreateMap()
 		case 4:
 			SetMonster<AFly>({ CurRoom->RoomPos.X + 52.0f * (0.0f), CurRoom->RoomPos.Y - 52.0f * (0.0f) });
 			break;
+
+		case 5:
+			SetMonster<ABabyLongLegs>({ CurRoom->RoomPos.X + 52.0f * (0.0f), CurRoom->RoomPos.Y - 52.0f * (0.0f) });
+			break;
+
 
 		default:
 			break;

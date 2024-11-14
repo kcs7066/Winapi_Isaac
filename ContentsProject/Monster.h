@@ -1,5 +1,8 @@
 #pragma once
 #include <EngineCore/Actor.h>
+#include <EngineCore/SpriteRenderer.h>
+#include <EngineBase/FSMStateManager.h>
+#include <EngineCore/2DCollision.h>
 
 // Ό³Έν :
 class AMonster : public AActor
@@ -15,19 +18,18 @@ public:
 	AMonster& operator=(const AMonster& _Other) = delete;
 	AMonster& operator=(AMonster&& _Other) noexcept = delete;
 
-	bool DeathCheck()
+	void SetHp(float _Value)
 	{
-		return Hp <= 0.0f;
+		Hp = _Value;
 	}
 
+	float DelayTime = 0.0f;
 	float Hp = 1.0f;
-
-	//void SetSeed()
-	//{
-	//	Random
-	//}
-
-	//UEngineRandom Random;
+	class USpriteRenderer* ShadowRenderer = nullptr;
+	class USpriteRenderer* MonsterRenderer = nullptr;
+	UFSMStateManager FSM = UFSMStateManager();
+	U2DCollision* CollisionComponent;
+	
 
 protected:
 
@@ -35,5 +37,6 @@ protected:
 
 private:
 
+	
 };
 

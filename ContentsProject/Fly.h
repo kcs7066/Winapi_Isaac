@@ -7,9 +7,8 @@
 
 enum class FlyState
 {
-	Idle,
-	Move
-
+	Move,
+	Die
 };
 
 class AFly : public AMonster
@@ -30,19 +29,13 @@ public:
 
 	void Idle(float _DeltaTime);
 	void Move(float _DeltaTime);
-
+	void Die(float _DeltaTime);
 
 protected:
 
 private:
-
-
-	U2DCollision* CollisionComponent;
 	float Speed = 500.0f;
-	class USpriteRenderer* FlyRenderer = nullptr;
 	FVector2D RandomDir;
-
-	UFSMStateManager FSM = UFSMStateManager();
 	UEngineRandom Random;
 
 };

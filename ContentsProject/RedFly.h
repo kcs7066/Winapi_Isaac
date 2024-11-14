@@ -8,7 +8,8 @@
 enum class  RedFlyState
 {
 	Idle,
-	Move
+	Move,
+	Die
 
 };
 
@@ -30,19 +31,12 @@ public:
 
 	void Idle(float _DeltaTime);
 	void Move(float _DeltaTime);
+	void Die(float _DeltaTime);
 
 protected:
 
 private:
 
 	FVector2D Dir;
-
-	U2DCollision* CollisionComponent;
 	float Speed = 100.0f;
-	class USpriteRenderer* RedFlyRenderer = nullptr;
-	
-
-	UFSMStateManager FSM = UFSMStateManager();
-	
-
 };

@@ -38,14 +38,13 @@ void IsaacContentsCore::BeginPlay()
 		UImageManager::GetInst().Load(FilePath);
 	}
 
-	//UImageManager::GetInst().CuttingSprite("Test_Loki.png", { 128, 128 });
-	//UImageManager::GetInst().CuttingSprite("Test_Monstro.png", { 512, 512 });
 	UImageManager::GetInst().CuttingSprite("Head.png", { 64, 64 });
 	UImageManager::GetInst().CuttingSprite("Body.png", { 64, 64 });
 	UImageManager::GetInst().CuttingSprite("NormalRoomDoor.png", { 256, 256 });
 	UImageManager::GetInst().CuttingSprite("GoldRoomDoor.png", { 256, 256 });
 	UImageManager::GetInst().CuttingSprite("BossRoomDoor.png", { 256, 256 });
 	UImageManager::GetInst().CuttingSprite("Tear.png", { 64, 64 });
+	UImageManager::GetInst().CuttingSprite("TearPoof.png", { 64, 64 });
 	UImageManager::GetInst().CuttingSprite("Monster_Fly.png", { 64, 64 });
 	UImageManager::GetInst().CuttingSprite("Monster_Roundworm.png", { 32, 32 });
 	UImageManager::GetInst().CuttingSprite("Monster_Dip_Left.png", { 32, 32 });
@@ -57,6 +56,7 @@ void IsaacContentsCore::BeginPlay()
 	UImageManager::GetInst().CuttingSprite("Structure_Rock.png", { 32, 32 });
 	UImageManager::GetInst().CuttingSprite("Structure_Poop_1.png", { 32, 32 });
 	UImageManager::GetInst().CuttingSprite("TrapDoor.png", { 64, 64 });
+	UImageManager::GetInst().CuttingSprite("BloodPoof.png", { 64, 64 });
 
 
 

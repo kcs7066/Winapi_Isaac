@@ -10,21 +10,28 @@ ARedFly::ARedFly()
 	SetActorLocation({ 200, 0 });
 
 	{
-		RedFlyRenderer = CreateDefaultSubObject<USpriteRenderer>();
-		RedFlyRenderer->SetComponentScale({ 100, 100 });
-		RedFlyRenderer->CreateAnimation("Move_RedFly", "Monster_Fly.png", 10, 11, 0.1f);
-		RedFlyRenderer->ChangeAnimation("Move_RedFly");
+		MonsterRenderer = CreateDefaultSubObject<USpriteRenderer>();
+		MonsterRenderer->SetComponentScale({ 150, 150 });
+		MonsterRenderer->SetComponentLocation({ 0,-40 });
+		MonsterRenderer->CreateAnimation("Move_RedFly", "Monster_Fly.png", 10, 11, 0.1f);
+		MonsterRenderer->CreateAnimation("Die_RedFly", "BloodPoof.png", 0, 10, 0.1f);
+
+		MonsterRenderer->ChangeAnimation("Move_RedFly");
 	}
 
+	ShadowRenderer = CreateDefaultSubObject<USpriteRenderer>();
+	ShadowRenderer->SetOrder(ERenderOrder::SHADOW);
+	ShadowRenderer->SetSprite("Shadow.png");
+	ShadowRenderer->SetSpriteScale(0.3f);
 
 
 	CollisionComponent = CreateDefaultSubObject<U2DCollision>();
-	CollisionComponent->SetComponentLocation({ 0, 0 });
-	CollisionComponent->SetComponentScale({ 30, 30 });
+	CollisionComponent->SetComponentScale({ 55, 55 });
 	CollisionComponent->SetCollisionGroup(ECollisionGroup::Monster);
 	CollisionComponent->SetCollisionType(ECollisionType::CirCle);
 
 	DebugOn();
+	SetHp(5.0f);
 }
 
 ARedFly::~ARedFly()
@@ -49,6 +56,13 @@ void ARedFly::BeginPlay()
 		}
 	);
 
+	FSM.CreateState(RedFlyState::Die, std::bind(&ARedFly::Die, this, std::placeholders::_1),
+		[this]()
+		{
+			MonsterRenderer->ChangeAnimation("Die_RedFly");
+		}
+	);
+
 	FSM.ChangeState(RedFlyState::Move);
 }
 
@@ -56,13 +70,6 @@ void ARedFly::Tick(float _DeltaTime)
 {
 	Super::Tick(_DeltaTime);
 	FSM.Update(_DeltaTime);
-	if (true == DeathCheck())
-	{
-		APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
-		PlayGameMode->CurRoom->MonsterNumber--;
-		Destroy();
-	}
-
 }
 
 
@@ -81,6 +88,15 @@ void ARedFly::Idle(float _DeltaTime)
 
 void ARedFly::Move(float _DeltaTime)
 {
+	DelayTime += _DeltaTime;
+
+	if (this->Hp <= 0.0f)
+	{
+		APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
+		PlayGameMode->CurRoom->MonsterNumber--;
+		DelayTime = 0.0f;
+		FSM.ChangeState(RedFlyState::Die);
+	}
 
 	Dir = GetWorld()->GetPawn()->GetActorLocation() - GetActorLocation();
 	Dir.Normalize();
@@ -88,10 +104,10 @@ void ARedFly::Move(float _DeltaTime)
 	FVector2D NewLocation = GetActorLocation() += Dir * _DeltaTime * Speed;
 	APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
 
-	if (PlayGameMode->CurRoom->RoomPos.X - NewLocation.X > 340.0f ||
-		PlayGameMode->CurRoom->RoomPos.X - NewLocation.X < -340.0f ||
-		PlayGameMode->CurRoom->RoomPos.Y - NewLocation.Y > 170.0f ||
-		PlayGameMode->CurRoom->RoomPos.Y - NewLocation.Y < -170.0f
+	if (PlayGameMode->CurRoom->RoomPos.X - NewLocation.X > 338.0f ||
+		PlayGameMode->CurRoom->RoomPos.X - NewLocation.X < -338.0f ||
+		PlayGameMode->CurRoom->RoomPos.Y - NewLocation.Y > 182.0f ||
+		PlayGameMode->CurRoom->RoomPos.Y - NewLocation.Y < -182.0f
 		)
 	{
 
@@ -105,4 +121,14 @@ void ARedFly::Move(float _DeltaTime)
 
 
 
+}
+
+void ARedFly::Die(float _DeltaTime)
+{
+	DelayTime += _DeltaTime;
+
+	if (DelayTime > 1.1f)
+	{
+		Destroy();
+	}
 }

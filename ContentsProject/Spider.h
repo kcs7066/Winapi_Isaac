@@ -9,7 +9,8 @@ enum class SpiderState
 {
 	Idle,
 	MoveRight,
-	MoveLeft
+	MoveLeft,
+	Die
 };
 
 class ASpider : public AMonster
@@ -30,19 +31,14 @@ public:
 
 	void Idle(float _DeltaTime);
 	void Move(float _DeltaTime);
-
+	void Die(float _DeltaTime);
 	
 
 protected:
 
 private:
 
-	float DelayTime = 0.0f;
-
-	UFSMStateManager FSM = UFSMStateManager();
-	U2DCollision* CollisionComponent;
 	float Speed = 300.0f;
-	class USpriteRenderer* SpiderRenderer = nullptr;
 	FVector2D RandomDir = { 0,0 };
 
 	UEngineRandom Random;

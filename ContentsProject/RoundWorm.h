@@ -10,7 +10,8 @@ enum class RoundWormState
 	Idle,
 	Attack,
 	Idle2,
-	Move
+	Move,
+	Die
 
 };
 
@@ -34,20 +35,15 @@ public:
 	void Attack(float _DeltaTime);
 	void Idle2(float _DeltaTime);
 	void Move(float _DeltaTime);
-	
+	void Die(float _DeltaTime);
 
 protected:
 
 private:
 	float BulletCoolTime = 0.5f;
 
-	float DelayTime = 0.0f;
-
-	U2DCollision* CollisionComponent;
 	float Speed = 500.0f;
-	class USpriteRenderer* RoundWormRenderer = nullptr;
 
-	UFSMStateManager FSM = UFSMStateManager();
 	UEngineRandom Random;
 
 };

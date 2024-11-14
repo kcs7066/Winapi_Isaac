@@ -8,7 +8,8 @@
 enum class BabyLongLegsState
 {
 	Move,
-	Attack
+	Attack,
+	Die
 };
 
 class ABabyLongLegs : public AMonster
@@ -29,17 +30,14 @@ public:
 
 	void Attack(float _DeltaTime);
 	void Move(float _DeltaTime);
+	void Die(float _DeltaTime);
 
 protected:
 
 private:
 
-	float DelayTime = 0.0f;
 
-	UFSMStateManager FSM = UFSMStateManager();
-	U2DCollision* CollisionComponent;
 	float Speed = 300.0f;
-	class USpriteRenderer* BabyLongLegsRenderer = nullptr;
 	FVector2D Dir = { 0,0 };
 
 	

@@ -4,11 +4,10 @@
 #include <EngineBase/FSMStateManager.h>
 #include <EngineCore/2DCollision.h>
 
-enum class NewMonsterState
+enum class PurpleFlyState
 {
-	Idle,
-	Move
-
+	Move,
+	Die
 };
 
 class APurpleFly : public AMonster
@@ -27,17 +26,17 @@ public:
 	void BeginPlay() override;
 	void Tick(float _DeltaTime) override;
 
-	void Idle(float _DeltaTime);
 	void Move(float _DeltaTime);
+	void Die(float _DeltaTime);
+
+
 
 protected:
 
 private:
-	U2DCollision* CollisionComponent;
-	float Speed = 500.0f;
-	class USpriteRenderer* PurpleFlyRenderer = nullptr;
 
-	UFSMStateManager FSM = UFSMStateManager();
+	float Speed = 500.0f;
+	FVector2D Dir = { 1,0 };
 
 };
 
