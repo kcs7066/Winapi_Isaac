@@ -21,7 +21,7 @@ AIsaac::AIsaac()
 
 	{
 		BodyRenderer = CreateDefaultSubObject<USpriteRenderer>();
-	
+		BodyRenderer->SetOrder(ERenderOrder::PLAYER);
 		BodyRenderer->SetComponentScale({ 70, 70 });
 		BodyRenderer->SetComponentLocation({ 0,-15 });
 		BodyRenderer->CreateAnimation("Idle_Body", "Body.png", 29, 29, 0.1f);
@@ -32,7 +32,7 @@ AIsaac::AIsaac()
 
 	{
 		HeadRenderer = CreateDefaultSubObject<USpriteRenderer>();
-		
+		HeadRenderer->SetOrder(ERenderOrder::PLAYER);
 		HeadRenderer->SetComponentScale({ 70, 70 });
 		HeadRenderer->SetComponentLocation({ 0,-45 });
 
@@ -148,7 +148,7 @@ void AIsaac::Tick(float _DeltaTime)
 
 		BulletCoolTime -= _DeltaTime;
 		FSM.Update(_DeltaTime);
-	
+		
 }
 
 
@@ -172,6 +172,7 @@ void AIsaac::Idle(float _DeltaTime)
 
 void AIsaac::Move(float _DeltaTime)
 {
+	
 	FVector2D Vector = FVector2D::ZERO;
 
 	if (true == UEngineInput::GetInst().IsPress('D'))
@@ -242,16 +243,10 @@ void AIsaac::Move(float _DeltaTime)
 			
 		}
 	}
-	AActor* StructureResult = CollisionComponent->CollisionOnce(ECollisionGroup::Structure);
+
 	FVector2D Location = GetActorLocation() += Vector * _DeltaTime * Speed;
 
-
-	if (nullptr != StructureResult)
-	{
-		AddActorLocation(Vector * _DeltaTime * Speed* (-1.0f));
-	}
-
-	else if 
+	if 
 		(
 		PlayGameMode->CurRoom->RoomPos.X - Location.X > 338.0f ||
 		PlayGameMode->CurRoom->RoomPos.X - Location.X < -338.0f ||
@@ -263,7 +258,17 @@ void AIsaac::Move(float _DeltaTime)
 	
 	else
 	{
+
+		PrevPos = GetActorLocation();
 		AddActorLocation(Vector * _DeltaTime * Speed);
+		AActor* StructureResult = CollisionComponent->CollisionOnce(ECollisionGroup::Structure);
+
+
+		if (nullptr != StructureResult)
+		{
+			SetActorLocation(PrevPos);
+		}
+
 	}
 
 	if (false == UEngineInput::GetInst().IsPress('A') &&

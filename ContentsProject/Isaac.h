@@ -51,6 +51,7 @@ public:
 	void DirCheck();
 
 	float Damage = 100.0f;
+	FVector2D PrevPos;
 
 protected:
 

@@ -12,6 +12,7 @@ ADip::ADip()
 
 	{
 		MonsterRenderer = CreateDefaultSubObject<USpriteRenderer>();
+		MonsterRenderer->SetOrder(ERenderOrder::MONSTER);
 		MonsterRenderer->SetComponentScale({ 100, 100 });
 
 		MonsterRenderer->CreateAnimation("Idle_Dip_Left", "Monster_Dip_Left.png", 0, 1, 0.1f);

@@ -11,6 +11,7 @@ ARoundWorm::ARoundWorm()
 
 	{
 		MonsterRenderer = CreateDefaultSubObject<USpriteRenderer>();
+		MonsterRenderer->SetOrder(ERenderOrder::MONSTER);
 		MonsterRenderer->SetSprite("Monster_RoundWorm.png");
 		MonsterRenderer->SetComponentScale({ 100, 100 });
 		MonsterRenderer->CreateAnimation("Idle_RoundWorm", "Monster_RoundWorm.png", 0, 1, 0.1f);

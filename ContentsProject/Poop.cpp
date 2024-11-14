@@ -8,6 +8,7 @@ APoop::APoop()
 
 	{
 		PoopRenderer = CreateDefaultSubObject<USpriteRenderer>();
+		PoopRenderer->SetOrder(ERenderOrder::STRUCTURE);
 		PoopRenderer->SetComponentScale({ 75, 75 });
 		PoopRenderer->CreateAnimation("Idle_Poop", "Structure_Poop_1.png", 0, 0, 0.1f);
 		PoopRenderer->ChangeAnimation("Idle_Poop");

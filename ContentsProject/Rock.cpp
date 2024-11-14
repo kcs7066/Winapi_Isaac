@@ -8,6 +8,7 @@ ARock::ARock()
 
 	{
 		RockRenderer = CreateDefaultSubObject<USpriteRenderer>();
+		RockRenderer->SetOrder(ERenderOrder::STRUCTURE);
 		RockRenderer->SetComponentScale({ 75, 75 });
 		RockRenderer->CreateAnimation("Idle_Rock", "Structure_Rock.png", 0, 0, 0.1f);
 		RockRenderer->ChangeAnimation("Idle_Rock");
