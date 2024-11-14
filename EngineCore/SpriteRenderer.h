@@ -3,7 +3,7 @@
 #include "EngineSprite.h"
 #include <EngineBase/EngineDelegate.h>
 #include <map>
-#include "Actor.h"
+#include <EngineBase/EngineMath.h>
 
 enum class PivotType
 {
@@ -12,8 +12,10 @@ enum class PivotType
 	Top,
 };
 
+
 class USpriteRenderer : public USceneComponent
 {
+
 public:
 	class FrameAnimation
 	{
@@ -27,6 +29,7 @@ public:
 		int ResultIndex = 0;
 		float CurTime = 0.0f;
 		bool Loop = true;
+		bool IsEnd = false;
 
 		void Reset()
 		{
@@ -34,8 +37,8 @@ public:
 			CurTime = 0;
 			ResultIndex = 0;
 		}
-
 	};
+
 
 public:
 	// constrcuter destructer
@@ -96,26 +99,43 @@ public:
 
 	void SetPivotType(PivotType _Type);
 
-
 	void SetCameraEffectScale(float _Effect);
 	void SetSprite(std::string_view _Name, int _CurIndex = 0);
 
+
+	bool IsCurAnimationEnd()
+	{
+		return CurAnimation->IsEnd;
+	}
+
+	
+	void SetAlphaChar(unsigned char _Value)
+	{
+		Alpha = _Value;
+	}
+
+	void SetAlphafloat(float _Value)
+	{
+		_Value = UEngineMath::Clamp(_Value, 0.0f, 1.0f);
+
+		Alpha = static_cast<unsigned char>(_Value * 255.0f);
+	}
+
 protected:
 
-public:
+private:
 	int Order = 0;
 	int CurIndex = 0;
 	bool IsCameraEffect = true;
 	float CameraEffectScale = 1.0f;
+
+	unsigned char Alpha = 255;
+
 	FVector2D Pivot = FVector2D::ZERO;
 
 	class UEngineSprite* Sprite = nullptr;
 
-
 	std::map<std::string, FrameAnimation> FrameAnimations;
 	FrameAnimation* CurAnimation = nullptr;
-
-
-
 };
 

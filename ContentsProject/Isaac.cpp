@@ -110,12 +110,6 @@ void AIsaac::Tick(float _DeltaTime)
 	UEngineDebug::CoreOutPutString("FPS : " + std::to_string(1.0f / _DeltaTime));
 	UEngineDebug::CoreOutPutString("PlayerPos : " + GetActorLocation().ToString());
 
-
-	if (true == UEngineInput::GetInst().IsDown('R'))
-	{
-		UEngineAPICore::GetCore()->OpenLevel("Title");
-	}
-
 	if (true == UEngineInput::GetInst().IsDown('B'))
 	{
 		UEngineDebug::SwitchIsDebug();

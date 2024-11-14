@@ -4,6 +4,7 @@
 #include <EnginePlatform/EngineInput.h>
 #include "MonsterTear.h"
 #include "PlayGameMode.h"
+#include "TrapDoor.h"
 
 AMonstro::AMonstro()
 {
@@ -83,6 +84,8 @@ void AMonstro::Tick(float _DeltaTime)
 	{
 		APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
 		PlayGameMode->CurRoom->MonsterNumber--;
+		ATrapDoor* NewTrapDoor = GetWorld()->SpawnActor<ATrapDoor>();
+		NewTrapDoor->SetActorLocation({ PlayGameMode->CurRoom->RoomPos.X + 52.0f * (0.0f), PlayGameMode->CurRoom->RoomPos.Y - 52.0f * (2.0f) });
 		Destroy();
 	}
 }

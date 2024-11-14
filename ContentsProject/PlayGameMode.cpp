@@ -252,9 +252,9 @@ void APlayGameMode::Tick(float _DeltaTime)
 
 	UEngineDebug::CoreOutPutString("Room : " + APlayGameMode::CurRoom->GetName());
 
-	if (true == UEngineInput::GetInst().IsDown('Z'))
-	{	
-		CurRoom -> MonsterNumber = 0;
+	if (true == UEngineInput::GetInst().IsDown('R'))
+	{
+		UEngineAPICore::GetCore()->OpenLevel("Title");
 	}
 
 	if (true == UEngineInput::GetInst().IsDown('1'))

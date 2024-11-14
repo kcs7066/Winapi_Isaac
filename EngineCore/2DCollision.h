@@ -36,7 +36,8 @@ public:
 		return CollisionGroup;
 	}
 
-
+	// 충돌체에게 충돌그룹을 지정안해주는건 의미가 없다.
+	// 중간에 충돌 그룹이 바뀌어야 되면 이야기 부탁.
 	template<typename EnumType>
 	void SetCollisionGroup(EnumType _CollisionGroup)
 	{
@@ -51,7 +52,7 @@ public:
 	template<typename EnumType>
 	AActor* CollisionOnce(EnumType _OtherCollisionGroup, FVector2D _NextPos = FVector2D::ZERO)
 	{
-		
+		// 상대가 100개이다. 100개 
 		std::vector<AActor*> Result;
 		Collision(static_cast<int>(_OtherCollisionGroup), Result, _NextPos, 1);
 
@@ -66,7 +67,7 @@ public:
 	template<typename EnumType>
 	std::vector<AActor*> CollisionAll(EnumType _OtherCollisionGroup, FVector2D _NextDir)
 	{
-		
+		// 상대가 100개이다. 100개 
 		std::vector<AActor*> Result;
 		Collision(static_cast<int>(_OtherCollisionGroup), Result, _NextDir, -1);
 
@@ -85,7 +86,7 @@ public:
 		return CollisionType;
 	}
 
-	//                                      
+	
 	void SetCollisionEnter(std::function<void(AActor*)> _Function);
 	void SetCollisionStay(std::function<void(AActor*)> _Function);
 	void SetCollisionEnd(std::function<void(AActor*)> _Function);

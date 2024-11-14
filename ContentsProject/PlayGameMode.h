@@ -112,6 +112,7 @@ public:
 			if (StartIter->second == _Pos)
 				return StartIter->first;
 		}
+
 	}
 	
 	ARoom* CurRoom = nullptr;
@@ -150,7 +151,7 @@ private:
 
 	void CreateMap();
 
-	USpriteRenderer* SpriteRenderer;
+	USpriteRenderer* SpriteRenderer = nullptr;
 
 	UEngineRandom Random;
 

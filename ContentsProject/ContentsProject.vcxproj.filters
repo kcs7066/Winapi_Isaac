@@ -114,6 +114,9 @@
     <ClCompile Include="Poop.cpp">
       <Filter>ContentsObject\Structure</Filter>
     </ClCompile>
+    <ClCompile Include="TrapDoor.cpp">
+      <Filter>ContentsObject\Play</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PreCompile.h">
@@ -196,6 +199,9 @@
     </ClInclude>
     <ClInclude Include="Poop.h">
       <Filter>ContentsObject\Structure</Filter>
+    </ClInclude>
+    <ClInclude Include="TrapDoor.h">
+      <Filter>ContentsObject\Play</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -7,6 +7,30 @@ public:
 	{
 		return ::sqrtf(_Value);
 	}
+
+	template <typename DataType>
+	DataType ClampMax(DataType value, DataType maxValue)
+	{
+		return (value > maxValue) ? maxValue : value;
+	}
+
+	template <typename DataType>
+	DataType ClampMin(DataType value, DataType minValue)
+	{
+		return (value < minValue) ? minValue : value;
+	}
+
+	template <typename DataType>
+	static DataType Clamp(DataType value, DataType minValue, DataType maxValue)
+	{
+		if (value < minValue)
+			return minValue;
+		else if (value > maxValue)
+			return maxValue;
+		else
+			return value;
+	}
+
 };
 
 class FVector2D

@@ -5,7 +5,6 @@
 #include "EngineAPICore.h"
 #include <EngineBase/EngineString.h>
 
-
 USpriteRenderer::USpriteRenderer()
 {
 }
@@ -17,60 +16,12 @@ USpriteRenderer::~USpriteRenderer()
 
 void USpriteRenderer::Render(float _DeltaTime)
 {
-	if (nullptr != CurAnimation)
-	{
-		std::vector<int>& Indexs = CurAnimation->FrameIndex;
-		std::vector<float>& Times = CurAnimation->FrameTime;
-
-		Sprite = CurAnimation->Sprite;
-
-
-		CurAnimation->CurTime += _DeltaTime;
-
-		float CurFrameTime = Times[CurAnimation->CurIndex];
-
-		if (CurAnimation->CurTime > CurFrameTime)
-		{
-			CurAnimation->CurTime -= CurFrameTime;
-			++CurAnimation->CurIndex;
-
-			if (CurAnimation->Events.contains(CurAnimation->CurIndex))
-			{
-				CurAnimation->Events[CurAnimation->CurIndex]();
-			}
-
-			if (CurAnimation->CurIndex >= Indexs.size())
-			{
-				if (true == CurAnimation->Loop)
-				{
-					CurAnimation->CurIndex = 0;
-
-					if (CurAnimation->Events.contains(CurAnimation->CurIndex))
-					{
-						CurAnimation->Events[CurAnimation->CurIndex]();
-					}
-
-				}
-				else
-				{
-					--CurAnimation->CurIndex;
-				}
-			}
-
-		}
-
-
-		//         2 3 4           0
-		CurIndex = Indexs[CurAnimation->CurIndex];
-		// ++CurAnimation->CurIndex;
-	}
 
 	if (nullptr == Sprite)
 	{
 		MSGASSERT("스프라이트가 세팅되지 않은 액터를 랜더링을 할수 없습니다.");
 		return;
 	}
-
 	UEngineWindow& MainWindow = UEngineAPICore::GetCore()->GetMainWindow();
 	UEngineWinImage* BackBufferImage = MainWindow.GetBackBuffer();
 	UEngineSprite::USpriteData CurData = Sprite->GetSpriteData(CurIndex);
@@ -79,21 +30,29 @@ void USpriteRenderer::Render(float _DeltaTime)
 
 	ULevel* Level = GetActor()->GetWorld();
 
-	//카메라
 	if (true == IsCameraEffect)
 	{
 		Trans.Location = Trans.Location - (Level->CameraPos * CameraEffectScale);
 	}
 
-	CurData.Image->CopyToTrans(BackBufferImage, Trans, CurData.Transform);
+	Trans.Location += Pivot;
 
-	int a = 0;
+
+	if (Alpha == 255)
+	{
+		CurData.Image->CopyToTrans(BackBufferImage, Trans, CurData.Transform);
+	}
+	else
+	{
+		CurData.Image->CopyToAlpha(BackBufferImage, Trans, CurData.Transform, Alpha);
+	}
 }
 
 void USpriteRenderer::BeginPlay()
 {
 
 	Super::BeginPlay();
+
 
 
 	AActor* Actor = GetActor();
@@ -105,6 +64,65 @@ void USpriteRenderer::BeginPlay()
 void USpriteRenderer::ComponentTick(float _DeltaTime)
 {
 	Super::ComponentTick(_DeltaTime);
+
+
+	if (nullptr != CurAnimation)
+	{
+		CurAnimation->IsEnd = false;
+		std::vector<int>& Indexs = CurAnimation->FrameIndex;
+		std::vector<float>& Times = CurAnimation->FrameTime;
+
+		Sprite = CurAnimation->Sprite;
+
+
+		CurAnimation->CurTime += _DeltaTime;
+
+		float CurFrameTime = Times[CurAnimation->CurIndex];
+
+
+		if (CurAnimation->CurTime > CurFrameTime)
+		{
+
+			CurAnimation->CurTime -= CurFrameTime;
+			++CurAnimation->CurIndex;
+
+			if (CurAnimation->Events.contains(CurIndex))
+			{
+				CurAnimation->Events[CurIndex]();
+			}
+
+
+			if (CurAnimation->CurIndex >= Indexs.size())
+			{
+				CurAnimation->IsEnd = true;
+			}
+
+			if (CurAnimation->CurIndex >= Indexs.size())
+			{
+				if (true == CurAnimation->Loop)
+				{
+					CurAnimation->CurIndex = 0;
+
+					if (CurAnimation->Events.contains(CurIndex))
+					{
+						CurAnimation->Events[CurIndex]();
+					}
+				}
+				else
+				{
+					CurAnimation->IsEnd = true;
+					--CurAnimation->CurIndex;
+				}
+			}
+
+		}
+
+
+	
+		CurIndex = Indexs[CurAnimation->CurIndex];
+	
+	}
+
 }
 
 void USpriteRenderer::SetSprite(std::string_view _Name, int _CurIndex /*= 0*/)
@@ -127,6 +145,13 @@ void USpriteRenderer::SetOrder(int _Order)
 
 	Order = _Order;
 
+
+	if (PrevOrder == Order)
+	{
+		return;
+	}
+
+
 	ULevel* Level = GetActor()->GetWorld();
 
 	if (nullptr != Level)
@@ -143,7 +168,7 @@ FVector2D USpriteRenderer::SetSpriteScale(float _Ratio /*= 1.0f*/, int _CurIndex
 		return FVector2D::ZERO;
 	}
 
-	UEngineSprite::USpriteData CurData = Sprite->GetSpriteData(CurIndex);
+	UEngineSprite::USpriteData CurData = Sprite->GetSpriteData(_CurIndex);
 
 	FVector2D Scale = CurData.Transform.Scale * _Ratio;
 
@@ -161,7 +186,7 @@ void USpriteRenderer::CreateAnimation(std::string_view _AnimationName, std::stri
 		return;
 	}
 
-	int Inter = (_End - _Start) + 1;
+	int Inter = 0;
 
 	std::vector<int> Indexs;
 	std::vector<float> Times;
@@ -188,10 +213,12 @@ void USpriteRenderer::CreateAnimation(std::string_view _AnimationName, std::stri
 		}
 	}
 
+
 	CreateAnimation(_AnimationName, _SpriteName, Indexs, Times, _Loop);
 }
 
-void USpriteRenderer::CreateAnimation(std::string_view _AnimationName, std::string_view _SpriteName, std::vector<int> _Indexs, float _Frame, bool _Loop)
+
+void USpriteRenderer::CreateAnimation(std::string_view _AnimationName, std::string_view _SpriteName, std::vector<int> _Indexs, float _Frame, bool _Loop /*= true*/)
 {
 	std::vector<float> Times;
 
@@ -237,7 +264,7 @@ void USpriteRenderer::CreateAnimation(std::string_view _AnimationName, std::stri
 
 }
 
-void USpriteRenderer::ChangeAnimation(std::string_view _AnimationName, bool _Force)
+void USpriteRenderer::ChangeAnimation(std::string_view _AnimationName, bool _Force /*= false*/)
 {
 	std::string UpperName = UEngineString::ToUpper(_AnimationName);
 
@@ -256,6 +283,7 @@ void USpriteRenderer::ChangeAnimation(std::string_view _AnimationName, bool _For
 
 	CurAnimation = &FrameAnimations[UpperName];
 	CurAnimation->Reset();
+	CurIndex = CurAnimation->FrameIndex[CurAnimation->CurIndex];
 
 	if (CurAnimation->Events.contains(CurAnimation->CurIndex))
 	{
@@ -303,6 +331,7 @@ void USpriteRenderer::SetCameraEffectScale(float _Effect)
 {
 	CameraEffectScale = _Effect;
 }
+
 
 void USpriteRenderer::SetPivotType(PivotType _Type)
 {
