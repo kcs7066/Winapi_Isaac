@@ -52,7 +52,6 @@ public:
 	template<typename EnumType>
 	AActor* CollisionOnce(EnumType _OtherCollisionGroup, FVector2D _NextPos = FVector2D::ZERO)
 	{
-		// 상대가 100개이다. 100개 
 		std::vector<AActor*> Result;
 		Collision(static_cast<int>(_OtherCollisionGroup), Result, _NextPos, 1);
 
@@ -67,7 +66,6 @@ public:
 	template<typename EnumType>
 	std::vector<AActor*> CollisionAll(EnumType _OtherCollisionGroup, FVector2D _NextDir)
 	{
-		// 상대가 100개이다. 100개 
 		std::vector<AActor*> Result;
 		Collision(static_cast<int>(_OtherCollisionGroup), Result, _NextDir, -1);
 

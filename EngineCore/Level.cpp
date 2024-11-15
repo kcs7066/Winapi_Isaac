@@ -45,6 +45,31 @@ ULevel::~ULevel()
 	}
 }
 
+void ULevel::BeginPlayCheck()
+{
+	{
+		std::list<AActor*>::iterator StartIter = BeginPlayList.begin();
+		std::list<AActor*>::iterator EndIter = BeginPlayList.end();
+
+		for (; StartIter != EndIter; ++StartIter)
+		{
+			AActor* CurActor = *StartIter;
+			CurActor->BeginPlay();
+			AllActors.push_back(CurActor);
+		}
+
+		BeginPlayList.clear();
+
+		Renderers;
+
+		AActor::ComponentBeginPlay();
+
+		Renderers;
+	}
+
+
+}
+
 void ULevel::LevelChangeStart()
 {
 	{

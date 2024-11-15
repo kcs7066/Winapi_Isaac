@@ -1,6 +1,6 @@
 #include "PreCompile.h"
 #include "BabyLongLegs.h"
-#include "ContentsEnum.h"
+
 #include <EnginePlatform/EngineInput.h>
 #include <EngineBase/EngineMath.h>
 #include "PlayGameMode.h"
@@ -12,20 +12,23 @@ ABabyLongLegs::ABabyLongLegs()
 
 	{
 		MonsterRenderer = CreateDefaultSubObject<USpriteRenderer>();
-		MonsterRenderer->SetComponentScale({ 300, 300 });
+		MonsterRenderer->SetComponentScale({ 250 , 250 });
 
-		MonsterRenderer->CreateAnimation("Move_BabyLongLegs", "Monster_BabyLongLegs.png", 0, 4, 0.1f);
+		MonsterRenderer->CreateAnimation("Move_BabyLongLegs", "Monster_BabyLongLegs.png", 0, 4, 0.033f);
 		MonsterRenderer->CreateAnimation("Attack_BabyLongLegs", "Monster_BabyLongLegs.png", 5, 7, 0.1f);
 		MonsterRenderer->CreateAnimation("Die_BabyLongLegs", "BloodPoof.png", 0, 10, 0.1f);
 		MonsterRenderer->ChangeAnimation("Move_BabyLongLegs");
 	}
 
-
+	ShadowRenderer = CreateDefaultSubObject<USpriteRenderer>();
+	ShadowRenderer->SetOrder(ERenderOrder::SHADOW);
+	ShadowRenderer->SetSprite("Shadow.png");
+	ShadowRenderer->SetSpriteScale(0.25f);
 
 	CollisionComponent = CreateDefaultSubObject<U2DCollision>();
-	CollisionComponent->SetComponentScale({ 84, 100 });
+	CollisionComponent->SetComponentScale({ 40, 40 });
 	CollisionComponent->SetCollisionGroup(ECollisionGroup::Monster);
-	CollisionComponent->SetCollisionType(ECollisionType::Rect);
+	CollisionComponent->SetCollisionType(ECollisionType::CirCle);
 
 	DebugOn();
 
@@ -154,6 +157,7 @@ void ABabyLongLegs::Move(float _DeltaTime)
 
 void ABabyLongLegs::Die(float _DeltaTime)
 {
+	DeathValue = true;
 	DelayTime += _DeltaTime;
 
 	if (DelayTime > 1.1f)

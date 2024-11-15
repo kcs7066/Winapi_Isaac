@@ -217,6 +217,7 @@ void APlayGameMode::BeginPlay()
 	CreateRestRoomPath(7);
 
 	CreateRoom("FirstRoom",RoomBind[0]);
+	Rooms[0]->CanSpawnNumber = 0;
 	CreateRoom("Room1", RoomBind[1]);
 	CreateRoom("Room2", RoomBind[2]);
 	CreateRoom("Room3", RoomBind[3]);
@@ -241,8 +242,8 @@ void APlayGameMode::BeginPlay()
 	GetWorld()->SetCameraPos({ CurRoom->RoomPos.X - 480.0f ,CurRoom->RoomPos.Y - 270.0f });
 
 	
-	Rooms[0]->CanSpawnNumber = 0;
-	int a = 0;
+	
+
 
 }
 
@@ -355,19 +356,11 @@ void APlayGameMode::Tick(float _DeltaTime)
 
 		if (1.0f <= RoomMoveCameraTime)
 		{
-			AIsaac* Ptr = GetWorld()->GetPawn<AIsaac>();
 			RoomMoveCameraTime = 0.0f;
 			PrevRoom = CurRoom;
 
 			GetWorld()->SetCameraPos({ CurRoom->RoomPos.X - 480.0f ,CurRoom->RoomPos.Y - 270.0f });
 			//GetWorld()->GetPawn()->SetActorLocation(CurRoom->RoomPos);
-			if (1 == CurRoom->CanSpawnNumber)
-			{
-				CreateMap();
-				CurRoom->RoomClear = false;
-				CurRoom->CanSpawnNumber--;
-				
-			}
 
 			if (nullptr != Ptr)
 			{
@@ -375,6 +368,14 @@ void APlayGameMode::Tick(float _DeltaTime)
 			}
 			else {
 				int a = 0;
+			}
+
+			if (1 == CurRoom->CanSpawnNumber)
+			{
+				CreateMap();
+				CurRoom->RoomClear = false;
+				CurRoom->CanSpawnNumber--;
+
 			}
 			
 		}

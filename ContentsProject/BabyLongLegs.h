@@ -3,7 +3,7 @@
 #include <EngineCore/SpriteRenderer.h>
 #include <EngineBase/FSMStateManager.h>
 #include <EngineCore/2DCollision.h>
-#include <EngineBase/EngineRandom.h>
+
 
 enum class BabyLongLegsState
 {

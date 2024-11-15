@@ -7,6 +7,7 @@
 #include <EngineBase/EngineDebug.h>
 #include <EngineBase/EngineFile.h>
 #include <EngineCore/ImageManager.h>
+#include <EnginePlatform/EngineSound.h>
 
 #include "TitleGameMode.h"
 #include "PlayGameMode.h"
@@ -22,21 +23,44 @@ IsaacContentsCore::~IsaacContentsCore()
 
 void IsaacContentsCore::BeginPlay()
 {
-	UEngineDirectory Dir;
 
-	if (false == Dir.MoveParentToDirectory("IsaacResource"))
 	{
-		MSGASSERT("리소스 폴더를 찾지 못했습니다.");
-		return;
+		UEngineDirectory Dir;
+
+		if (false == Dir.MoveParentToDirectory("IsaacResource"))
+		{
+			MSGASSERT("리소스 폴더를 찾지 못했습니다.");
+			return;
+		}
+
+		Dir.Append("Image");
+
+		std::vector<UEngineFile> ImageFiles = Dir.GetAllFile();
+
+		for (size_t i = 0; i < ImageFiles.size(); i++)
+		{
+			std::string FilePath = ImageFiles[i].GetPathToString();
+			UImageManager::GetInst().Load(FilePath);
+		}
 	}
 
-	std::vector<UEngineFile> ImageFiles = Dir.GetAllFile();
-
-	for (size_t i = 0; i < ImageFiles.size(); i++)
 	{
-		std::string FilePath = ImageFiles[i].GetPathToString();
-		UImageManager::GetInst().Load(FilePath);
+		UEngineDirectory Dir;
+		if (false == Dir.MoveParentToDirectory("IsaacResource"))
+		{
+			MSGASSERT("리소스 폴더를 찾지 못했습니다.");
+			return;
+		}
+		Dir.Append("Sound");
+		std::vector<UEngineFile> ImageFiles = Dir.GetAllFile();
+		for (size_t i = 0; i < ImageFiles.size(); i++)
+		{
+			std::string FilePath = ImageFiles[i].GetPathToString();
+			UEngineSound::Load(FilePath);
+		}
 	}
+
+	
 
 	UImageManager::GetInst().CuttingSprite("Head.png", { 64, 64 });
 	UImageManager::GetInst().CuttingSprite("Body.png", { 64, 64 });
@@ -72,17 +96,6 @@ void IsaacContentsCore::BeginPlay()
 		UImageManager::GetInst().LoadFolder(TitleDir.GetPathToString());
 
 	}
-
-	{
-
-		UEngineDirectory PlayDir;
-		PlayDir.MoveParentToDirectory("IsaacResource");
-		PlayDir.Append("Play");
-
-		UImageManager::GetInst().LoadFolder(PlayDir.GetPathToString());
-
-	}
-
 
 
 	UEngineAPICore::GetCore()->GetMainWindow().SetWindowTitle("The Binding Of Isaac");

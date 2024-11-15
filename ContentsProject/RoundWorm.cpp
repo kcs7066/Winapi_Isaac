@@ -1,9 +1,11 @@
 #include "PreCompile.h"
 #include "RoundWorm.h"
-#include "ContentsEnum.h"
+
 #include <EnginePlatform/EngineInput.h>
 #include "MonsterTear.h"
 #include "PlayGameMode.h"
+
+
 
 ARoundWorm::ARoundWorm()
 {
@@ -12,8 +14,10 @@ ARoundWorm::ARoundWorm()
 	{
 		MonsterRenderer = CreateDefaultSubObject<USpriteRenderer>();
 		MonsterRenderer->SetOrder(ERenderOrder::MONSTER);
-		MonsterRenderer->SetSprite("Monster_RoundWorm.png");
-		MonsterRenderer->SetComponentScale({ 100, 100 });
+		
+		MonsterRenderer->SetComponentScale({ 70, 70 });
+		MonsterRenderer->SetComponentLocation({ 0, -20 });
+
 		MonsterRenderer->CreateAnimation("Idle_RoundWorm", "Monster_RoundWorm.png", 0, 1, 0.1f);
 		MonsterRenderer->CreateAnimation("Attack_RoundWorm", "Monster_RoundWorm.png", 3, 4, 0.1f);
 		MonsterRenderer->CreateAnimation("Move_RoundWorm", "Monster_RoundWorm.png", { 2,5,2 },{0.1f,0.8f,0.1f});
@@ -25,9 +29,9 @@ ARoundWorm::ARoundWorm()
 
 
 	CollisionComponent = CreateDefaultSubObject<U2DCollision>();
-	CollisionComponent->SetComponentScale({ 50, 90 });
+	CollisionComponent->SetComponentScale({ 40, 40 });
 	CollisionComponent->SetCollisionGroup(ECollisionGroup::Monster);
-	CollisionComponent->SetCollisionType(ECollisionType::Rect);
+	CollisionComponent->SetCollisionType(ECollisionType::CirCle);
 
 	DebugOn();
 
@@ -176,6 +180,7 @@ void ARoundWorm::Move(float _DeltaTime)
 
 void ARoundWorm::Die(float _DeltaTime)
 {
+	DeathValue = true;
 	DelayTime += _DeltaTime;
 
 	if (DelayTime > 1.1f)

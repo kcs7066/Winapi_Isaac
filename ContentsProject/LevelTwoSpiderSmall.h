@@ -3,7 +3,7 @@
 #include <EngineCore/SpriteRenderer.h>
 #include <EngineBase/FSMStateManager.h>
 #include <EngineCore/2DCollision.h>
-#include <EngineBase/EngineRandom.h>
+
 
 enum class LevelTwoSpiderSmallState
 {
@@ -42,7 +42,6 @@ private:
 
 	float Speed = 300.0f;
 	FVector2D Dir = { 0,0 };
-	UEngineRandom Random;
 
 
 };

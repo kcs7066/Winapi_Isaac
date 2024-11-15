@@ -89,7 +89,7 @@ void AIsaac::BeginPlay()
 	Super::BeginPlay();
 	GetWorld()->SetCameraToMainPawn(false);
 	
-
+	//BGMPlayer = UEngineSound::Play("title screen.ogg");
 	
 	FVector2D Size = UEngineAPICore::GetCore()->GetMainWindow().GetWindowSize();
 	GetWorld()->SetCameraPivot(Size.Half() * -1.0f);
@@ -160,11 +160,9 @@ void AIsaac::Idle(float _DeltaTime)
 		true == UEngineInput::GetInst().IsPress('W') ||
 		true == UEngineInput::GetInst().IsPress('S'))
 
-		if (true == CanMove)
-		{
 			FSM.ChangeState(NewPlayerState::Move);
 			return;
-		}
+		
 }
 
 
@@ -205,19 +203,19 @@ void AIsaac::Move(float _DeltaTime)
 
 	if (true == PlayGameMode->CurRoom->RoomClear)
 	{
-		if (true == CanMove)
 
+		if (true == CanMove)
 		{
 			AActor* Result = CollisionComponent->CollisionOnce(ECollisionGroup::Door);
 
 
+
 			if (nullptr != Result)
 			{
-
+				CanMove = false;
 				ADoor* NewResult = dynamic_cast<ADoor*>(Result);
-
-
 				PlayGameMode->CurRoom = NewResult->LinkedRoom;
+
 
 				switch (NewResult->Dir)
 				{
@@ -237,12 +235,13 @@ void AIsaac::Move(float _DeltaTime)
 				default:
 					break;
 				}
-				CanMove = false;
+				
 				FSM.ChangeState(NewPlayerState::Idle);
 			}
-			
 		}
 	}
+		
+	
 
 	FVector2D Location = GetActorLocation() += Vector * _DeltaTime * Speed;
 
@@ -260,7 +259,9 @@ void AIsaac::Move(float _DeltaTime)
 	{
 
 		PrevPos = GetActorLocation();
-		AddActorLocation(Vector * _DeltaTime * Speed);
+		if (true == CanMove) {
+			AddActorLocation(Vector * _DeltaTime * Speed);
+		}
 		AActor* StructureResult = CollisionComponent->CollisionOnce(ECollisionGroup::Structure);
 
 

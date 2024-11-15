@@ -4,6 +4,7 @@
 #include <EngineBase/FSMStateManager.h>
 #include <EngineCore/2DCollision.h>
 #include <EngineBase/EngineMath.h>
+#include <EnginePlatform/EngineSound.h>
 
 enum class NewPlayerState
 {
@@ -48,8 +49,6 @@ public:
 
 	bool CanMove = true;
 
-	void DirCheck();
-
 	float Damage = 100.0f;
 	FVector2D PrevPos;
 
@@ -60,6 +59,8 @@ private:
 	float Speed = 500.0f;
 	class UEngineWinImage* ColImage = nullptr;
 	
+	float RoomMoveCameraTime = 0.0f;
+
 	std::string DirString = "_Right";
 
 	class USpriteRenderer* BodyRenderer = nullptr;
@@ -67,5 +68,7 @@ private:
 	UFSMStateManager FSM = UFSMStateManager();
 	int Test = 0;
 	float BulletCoolTime = 0.5f;
+
+	USoundPlayer BGMPlayer;
 };
 

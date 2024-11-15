@@ -1,6 +1,6 @@
 #include "PreCompile.h"
 #include "PurpleFly.h"
-#include "ContentsEnum.h"
+
 #include <EnginePlatform/EngineInput.h>
 #include "PlayGameMode.h"
 
@@ -98,6 +98,7 @@ void APurpleFly::Move(float _DeltaTime)
 
 void APurpleFly::Die(float _DeltaTime)
 {
+	DeathValue = true;
 	DelayTime += _DeltaTime;
 
 	if (DelayTime > 1.1f)

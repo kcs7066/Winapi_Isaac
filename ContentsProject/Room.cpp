@@ -7,13 +7,12 @@
 
 ARoom::ARoom()
 {
+
 	RoomRenderer = CreateDefaultSubObject<USpriteRenderer>();
 	RoomRenderer->SetOrder(ERenderOrder::BACKGROUND);
 	RoomRenderer->SetSprite("Room_01.png");
     RoomRenderer->SetSpriteScale(1.0f);
 	
-	
-
 }
 
 ARoom::~ARoom()

@@ -1,8 +1,9 @@
 #include "PreCompile.h"
 #include "Spider.h"
-#include "ContentsEnum.h"
+
 #include <EnginePlatform/EngineInput.h>
 #include "PlayGameMode.h"
+
 
 ASpider::ASpider()
 {
@@ -11,6 +12,7 @@ ASpider::ASpider()
 	{
 		MonsterRenderer = CreateDefaultSubObject<USpriteRenderer>();
 		MonsterRenderer->SetComponentScale({ 100, 100 });
+		MonsterRenderer->SetComponentLocation({ 0, -5 });
 
 		MonsterRenderer->CreateAnimation("Idle_Spider", "Monster_Spider.png", 0, 0, 0.1f);
 		MonsterRenderer->CreateAnimation("Move_Spider_Right", "Monster_Spider.png", 2, 3, 0.1f);
@@ -22,12 +24,15 @@ ASpider::ASpider()
 		MonsterRenderer->ChangeAnimation("Idle_Spider");
 	}
 
-
+	ShadowRenderer = CreateDefaultSubObject<USpriteRenderer>();
+	ShadowRenderer->SetOrder(ERenderOrder::SHADOW);
+	ShadowRenderer->SetSprite("Shadow.png");
+	ShadowRenderer->SetSpriteScale(0.2f);
 
 	CollisionComponent = CreateDefaultSubObject<U2DCollision>();
-	CollisionComponent->SetComponentScale({ 30, 15 });
+	CollisionComponent->SetComponentScale({ 25, 25 });
 	CollisionComponent->SetCollisionGroup(ECollisionGroup::Monster);
-	CollisionComponent->SetCollisionType(ECollisionType::Rect);
+	CollisionComponent->SetCollisionType(ECollisionType::CirCle);
 
 	DebugOn();
 
@@ -145,6 +150,7 @@ void ASpider::Move(float _DeltaTime)
 
 void ASpider::Die(float _DeltaTime)
 {
+	DeathValue = true;
 	DelayTime += _DeltaTime;
 
 	if (DelayTime > 1.1f)

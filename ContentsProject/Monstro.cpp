@@ -1,10 +1,11 @@
 #include "PreCompile.h"
 #include "Monstro.h"
-#include "ContentsEnum.h"
+
 #include <EnginePlatform/EngineInput.h>
 #include "MonsterTear.h"
 #include "PlayGameMode.h"
 #include "TrapDoor.h"
+
 
 AMonstro::AMonstro()
 {
@@ -12,8 +13,8 @@ AMonstro::AMonstro()
 
 	{
 		MonsterRenderer = CreateDefaultSubObject<USpriteRenderer>();
-		MonsterRenderer->SetComponentScale({ 300, 300 });
-		MonsterRenderer->SetComponentLocation({ 0,-50 });
+		MonsterRenderer->SetComponentScale({ 250, 250 });
+		MonsterRenderer->SetComponentLocation({ 0,-40 });
 
 		MonsterRenderer->CreateAnimation("Idle_Monstro", "Boss_Monstro.png", 0, 0, 0.1f);
 		MonsterRenderer->CreateAnimation("Move_Monstro", "Boss_Monstro.png", 1, 2, 0.5f);
@@ -27,11 +28,12 @@ AMonstro::AMonstro()
 	ShadowRenderer = CreateDefaultSubObject<USpriteRenderer>();
 	ShadowRenderer->SetOrder(ERenderOrder::SHADOW);
 	ShadowRenderer->SetSprite("Shadow.png");
-	ShadowRenderer->SetSpriteScale(1.2f);
+	ShadowRenderer->SetSpriteScale(1.0f);
 
 
 	CollisionComponent = CreateDefaultSubObject<U2DCollision>();
-	CollisionComponent->SetComponentScale({ 160, 120 });
+	CollisionComponent->SetComponentScale({ 100, 100 });
+	CollisionComponent->SetComponentLocation({ 0, -10 });
 	CollisionComponent->SetCollisionGroup(ECollisionGroup::Monster);
 	CollisionComponent->SetCollisionType(ECollisionType::CirCle);
 
@@ -176,8 +178,8 @@ void AMonstro::Move(float _DeltaTime)
 	}
 	else
 	{
-		MonsterRenderer->SetComponentLocation({ 0,-50 });
-		ShadowRenderer->SetSpriteScale(1.2f);
+		MonsterRenderer->SetComponentLocation({ 0,-40 });
+		ShadowRenderer->SetSpriteScale(1.0f);
 	}
 
 	if (DelayTime > 1.0f)
@@ -261,7 +263,7 @@ void AMonstro::Jump(float _DeltaTime)
 
 	if (DelayTime > 1.8f)
 	{
-		ShadowRenderer->SetSpriteScale(1.2f);
+		ShadowRenderer->SetSpriteScale(1.0f);
 	}
 	
 		if (DelayTime > 2.6f)
@@ -277,6 +279,7 @@ void AMonstro::Jump(float _DeltaTime)
 
 void AMonstro::Die(float _DeltaTime)
 {
+	DeathValue = true;
 	DelayTime += _DeltaTime;
 
 	if (DelayTime > 1.1f)

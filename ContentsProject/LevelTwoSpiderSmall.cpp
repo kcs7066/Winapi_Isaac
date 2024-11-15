@@ -1,10 +1,11 @@
 #include "PreCompile.h"
 #include "LevelTwoSpiderSmall.h"
-#include "ContentsEnum.h"
+
 #include <EnginePlatform/EngineInput.h>
 #include <EngineBase/EngineMath.h>
 #include "PlayGameMode.h"
 #include "Spider.h"
+
 
 ALevelTwoSpiderSmall::ALevelTwoSpiderSmall()
 {
@@ -12,7 +13,8 @@ ALevelTwoSpiderSmall::ALevelTwoSpiderSmall()
 
 	{
 		MonsterRenderer = CreateDefaultSubObject<USpriteRenderer>();
-		MonsterRenderer->SetComponentScale({ 100, 100 });
+		MonsterRenderer->SetComponentScale({ 100, 65	 });
+		MonsterRenderer->SetComponentLocation({ 0, -20 });
 
 
 		MonsterRenderer->CreateAnimation("Idle_LevelTwoSpiderSmall", "Monster_LevelTwoSpiderSmall.png", 4, 4, 0.1f);
@@ -25,6 +27,11 @@ ALevelTwoSpiderSmall::ALevelTwoSpiderSmall()
 
 		MonsterRenderer->ChangeAnimation("Idle_LevelTwoSpiderSmall");
 	}
+
+	ShadowRenderer = CreateDefaultSubObject<USpriteRenderer>();
+	ShadowRenderer->SetOrder(ERenderOrder::SHADOW);
+	ShadowRenderer->SetSprite("Shadow.png");
+	ShadowRenderer->SetSpriteScale(0.25f);
 
 
 
@@ -133,28 +140,39 @@ void ALevelTwoSpiderSmall::Jump(float _DeltaTime)
 		FSM.ChangeState(LevelTwoSpiderSmallState::Die);
 	}
 
-	Dir = GetWorld()->GetPawn()->GetActorLocation() - GetActorLocation();
-	Dir.Normalize();
-
-	FVector2D NewLocation = GetActorLocation() += Dir * _DeltaTime * Speed;
-	APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
-
-	if (PlayGameMode->CurRoom->RoomPos.X - NewLocation.X > 338.0f ||
-		PlayGameMode->CurRoom->RoomPos.X - NewLocation.X < -338.0f ||
-		PlayGameMode->CurRoom->RoomPos.Y - NewLocation.Y > 182.0f ||
-		PlayGameMode->CurRoom->RoomPos.Y - NewLocation.Y < -182.0f
-		)
+	if (DelayTime < 0.25f)
 	{
+		MonsterRenderer->SetComponentLocation({ 0,-50 });
+		ShadowRenderer->SetSpriteScale(0.15f);
 
+		Dir = GetWorld()->GetPawn()->GetActorLocation() - GetActorLocation();
+		Dir.Normalize();
+
+		FVector2D NewLocation = GetActorLocation() += Dir * _DeltaTime * Speed;
+		APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
+
+		if (PlayGameMode->CurRoom->RoomPos.X - NewLocation.X > 338.0f ||
+			PlayGameMode->CurRoom->RoomPos.X - NewLocation.X < -338.0f ||
+			PlayGameMode->CurRoom->RoomPos.Y - NewLocation.Y > 182.0f ||
+			PlayGameMode->CurRoom->RoomPos.Y - NewLocation.Y < -182.0f
+			)
+		{
+
+		}
+		else
+		{
+			AddActorLocation(Dir * _DeltaTime * Speed);
+		}
 	}
-
 	else
 	{
+		MonsterRenderer->SetComponentLocation({ 0,-20 });
+		ShadowRenderer->SetSpriteScale(0.25f);
 		AddActorLocation(Dir * _DeltaTime * Speed);
 	}
 
 	if (DelayTime > 0.5f)
-	{	
+	{
 		FSM.ChangeState(LevelTwoSpiderSmallState::Idle);
 		DelayTime = 0.0f;
 	}
@@ -203,6 +221,7 @@ void ALevelTwoSpiderSmall::Move(float _DeltaTime)
 
 void ALevelTwoSpiderSmall::Die(float _DeltaTime)
 {
+	DeathValue = true;
 	DelayTime += _DeltaTime;
 
 	if (DelayTime > 1.1f)

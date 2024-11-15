@@ -5,7 +5,7 @@
 #include "Room.h"
 #include "Door.h"
 #include "Monster.h"
-
+#include <EnginePlatform/EngineSound.h>
 #include <EngineBase/EngineRandom.h>
 
 
@@ -114,16 +114,17 @@ public:
 		}
 
 	}
-	
+
+	ARoom* PrevRoom = nullptr;
 	ARoom* CurRoom = nullptr;
+	void CreateMap();
 
 protected:
 	
 private:
 
 	
-	ARoom* PrevRoom = nullptr;
-	float RoomMoveCameraTime = 0.0f;
+
 
 	std::map<int, ARoom*> Rooms;
 	std::map<int, FVector2D> RoomBind;
@@ -139,7 +140,6 @@ private:
 		CurRoom->MonsterNumber++;
 		ActorType* NewActor = GetWorld()->SpawnActor<ActorType>();
 		NewActor->SetActorLocation(_Pos);
-	
 	}
 
 	template<typename ActorType>
@@ -149,13 +149,11 @@ private:
 		NewActor->SetActorLocation(_Pos);
 	}
 
-	void CreateMap();
-
+	UEngineRandom Random;
 	USpriteRenderer* SpriteRenderer = nullptr;
 
-	UEngineRandom Random;
 
-	
+	float RoomMoveCameraTime = 0.0f;
 
 	int RoomNumber = 0;
 

@@ -4,7 +4,7 @@
 
 ARock::ARock()
 {
-	SetActorLocation({ 200, 0 });
+
 
 	{
 		RockRenderer = CreateDefaultSubObject<USpriteRenderer>();
@@ -17,7 +17,6 @@ ARock::ARock()
 
 
 	CollisionComponent = CreateDefaultSubObject<U2DCollision>();
-	CollisionComponent->SetComponentLocation({ 0, 0 });
 	CollisionComponent->SetComponentScale({ 50,50 });
 	CollisionComponent->SetCollisionGroup(ECollisionGroup::Structure);
 	CollisionComponent->SetCollisionType(ECollisionType::Rect);

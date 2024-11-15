@@ -1,9 +1,10 @@
 #include "PreCompile.h"
 #include "Dip.h"
-#include "ContentsEnum.h"
+
 #include <EnginePlatform/EngineInput.h>
 #include <EngineBase/EngineMath.h>
 #include "PlayGameMode.h"
+
 
 
 ADip::ADip()
@@ -13,7 +14,8 @@ ADip::ADip()
 	{
 		MonsterRenderer = CreateDefaultSubObject<USpriteRenderer>();
 		MonsterRenderer->SetOrder(ERenderOrder::MONSTER);
-		MonsterRenderer->SetComponentScale({ 100, 100 });
+		MonsterRenderer->SetComponentScale({ 70, 70 });
+		MonsterRenderer->SetComponentLocation({ 0, -15 });
 
 		MonsterRenderer->CreateAnimation("Idle_Dip_Left", "Monster_Dip_Left.png", 0, 1, 0.1f);
 		MonsterRenderer->CreateAnimation("Idle_Dip_Right", "Monster_Dip_Right.png", 0, 1, 0.1f);
@@ -25,12 +27,15 @@ ADip::ADip()
 		MonsterRenderer->ChangeAnimation("Idle_Dip_Right");
 	}
 
-
+	ShadowRenderer = CreateDefaultSubObject<USpriteRenderer>();
+	ShadowRenderer->SetOrder(ERenderOrder::SHADOW);
+	ShadowRenderer->SetSprite("Shadow.png");
+	ShadowRenderer->SetSpriteScale(0.25f);
 
 	CollisionComponent = CreateDefaultSubObject<U2DCollision>();
-	CollisionComponent->SetComponentScale({ 50, 60 });
+	CollisionComponent->SetComponentScale({ 30, 30 });
 	CollisionComponent->SetCollisionGroup(ECollisionGroup::Monster);
-	CollisionComponent->SetCollisionType(ECollisionType::Rect);
+	CollisionComponent->SetCollisionType(ECollisionType::CirCle);
 
 	DebugOn();
 
@@ -170,6 +175,7 @@ void ADip::Move(float _DeltaTime)
 
 void ADip::Die(float _DeltaTime)
 {
+	DeathValue = true;
 	DelayTime += _DeltaTime;
 
 	if (DelayTime > 1.1f)

@@ -16,7 +16,6 @@ ADoor::ADoor()
 
 	
 	CollisionComponent = CreateDefaultSubObject<U2DCollision>();
-	CollisionComponent->SetComponentLocation(this->GetActorLocation());
 	CollisionComponent->SetComponentScale({ 50, 50 });
 	CollisionComponent->SetCollisionGroup(ECollisionGroup::Door);
 	CollisionComponent->SetCollisionType(ECollisionType::Rect);

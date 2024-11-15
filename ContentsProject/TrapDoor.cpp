@@ -7,7 +7,6 @@
 
 ATrapDoor::ATrapDoor()
 {
-	SetActorLocation({ 200, 0 });
 
 	{
 		TrapDoorRenderer = CreateDefaultSubObject<USpriteRenderer>();
@@ -19,7 +18,6 @@ ATrapDoor::ATrapDoor()
 
 
 	CollisionComponent = CreateDefaultSubObject<U2DCollision>();
-	CollisionComponent->SetComponentLocation({ 0, 0 });
 	CollisionComponent->SetComponentScale({ 50,50 });
 	CollisionComponent->SetCollisionGroup(ECollisionGroup::TrapDoor);
 	CollisionComponent->SetCollisionType(ECollisionType::Rect);

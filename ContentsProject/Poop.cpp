@@ -4,7 +4,6 @@
 
 APoop::APoop()
 {
-	SetActorLocation({ 200, 0 });
 
 	{
 		PoopRenderer = CreateDefaultSubObject<USpriteRenderer>();
@@ -17,7 +16,7 @@ APoop::APoop()
 
 
 	CollisionComponent = CreateDefaultSubObject<U2DCollision>();
-	CollisionComponent->SetComponentLocation({ 0, 0 });
+	
 	CollisionComponent->SetComponentScale({ 50,50 });
 	CollisionComponent->SetCollisionGroup(ECollisionGroup::Structure);
 	CollisionComponent->SetCollisionType(ECollisionType::Rect);

@@ -1,8 +1,9 @@
 #include "PreCompile.h"
 #include "Fly.h"
-#include "ContentsEnum.h"
+
 #include <EnginePlatform/EngineInput.h>
 #include "PlayGameMode.h"
+
 
 
 AFly::AFly()
@@ -106,6 +107,7 @@ void AFly::Move(float _DeltaTime)
 
 void AFly::Die(float _DeltaTime)
 {
+	DeathValue = true;
 	DelayTime += _DeltaTime;
 
 	if (DelayTime > 1.1f)

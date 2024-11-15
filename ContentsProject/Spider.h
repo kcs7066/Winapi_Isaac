@@ -3,7 +3,7 @@
 #include <EngineCore/SpriteRenderer.h>
 #include <EngineBase/FSMStateManager.h>
 #include <EngineCore/2DCollision.h>
-#include <EngineBase/EngineRandom.h>
+
 
 enum class SpiderState
 {
@@ -40,7 +40,6 @@ private:
 
 	float Speed = 300.0f;
 	FVector2D RandomDir = { 0,0 };
-
-	UEngineRandom Random;
+	
 
 };

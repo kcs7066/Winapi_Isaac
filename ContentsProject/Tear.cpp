@@ -27,7 +27,6 @@ ATear::ATear()
 	}
 	{
 		CollisionComponent = CreateDefaultSubObject<U2DCollision>();
-		CollisionComponent->SetComponentLocation({ 0, 0 });
 		CollisionComponent->SetComponentScale({ 25, 25 });
 		CollisionComponent->SetCollisionGroup(ECollisionGroup::Tear);
 		CollisionComponent->SetCollisionType(ECollisionType::CirCle);
@@ -85,43 +84,61 @@ void ATear::Fly(float _DeltaTime)
 			DelayTime = 0.0f;
 			FSM.ChangeState(TearState::Poof);
 		}
-
+	
 		AActor* Result = CollisionComponent->CollisionOnce(ECollisionGroup::Monster);
+		AMonster* NewResult = dynamic_cast<AMonster*>(Result);
 		if (nullptr != Result)
 		{
-			AMonster* NewResult = dynamic_cast<AMonster*>(Result);
+			
 
-			AIsaac* Ptr =  GetWorld()->GetPawn<AIsaac>();
-
-			if (nullptr != Ptr)
+			if (false == NewResult->DeathValue)
 			{
+				AIsaac* Ptr = GetWorld()->GetPawn<AIsaac>();
 				NewResult->Hp -= Ptr->Damage;
-				DelayTime = 0.0f;
-				FSM.ChangeState(TearState::Poof);
-			}
-			else {
-				int a = 0;
-			}
-		}
-		else
-		{
-			FVector2D NewLocation = GetActorLocation() += Dir * _DeltaTime * Speed;
-			APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
-
-			if (PlayGameMode->CurRoom->RoomPos.X - NewLocation.X > 338.0f ||
-				PlayGameMode->CurRoom->RoomPos.X - NewLocation.X < -338.0f ||
-				PlayGameMode->CurRoom->RoomPos.Y - NewLocation.Y > 182.0f ||
-				PlayGameMode->CurRoom->RoomPos.Y - NewLocation.Y < -182.0f
-				)
-			{
 				DelayTime = 0.0f;
 				FSM.ChangeState(TearState::Poof);
 			}
 			else
 			{
-				AddActorLocation(Dir * _DeltaTime * Speed);
+				FVector2D NewLocation = GetActorLocation() += Dir * _DeltaTime * Speed;
+				APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
+
+				if (PlayGameMode->CurRoom->RoomPos.X - NewLocation.X > 338.0f ||
+					PlayGameMode->CurRoom->RoomPos.X - NewLocation.X < -338.0f ||
+					PlayGameMode->CurRoom->RoomPos.Y - NewLocation.Y > 182.0f ||
+					PlayGameMode->CurRoom->RoomPos.Y - NewLocation.Y < -182.0f
+					)
+				{
+					DelayTime = 0.0f;
+					FSM.ChangeState(TearState::Poof);
+				}
+				else
+				{
+					AddActorLocation(Dir * _DeltaTime * Speed);
+				}
 			}
+				
+	    }
+		else
+		{
+				FVector2D NewLocation = GetActorLocation() += Dir * _DeltaTime * Speed;
+				APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
+
+				if (PlayGameMode->CurRoom->RoomPos.X - NewLocation.X > 338.0f ||
+					PlayGameMode->CurRoom->RoomPos.X - NewLocation.X < -338.0f ||
+					PlayGameMode->CurRoom->RoomPos.Y - NewLocation.Y > 182.0f ||
+					PlayGameMode->CurRoom->RoomPos.Y - NewLocation.Y < -182.0f
+					)
+				{
+					DelayTime = 0.0f;
+					FSM.ChangeState(TearState::Poof);
+				}
+				else
+				{
+					AddActorLocation(Dir * _DeltaTime * Speed);
+				}
 		}
+	    
 	}
 	else
 	{

@@ -1,6 +1,6 @@
 #include "PreCompile.h"
 #include "RedFly.h"
-#include "ContentsEnum.h"
+
 #include <EnginePlatform/EngineInput.h>
 #include "PlayGameMode.h"
 
@@ -125,6 +125,7 @@ void ARedFly::Move(float _DeltaTime)
 
 void ARedFly::Die(float _DeltaTime)
 {
+	DeathValue = true;
 	DelayTime += _DeltaTime;
 
 	if (DelayTime > 1.1f)

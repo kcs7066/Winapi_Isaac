@@ -1,7 +1,7 @@
 #include "PreCompile.h"
 #include "EngineAPICore.h"
 #include <EnginePlatform/EngineInput.h>
-
+#include <EnginePlatform/EngineSound.h>
 #include <EnginePlatform/EngineWindow.h>
 #include <EngineBase/EngineDelegate.h>
 #include <EngineBase/EngineDebug.h>
@@ -32,6 +32,8 @@ UEngineAPICore::~UEngineAPICore()
 	}
 
 	Levels.clear();
+
+	UEngineSound::Release();
 }
 
 int UEngineAPICore::EngineStart(HINSTANCE _Inst, UContentsCore* _UserCore)

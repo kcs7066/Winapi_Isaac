@@ -162,6 +162,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="EngineRandom.h" />
+    <ClInclude Include="EngineResources.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="EngineSerializer.h">
       <SubType>
       </SubType>
@@ -205,6 +209,10 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="EngineRandom.cpp" />
+    <ClCompile Include="EngineResources.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="EngineSerializer.cpp">
       <SubType>
       </SubType>

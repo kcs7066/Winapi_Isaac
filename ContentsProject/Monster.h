@@ -3,6 +3,9 @@
 #include <EngineCore/SpriteRenderer.h>
 #include <EngineBase/FSMStateManager.h>
 #include <EngineCore/2DCollision.h>
+#include <EngineBase/EngineRandom.h>
+#include "ContentsEnum.h"
+
 
 // Ό³Έν :
 class AMonster : public AActor
@@ -23,13 +26,17 @@ public:
 		Hp = _Value;
 	}
 
+
+	bool DeathValue = false;
 	float DelayTime = 0.0f;
 	float Hp = 1.0f;
 	class USpriteRenderer* ShadowRenderer = nullptr;
 	class USpriteRenderer* MonsterRenderer = nullptr;
 	UFSMStateManager FSM = UFSMStateManager();
 	U2DCollision* CollisionComponent;
-	
+	UEngineRandom Random;
+
+
 
 protected:
 
