@@ -4,7 +4,6 @@
 #include <EngineBase/FSMStateManager.h>
 #include <EngineCore/2DCollision.h>
 
-
 enum class MonstroState
 {
 	Idle,
@@ -36,7 +35,6 @@ public:
 	void Attack(float _DeltaTime);
 	void Jump(float _DeltaTime);
 	void Die(float _DeltaTime);
-
 
 protected:
 

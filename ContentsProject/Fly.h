@@ -4,7 +4,6 @@
 #include <EngineBase/FSMStateManager.h>
 #include <EngineCore/2DCollision.h>
 
-
 enum class FlyState
 {
 	Move,
@@ -36,5 +35,4 @@ protected:
 private:
 	float Speed = 500.0f;
 	FVector2D RandomDir;
-
 };

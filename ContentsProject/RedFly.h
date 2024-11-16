@@ -5,6 +5,7 @@
 #include <EngineCore/2DCollision.h>
 
 
+
 enum class  RedFlyState
 {
 	Idle,
@@ -33,10 +34,13 @@ public:
 	void Move(float _DeltaTime);
 	void Die(float _DeltaTime);
 
+	
 protected:
 
 private:
 
 	FVector2D Dir;
 	float Speed = 100.0f;
+
+	
 };

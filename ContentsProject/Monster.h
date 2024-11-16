@@ -34,7 +34,7 @@ public:
 	class USpriteRenderer* MonsterRenderer = nullptr;
 	UFSMStateManager FSM = UFSMStateManager();
 	U2DCollision* CollisionComponent;
-	UEngineRandom Random;
+	UEngineRandom Random = UEngineRandom();
 
 
 

@@ -7,6 +7,8 @@
 #include "Monster.h"
 #include <EnginePlatform/EngineSound.h>
 #include <EngineBase/EngineRandom.h>
+#include "RoundWorm.h"
+#include "Dip.h"
 
 
 class APlayGameMode : public AGameMode
@@ -135,11 +137,16 @@ private:
 	void CreateRoom(std::string_view _RoomName,FVector2D _Pos,RoomType _Type = RoomType::NORMAL);
 
 	template<typename ActorType>
-	void SetMonster(FVector2D _Pos)
+	ActorType* SetMonster(FVector2D _Pos)
 	{
 		CurRoom->MonsterNumber++;
 		ActorType* NewActor = GetWorld()->SpawnActor<ActorType>();
-		NewActor->SetActorLocation(_Pos);
+		
+		NewActor->SetActorLocation(_Pos);	
+
+		SeedValue++;
+
+		return NewActor;	
 	}
 
 	template<typename ActorType>
@@ -147,6 +154,7 @@ private:
 	{
 		ActorType* NewActor = GetWorld()->SpawnActor<ActorType>();
 		NewActor->SetActorLocation(_Pos);
+		NewActor->Pos = _Pos;
 	}
 
 	UEngineRandom Random;
@@ -158,5 +166,13 @@ private:
 	int RoomNumber = 0;
 
 	
+
+	ARoundWorm* Monster1 = nullptr;
+	ARoundWorm* Monster2 = nullptr;
+	ADip* Monster3 = nullptr;
+	ADip* Monster4 = nullptr;
+	ADip* Monster5 = nullptr;
+	ADip* Monster6 = nullptr;
+	long long SeedValue = 0;
 };
 

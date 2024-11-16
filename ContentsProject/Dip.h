@@ -5,7 +5,6 @@
 #include <EngineCore/2DCollision.h>
 
 
-
 enum class DipState
 {
     IdleRight,
@@ -35,6 +34,8 @@ public:
 	void Move(float _DeltaTime);
 	void Die(float _DeltaTime);
 
+
+
 protected:
 
 
@@ -42,5 +43,5 @@ private:
 
 	float Speed = 300.0f;
 	FVector2D RandomDir = { 0,0 };
-
+	
 };

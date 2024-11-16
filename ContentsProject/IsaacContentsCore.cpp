@@ -70,7 +70,7 @@ void IsaacContentsCore::BeginPlay()
 	UImageManager::GetInst().CuttingSprite("Tear.png", { 64, 64 });
 	UImageManager::GetInst().CuttingSprite("TearPoof.png", { 64, 64 });
 	UImageManager::GetInst().CuttingSprite("Monster_Fly.png", { 64, 64 });
-	UImageManager::GetInst().CuttingSprite("Monster_Roundworm.png", { 32, 32 });
+	UImageManager::GetInst().CuttingSprite("Monster_Roundworm.png", { 64, 64 });
 	UImageManager::GetInst().CuttingSprite("Monster_Dip_Left.png", { 32, 32 });
 	UImageManager::GetInst().CuttingSprite("Monster_Dip_Right.png", { 32, 32 });
 	UImageManager::GetInst().CuttingSprite("Monster_Spider.png", { 64, 64 });

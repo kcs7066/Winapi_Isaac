@@ -13,6 +13,8 @@ AMonstro::AMonstro()
 
 	{
 		MonsterRenderer = CreateDefaultSubObject<USpriteRenderer>();
+		MonsterRenderer->SetOrder(ERenderOrder::MONSTER);
+
 		MonsterRenderer->SetComponentScale({ 250, 250 });
 		MonsterRenderer->SetComponentLocation({ 0,-40 });
 

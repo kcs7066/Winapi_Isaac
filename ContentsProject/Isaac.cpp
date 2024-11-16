@@ -199,6 +199,8 @@ void AIsaac::Move(float _DeltaTime)
 		Vector += FVector2D::UP;
 	}
 
+	Vector.Normalize();
+
 	APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
 
 	if (true == PlayGameMode->CurRoom->RoomClear)

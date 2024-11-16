@@ -3,6 +3,7 @@
 
 AMonster::AMonster()
 {
+
 }
 
 AMonster::~AMonster()

@@ -4,6 +4,7 @@
 #include <EnginePlatform/EngineInput.h>
 #include <EngineBase/EngineMath.h>
 #include "PlayGameMode.h"
+#include "Structure.h"
 
 
 
@@ -14,6 +15,7 @@ ADip::ADip()
 	{
 		MonsterRenderer = CreateDefaultSubObject<USpriteRenderer>();
 		MonsterRenderer->SetOrder(ERenderOrder::MONSTER);
+
 		MonsterRenderer->SetComponentScale({ 70, 70 });
 		MonsterRenderer->SetComponentLocation({ 0, -15 });
 
@@ -158,6 +160,29 @@ void ADip::Move(float _DeltaTime)
 
 	else
 	{
+		AActor* StructureResult = CollisionComponent->CollisionOnce(ECollisionGroup::Structure);
+
+		if (nullptr != StructureResult)
+		{
+			AStructure* NewResult = dynamic_cast<AStructure*>(StructureResult);
+
+			float NewX = NewResult->Pos.X - GetActorLocation().X ;
+			float NewY = NewResult->Pos.Y - GetActorLocation().Y;
+			if (abs(NewX) >= abs(NewY))
+			{
+				RandomDir.X *= (-1.0f);
+			}
+			else if (abs(NewX) == abs(NewY))
+			{
+				int a = 0;
+				RandomDir.Y *= (-1.0f);
+			}
+			else
+			{
+				RandomDir.Y *= (-1.0f);
+			}
+		}
+
 		AddActorLocation(RandomDir * _DeltaTime * Speed);
 	}
 	

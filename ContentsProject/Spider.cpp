@@ -11,6 +11,8 @@ ASpider::ASpider()
 
 	{
 		MonsterRenderer = CreateDefaultSubObject<USpriteRenderer>();
+		MonsterRenderer->SetOrder(ERenderOrder::MONSTER);
+
 		MonsterRenderer->SetComponentScale({ 100, 100 });
 		MonsterRenderer->SetComponentLocation({ 0, -5 });
 
@@ -96,6 +98,7 @@ void ASpider::Idle(float _DeltaTime)
 	{
 		APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
 		PlayGameMode->CurRoom->MonsterNumber--;
+		PlayGameMode->CurRoom->SpiderNumber--;
 		DelayTime = 0.0f;
 		FSM.ChangeState(SpiderState::Die);
 	}
@@ -115,6 +118,7 @@ void ASpider::Move(float _DeltaTime)
 	{
 		APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
 		PlayGameMode->CurRoom->MonsterNumber--;
+		PlayGameMode->CurRoom->SpiderNumber--;
 		DelayTime = 0.0f;
 		FSM.ChangeState(SpiderState::Die);
 	}

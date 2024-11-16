@@ -14,13 +14,14 @@ ARoundWorm::ARoundWorm()
 	{
 		MonsterRenderer = CreateDefaultSubObject<USpriteRenderer>();
 		MonsterRenderer->SetOrder(ERenderOrder::MONSTER);
+
 		
-		MonsterRenderer->SetComponentScale({ 70, 70 });
+		MonsterRenderer->SetComponentScale({ 140, 140 });
 		MonsterRenderer->SetComponentLocation({ 0, -20 });
 
 		MonsterRenderer->CreateAnimation("Idle_RoundWorm", "Monster_RoundWorm.png", 0, 1, 0.1f);
-		MonsterRenderer->CreateAnimation("Attack_RoundWorm", "Monster_RoundWorm.png", 3, 4, 0.1f);
-		MonsterRenderer->CreateAnimation("Move_RoundWorm", "Monster_RoundWorm.png", { 2,5,2 },{0.1f,0.8f,0.1f});
+		MonsterRenderer->CreateAnimation("Attack_RoundWorm", "Monster_RoundWorm.png", 2, 3, 0.1f);
+		MonsterRenderer->CreateAnimation("Move_RoundWorm", "Monster_RoundWorm.png", { 4,5,4 },{0.1f,0.8f,0.1f});
 		MonsterRenderer->CreateAnimation("Die_RoundWorm", "BloodPoof.png", 0, 10, 0.1f);
 
 		MonsterRenderer->ChangeAnimation("Idle_RoundWorm");
@@ -131,6 +132,8 @@ void ARoundWorm::Attack(float _DeltaTime)
 		AMonsterTear* NewTear = GetWorld()->SpawnActor<AMonsterTear>();
 		NewTear->SetActorLocation(GetActorLocation());
 		NewTear->Dir = GetWorld()->GetPawn()->GetActorLocation() - GetActorLocation();
+		NewTear->Dir.Normalize();
+		
 		BulletCoolTime = 0.5f;
 	}
 

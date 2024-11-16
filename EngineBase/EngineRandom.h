@@ -16,7 +16,7 @@ public:
 
 	void SetSeed(__int64 _Seed)
 	{
-		std::mt19937_64 MtGen = std::mt19937_64(_Seed);
+	    MtGen = std::mt19937_64(_Seed);
 	}
 
 	int RandomInt(int _Min, int _Max)
@@ -38,5 +38,6 @@ protected:
 private:
 
 	std::mt19937_64 MtGen = std::mt19937_64(time(nullptr));
+
 
 };

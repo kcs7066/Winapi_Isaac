@@ -15,6 +15,8 @@ public:
 	AStructure& operator=(const AStructure& _Other) = delete;
 	AStructure& operator=(AStructure&& _Other) noexcept = delete;
 
+	FVector2D Pos;
+
 protected:
 
 

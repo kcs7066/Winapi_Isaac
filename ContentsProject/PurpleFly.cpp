@@ -11,7 +11,8 @@ APurpleFly::APurpleFly()
 
 	{
 		MonsterRenderer = CreateDefaultSubObject<USpriteRenderer>();
-		MonsterRenderer->SetSprite("Monster_Fly.png");
+		MonsterRenderer->SetOrder(ERenderOrder::MONSTER);
+
 		MonsterRenderer->SetComponentScale({ 100, 100 });
 		MonsterRenderer->CreateAnimation("Move_PurpleFly", "Monster_Fly.png", 12,13, 0.1f);
 		MonsterRenderer->CreateAnimation("Die_PurpleFly", "BloodPoof.png", 0, 10, 0.1f);

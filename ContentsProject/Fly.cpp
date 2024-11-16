@@ -12,6 +12,8 @@ AFly::AFly()
 
 	
 		MonsterRenderer = CreateDefaultSubObject<USpriteRenderer>();
+		MonsterRenderer->SetOrder(ERenderOrder::MONSTER);
+
 		MonsterRenderer->SetComponentScale({ 150, 150 });
 		MonsterRenderer->SetComponentLocation({ 0,-40 });
 		MonsterRenderer->CreateAnimation("Move_Fly", "Monster_Fly.png", 0, 1, 0.1f);

@@ -13,6 +13,8 @@ ALevelTwoSpiderSmall::ALevelTwoSpiderSmall()
 
 	{
 		MonsterRenderer = CreateDefaultSubObject<USpriteRenderer>();
+		MonsterRenderer->SetOrder(ERenderOrder::MONSTER);
+
 		MonsterRenderer->SetComponentScale({ 100, 65	 });
 		MonsterRenderer->SetComponentLocation({ 0, -20 });
 

@@ -4,7 +4,6 @@
 #include <EngineBase/FSMStateManager.h>
 #include <EngineCore/2DCollision.h>
 
-
 enum class LevelTwoSpiderSmallState
 {
 	Idle,
@@ -42,6 +41,5 @@ private:
 
 	float Speed = 300.0f;
 	FVector2D Dir = { 0,0 };
-
 
 };

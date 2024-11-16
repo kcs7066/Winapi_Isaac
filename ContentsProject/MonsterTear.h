@@ -26,5 +26,5 @@ private:
 	class USpriteRenderer* SpriteRenderer;
 	U2DCollision* CollisionComponent;
 
-	float BulletSpeed = 1.0f;
+	float BulletSpeed = 500.0f;
 };

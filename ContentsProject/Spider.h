@@ -41,5 +41,4 @@ private:
 	float Speed = 300.0f;
 	FVector2D RandomDir = { 0,0 };
 	
-
 };

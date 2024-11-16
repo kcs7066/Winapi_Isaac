@@ -12,6 +12,8 @@ ABabyLongLegs::ABabyLongLegs()
 
 	{
 		MonsterRenderer = CreateDefaultSubObject<USpriteRenderer>();
+		MonsterRenderer->SetOrder(ERenderOrder::MONSTER);
+
 		MonsterRenderer->SetComponentScale({ 250 , 250 });
 
 		MonsterRenderer->CreateAnimation("Move_BabyLongLegs", "Monster_BabyLongLegs.png", 0, 4, 0.033f);
@@ -100,6 +102,7 @@ void ABabyLongLegs::Attack(float _DeltaTime)
 			ASpider* Monster = GetWorld()->SpawnActor<ASpider>();
 			Monster->SetActorLocation(GetActorLocation());
 			PlayGameMode->CurRoom->SpiderNumber++;
+			PlayGameMode->CurRoom->MonsterNumber++;
 		}
 		FSM.ChangeState(BabyLongLegsState::Move);
 		DelayTime = 0.0f;

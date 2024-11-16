@@ -2,6 +2,7 @@
 #include "GameMode.h"
 
 
+
 class CollisionLinkData
 {
 public:
@@ -47,9 +48,11 @@ public:
 	ActorType* SpawnActor()
 	{
 		ActorType* NewActor = new ActorType();
-
 		AActor* ActorPtr = dynamic_cast<AActor*>(NewActor);
+
+
 		ActorPtr->World = this;
+
 
 		BeginPlayList.push_back(ActorPtr);
 		return NewActor;
@@ -183,5 +186,7 @@ private:
 	static std::vector<CollisionLinkData> CollisionLink;
 
 	std::map<int, std::list<class U2DCollision*>> CheckCollisions;
+
+
 };
 

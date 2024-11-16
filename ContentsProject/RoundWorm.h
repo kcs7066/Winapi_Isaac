@@ -4,7 +4,6 @@
 #include <EngineBase/FSMStateManager.h>
 #include <EngineCore/2DCollision.h>
 
-
 enum class RoundWormState
 {
 	Idle,
@@ -37,6 +36,7 @@ public:
 	void Move(float _DeltaTime);
 	void Die(float _DeltaTime);
 
+
 protected:
 
 private:
@@ -44,6 +44,6 @@ private:
 
 	float Speed = 500.0f;
 
-
+	
 };
 

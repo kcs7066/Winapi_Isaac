@@ -11,6 +11,8 @@ ARedFly::ARedFly()
 
 	{
 		MonsterRenderer = CreateDefaultSubObject<USpriteRenderer>();
+		MonsterRenderer->SetOrder(ERenderOrder::MONSTER);
+
 		MonsterRenderer->SetComponentScale({ 150, 150 });
 		MonsterRenderer->SetComponentLocation({ 0,-40 });
 		MonsterRenderer->CreateAnimation("Move_RedFly", "Monster_Fly.png", 10, 11, 0.1f);
