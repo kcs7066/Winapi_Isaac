@@ -9,6 +9,7 @@
 #include <EngineBase/EngineRandom.h>
 #include "RoundWorm.h"
 #include "Dip.h"
+#include "Larryjr.h"
 
 
 class APlayGameMode : public AGameMode
@@ -119,6 +120,7 @@ public:
 
 	ARoom* PrevRoom = nullptr;
 	ARoom* CurRoom = nullptr;
+	std::map<int, ARoom*> Rooms;
 
 	USoundPlayer BGMPlayer;
 
@@ -131,7 +133,7 @@ private:
 	
 
 
-	std::map<int, ARoom*> Rooms;
+	
 	std::map<int, FVector2D> RoomBind;
 
 
@@ -176,6 +178,11 @@ private:
 	ADip* Monster4 = nullptr;
 	ADip* Monster5 = nullptr;
 	ADip* Monster6 = nullptr;
+	ALarryjr* Monster7 = nullptr;
+	ALarryjr* Monster8 = nullptr;
+	ALarryjr* Monster9 = nullptr;
+	ALarryjr* Monster10 = nullptr;
+	ALarryjr* Monster11 = nullptr;
 	long long SeedValue = 0;
 
 };

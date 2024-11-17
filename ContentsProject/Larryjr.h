@@ -1,5 +1,6 @@
 #pragma once
 #include "Monster.h"
+#include "Poop.h"
 #include <EngineCore/SpriteRenderer.h>
 #include <EngineBase/FSMStateManager.h>
 #include <EngineCore/2DCollision.h>
@@ -7,12 +8,22 @@
 
 enum class LarryjrState
 {
-
-	Move,
+	UpMove,
+	RightMove,
+	DownMove,
+    LeftMove,
 	Poop,
 	Separate,
 	Die
 
+};
+
+enum class LarryjrDir
+{
+	Up,
+	Right,
+	Down,
+	Left
 };
 
 enum class LarryjrPart
@@ -45,20 +56,42 @@ public:
 	void BeginPlay() override;
 	void Tick(float _DeltaTime) override;
 
-	void Move(float _DeltaTime);
+	void UpMove(float _DeltaTime);
+	void RightMove(float _DeltaTime);
+	void DownMove(float _DeltaTime);
+	void LeftMove(float _DeltaTime);
 	void Poop(float _DeltaTime);
 	void Separate(float _DeltaTime);
 	void Die(float _DeltaTime);
+
+	int Poopkey(FVector2D _Pos)
+	{
+		std::map<int, FVector2D>::iterator StartIter = PoopBind.begin();
+		std::map<int, FVector2D>::iterator EndIter = PoopBind.end();
+
+		for (; StartIter != EndIter; ++StartIter)
+		{
+			if (StartIter->second == _Pos)
+				return StartIter->first;
+		}
+
+	}
 
 	LarryjrPart Part = LarryjrPart::BODY;
 
 	std::map<Dir, ALarryjr*> LinkedParts;
 
+	std::map<int, FVector2D> PoopBind;
+	std::map<int, APoop*> PoopPos;
+	FVector2D HeadFuturePos = { 0.0f,0.0f };
+	FVector2D BodyFuturePos = { 0.0f,0.0f };
+	float Speed = 208.0f;
+	//FVector2D Dir = { 1,0 };
+
 protected:
 
 private:
-	float Speed = 300.0f;
-	FVector2D Dir;
+
 
 };
 

@@ -23,6 +23,7 @@
 #include "Monstro.h"
 #include "Rock.h"
 #include "Poop.h"
+#include "Larryjr.h"
 
 
 APlayGameMode::APlayGameMode()
@@ -140,6 +141,11 @@ void APlayGameMode::Tick(float _DeltaTime)
 	if (true == UEngineInput::GetInst().IsDown('8'))
 	{
 		ASpider* Monster = GetWorld()->SpawnActor<ASpider>();
+	}
+
+	if (true == UEngineInput::GetInst().IsDown('9'))
+	{
+		ALarryjr* Monster = GetWorld()->SpawnActor<ALarryjr>();
 	}
 
 	if (true == UEngineInput::GetInst().IsPress(VK_NUMPAD0))
@@ -454,15 +460,46 @@ void APlayGameMode::Link(ARoom* _Room)
 
 void APlayGameMode::CreateMap()
 {
+	
 	if (Rooms[4] == CurRoom)
 	{
-		SetMonster<AMonstro>({ CurRoom->RoomPos.X + 52.0f * (0.0f), CurRoom->RoomPos.Y - 52.0f * (0.0f) });
-		SetMonster <ARedFly> ({ CurRoom->RoomPos.X + 52.0f * (2.0f), CurRoom->RoomPos.Y - 52.0f * (0.0f) });
-		SetMonster<ARedFly>({ CurRoom->RoomPos.X + 52.0f * (-2.0f), CurRoom->RoomPos.Y - 52.0f * (0.0f) });
+		int RandomValue = Random.RandomInt(2, 2);
+
+		switch (RandomValue)
+		{
+		case 1:
+			SetMonster<AMonstro>({ CurRoom->RoomPos.X + 52.0f * (0.0f), CurRoom->RoomPos.Y - 52.0f * (0.0f) });
+			SetMonster <ARedFly>({ CurRoom->RoomPos.X + 52.0f * (2.0f), CurRoom->RoomPos.Y - 52.0f * (0.0f) });
+			SetMonster<ARedFly>({ CurRoom->RoomPos.X + 52.0f * (-2.0f), CurRoom->RoomPos.Y - 52.0f * (0.0f) });
+			break;
+		case 2:
+			Monster7 = SetMonster<ALarryjr>({ CurRoom->RoomPos.X + 52.0f * (2.0f), CurRoom->RoomPos.Y - 52.0f * (0.0f) });
+			Monster7->Part = LarryjrPart::HEAD;
+			Monster8 = SetMonster<ALarryjr>({ CurRoom->RoomPos.X + 52.0f * (1.0f), CurRoom->RoomPos.Y - 52.0f * (0.0f) });
+			Monster8->Part = LarryjrPart::BODY;
+			Monster9 = SetMonster<ALarryjr>({ CurRoom->RoomPos.X + 52.0f * (0.0f), CurRoom->RoomPos.Y - 52.0f * (0.0f) });
+			Monster9->Part = LarryjrPart::BODY;
+			Monster10 = SetMonster<ALarryjr>({ CurRoom->RoomPos.X + 52.0f * (-1.0f), CurRoom->RoomPos.Y - 52.0f * (0.0f) });
+			Monster10->Part = LarryjrPart::BODY;
+			Monster11 = SetMonster<ALarryjr>({ CurRoom->RoomPos.X + 52.0f * (-2.0f), CurRoom->RoomPos.Y - 52.0f * (0.0f) });
+			Monster11->Part = LarryjrPart::TAIL;
+
+			Monster7->LinkedParts[Dir::Back] = Monster8;
+			Monster8->LinkedParts[Dir::Front] = Monster7;
+			Monster8->LinkedParts[Dir::Back] = Monster9;
+			Monster9->LinkedParts[Dir::Front] = Monster8;
+			Monster9->LinkedParts[Dir::Back] = Monster10;
+			Monster10->LinkedParts[Dir::Front] = Monster9;
+			Monster10->LinkedParts[Dir::Back] = Monster11;
+			Monster11->LinkedParts[Dir::Front] = Monster10;
+
+		default:
+			break;
+		}
 	}
 	else
 	{
-		int RandomValue = Random.RandomInt(1, 5);
+		int RandomValue = Random.RandomInt(3, 3);
 		switch (RandomValue)
 		{
 		case 1:
