@@ -5,6 +5,7 @@
 #include <EngineCore/2DCollision.h>
 #include <EngineBase/EngineRandom.h>
 #include "ContentsEnum.h"
+#include <EnginePlatform/EngineSound.h>
 
 
 // Ό³Έν :
@@ -35,6 +36,7 @@ public:
 	UFSMStateManager FSM = UFSMStateManager();
 	U2DCollision* CollisionComponent;
 	UEngineRandom Random = UEngineRandom();
+	USoundPlayer EffectPlayer;
 
 
 

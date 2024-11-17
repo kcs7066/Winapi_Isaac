@@ -3,6 +3,8 @@
 #include "ContentsEnum.h"
 #include "Isaac.h"
 #include <EngineCore/EngineAPICore.h>
+#include "PlayGameMode.h"
+
 
 
 ATrapDoor::ATrapDoor()
@@ -36,7 +38,8 @@ void ATrapDoor::Tick(float _DeltaTime)
 		if (nullptr != Result)
 		{
 			AIsaac* NewResult = dynamic_cast<AIsaac*>(Result);
-
+			APlayGameMode* Mode = GetWorld()->GetGameMode<APlayGameMode>();
+			Mode->BGMPlayer.Off();
 			UEngineAPICore::GetCore()->OpenLevel("Title");
 			Destroy();
 		}

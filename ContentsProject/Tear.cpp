@@ -58,6 +58,18 @@ void ATear::BeginPlay()
 		}
 	);
 
+	int Value = Random.RandomInt(1, 2);
+
+	if (1 == Value)
+	{
+		BGMPlayer = UEngineSound::Play("tear fire 1.wav");
+	}
+	else
+	{
+		BGMPlayer = UEngineSound::Play("tear fire 2.wav");
+	}
+
+	
 	FSM.ChangeState(TearState::Fly);
 }
 void ATear::Tick(float _DeltaTime)
@@ -69,7 +81,6 @@ void ATear::Tick(float _DeltaTime)
 
 void ATear::Fly(float _DeltaTime)
 {
-
 	DelayTime += _DeltaTime;
 	DropPos += _DeltaTime;
 	float Value = -40.0f + DropPos * DropPos * 60.0f;
@@ -83,6 +94,7 @@ void ATear::Fly(float _DeltaTime)
 		{
 			DelayTime = 0.0f;
 			FSM.ChangeState(TearState::Poof);
+			BGMPlayer = UEngineSound::Play("tear block.wav");
 		}
 	
 		AActor* Result = CollisionComponent->CollisionOnce(ECollisionGroup::Monster);
@@ -97,6 +109,7 @@ void ATear::Fly(float _DeltaTime)
 				NewResult->Hp -= Ptr->Damage;
 				DelayTime = 0.0f;
 				FSM.ChangeState(TearState::Poof);
+				BGMPlayer = UEngineSound::Play("tear block.wav");
 			}
 			else
 			{
@@ -111,6 +124,7 @@ void ATear::Fly(float _DeltaTime)
 				{
 					DelayTime = 0.0f;
 					FSM.ChangeState(TearState::Poof);
+					BGMPlayer = UEngineSound::Play("tear block.wav");
 				}
 				else
 				{
@@ -132,6 +146,7 @@ void ATear::Fly(float _DeltaTime)
 				{
 					DelayTime = 0.0f;
 					FSM.ChangeState(TearState::Poof);
+					BGMPlayer = UEngineSound::Play("tear block.wav");
 				}
 				else
 				{
@@ -144,15 +159,18 @@ void ATear::Fly(float _DeltaTime)
 	{
 		DelayTime = 0.0f;
 		FSM.ChangeState(TearState::Poof);
+		BGMPlayer = UEngineSound::Play("tear block.wav");
 	}
 }
 
 void ATear::Poof(float _DeltaTime)
 {
+
 	DelayTime += _DeltaTime;
 
 	if (DelayTime > 0.75f)
 	{
+		
 		Destroy();
 	}
 }

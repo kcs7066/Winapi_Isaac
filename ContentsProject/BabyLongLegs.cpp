@@ -90,6 +90,7 @@ void ABabyLongLegs::Attack(float _DeltaTime)
 		APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
 		PlayGameMode->CurRoom->MonsterNumber--;
 		DelayTime = 0.0f;
+		EffectPlayer = UEngineSound::Play("death burst small.wav");
 		FSM.ChangeState(BabyLongLegsState::Die);
 	}
 
@@ -118,14 +119,7 @@ void ABabyLongLegs::Move(float _DeltaTime)
 		APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
 		PlayGameMode->CurRoom->MonsterNumber--;
 		DelayTime = 0.0f;
-		FSM.ChangeState(BabyLongLegsState::Die);
-	}
-
-	if (this->Hp <= 0.0f)
-	{
-		APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
-		PlayGameMode->CurRoom->MonsterNumber--;
-		DelayTime = 0.0f;
+		EffectPlayer = UEngineSound::Play("death burst small.wav");
 		FSM.ChangeState(BabyLongLegsState::Die);
 	}
 

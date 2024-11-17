@@ -9,9 +9,10 @@ enum class ERenderOrder
 
 
 	DOOR = -500,
-	STRUCTURE = -3,
-	SHADOW = -2,
-	MONSTER = -1,
+	STRUCTURE = -300,
+	SHADOW = -200,
+	MONSTER = -100,
+	BOMB = -50,
 	
 	PLAYER = 0,
 	UI = 10000

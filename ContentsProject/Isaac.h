@@ -68,6 +68,7 @@ private:
 	UFSMStateManager FSM = UFSMStateManager();
 	int Test = 0;
 	float BulletCoolTime = 0.5f;
+	float BombCoolTime = 0.0f;
 
 	USoundPlayer BGMPlayer;
 };

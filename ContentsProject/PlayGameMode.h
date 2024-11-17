@@ -119,6 +119,9 @@ public:
 
 	ARoom* PrevRoom = nullptr;
 	ARoom* CurRoom = nullptr;
+
+	USoundPlayer BGMPlayer;
+
 	void CreateMap();
 
 protected:
@@ -174,5 +177,6 @@ private:
 	ADip* Monster5 = nullptr;
 	ADip* Monster6 = nullptr;
 	long long SeedValue = 0;
+
 };
 

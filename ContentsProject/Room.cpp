@@ -56,35 +56,103 @@ void ARoom::Tick(float _DeltaTime)
 void ARoom::CreateDoor(RoomDir _Dir, FVector2D _Pos, ARoom* _LinkRoom)
 {
 	ADoor* NewDoor = GetWorld()->SpawnActor<ADoor>();
+	NewDoor->LinkedRoom = _LinkRoom;
 
 	switch (_Dir)
 	{
 	case RoomDir::NONE:
 		break;
 	case RoomDir::UP:
-		NewDoor->DoorRenderer->CreateAnimation("UpNormalRoomDoor_Close", "NormalRoomDoor.png", 6, 6, 0.1f);
-		NewDoor->DoorRenderer->ChangeAnimation("UpNormalRoomDoor_Close");
+
+		if (RoomType::BOSS == this->Type || RoomType::BOSS == NewDoor->LinkedRoom->Type)
+		{
+			NewDoor->DoorRenderer->CreateAnimation("UpBossRoomDoor_Close", "BossRoomDoor.png", 6, 6, 0.1f);
+			NewDoor->DoorRenderer->ChangeAnimation("UpBossRoomDoor_Close");
+			NewDoor->Type = DoorType::BOSS;
+		}
+		else if (RoomType::GOLD == this->Type || RoomType::GOLD == NewDoor->LinkedRoom->Type)
+		{
+			NewDoor->DoorRenderer->CreateAnimation("UpGoldRoomDoor_Close", "GoldRoomDoor.png", 6, 6, 0.1f);
+			NewDoor->DoorRenderer->ChangeAnimation("UpGoldRoomDoor_Close");
+			NewDoor->Type = DoorType::GOLD;
+		}
+		else
+		{
+			NewDoor->DoorRenderer->CreateAnimation("UpNormalRoomDoor_Close", "NormalRoomDoor.png", 6, 6, 0.1f);
+			NewDoor->DoorRenderer->ChangeAnimation("UpNormalRoomDoor_Close");
+		}
 		NewDoor->SetActorLocation({ _Pos.X, _Pos.Y - 215.0f });
 		NewDoor->Dir = DoorDir::UP;
 
 		break;
 	case RoomDir::RIGHT:
-		NewDoor->DoorRenderer->CreateAnimation("RightNormalRoomDoor_Close", "NormalRoomDoor.png", 5, 5, 0.1f);
-		NewDoor->DoorRenderer->ChangeAnimation("RightNormalRoomDoor_Close");
+
+		if (RoomType::BOSS == this->Type || RoomType::BOSS == NewDoor->LinkedRoom->Type)
+		{
+			NewDoor->DoorRenderer->CreateAnimation("RightBossRoomDoor_Close", "BossRoomDoor.png", 5, 5, 0.1f);
+			NewDoor->DoorRenderer->ChangeAnimation("RightBossRoomDoor_Close");
+			NewDoor->Type = DoorType::BOSS;
+		}
+		else if (RoomType::GOLD == this->Type || RoomType::GOLD == NewDoor->LinkedRoom->Type)
+		{
+			NewDoor->DoorRenderer->CreateAnimation("RightGoldRoomDoor_Close", "GoldRoomDoor.png", 5, 5, 0.1f);
+			NewDoor->DoorRenderer->ChangeAnimation("RightGoldRoomDoor_Close");
+			NewDoor->Type = DoorType::GOLD;
+
+		}
+		else
+		{
+			NewDoor->DoorRenderer->CreateAnimation("RightNormalRoomDoor_Close", "NormalRoomDoor.png", 5, 5, 0.1f);
+			NewDoor->DoorRenderer->ChangeAnimation("RightNormalRoomDoor_Close");
+		}
 		NewDoor->SetActorLocation({ _Pos.X + 370.0f, _Pos.Y });
 		NewDoor->Dir = DoorDir::RIGHT;
 
 		break;
 	case RoomDir::DOWN:
-		NewDoor->DoorRenderer->CreateAnimation("DownNormalRoomDoor_Close", "NormalRoomDoor.png", 7, 7, 0.1f);
-		NewDoor->DoorRenderer->ChangeAnimation("DownNormalRoomDoor_Close");
+
+		if (RoomType::BOSS == this->Type || RoomType::BOSS == NewDoor->LinkedRoom->Type)
+		{
+			NewDoor->DoorRenderer->CreateAnimation("DownBossRoomDoor_Close", "BossRoomDoor.png", 7, 7, 0.1f);
+			NewDoor->DoorRenderer->ChangeAnimation("DownBossRoomDoor_Close");
+			NewDoor->Type = DoorType::BOSS;
+		}
+		else if (RoomType::GOLD == this->Type || RoomType::GOLD == NewDoor->LinkedRoom->Type)
+		{
+			NewDoor->DoorRenderer->CreateAnimation("DownGoldRoomDoor_Close", "GoldRoomDoor.png", 7, 7, 0.1f);
+			NewDoor->DoorRenderer->ChangeAnimation("DownGoldRoomDoor_Close");
+			NewDoor->Type = DoorType::GOLD;
+
+		}
+		else
+		{
+			NewDoor->DoorRenderer->CreateAnimation("DownNormalRoomDoor_Close", "NormalRoomDoor.png", 7, 7, 0.1f);
+			NewDoor->DoorRenderer->ChangeAnimation("DownNormalRoomDoor_Close");
+		}
 		NewDoor->SetActorLocation({ _Pos.X, _Pos.Y + 215.0f });
 		NewDoor->Dir = DoorDir::DOWN;
 
 		break;
 	case RoomDir::LEFT:
-		NewDoor->DoorRenderer->CreateAnimation("LeftNormalRoomDoor_Close", "NormalRoomDoor.png", 4, 4, 0.1f);
-		NewDoor->DoorRenderer->ChangeAnimation("LeftNormalRoomDoor_Close");
+
+		if (RoomType::BOSS == this->Type || RoomType::BOSS == NewDoor->LinkedRoom->Type)
+		{
+			NewDoor->DoorRenderer->CreateAnimation("LeftBossRoomDoor_Close", "BossRoomDoor.png", 4, 4, 0.1f);
+			NewDoor->DoorRenderer->ChangeAnimation("LeftBossRoomDoor_Close");
+			NewDoor->Type = DoorType::BOSS;
+		}
+		else if (RoomType::GOLD == this->Type || RoomType::GOLD == NewDoor->LinkedRoom->Type)
+		{
+			NewDoor->DoorRenderer->CreateAnimation("LeftGoldRoomDoor_Close", "GoldRoomDoor.png", 4, 4, 0.1f);
+			NewDoor->DoorRenderer->ChangeAnimation("LeftGoldRoomDoor_Close");
+			NewDoor->Type = DoorType::GOLD;
+
+		}
+		else
+		{
+			NewDoor->DoorRenderer->CreateAnimation("LeftNormalRoomDoor_Close", "NormalRoomDoor.png", 4, 4, 0.1f);
+			NewDoor->DoorRenderer->ChangeAnimation("LeftNormalRoomDoor_Close");
+		}
 		NewDoor->SetActorLocation({ _Pos.X - 370.0f, _Pos.Y });
 		NewDoor->Dir = DoorDir::LEFT;
 
@@ -102,7 +170,5 @@ void ARoom::CreateDoor(RoomDir _Dir, FVector2D _Pos, ARoom* _LinkRoom)
 	//CollisionComponent->SetCollisionType(ECollisionType::Rect);
 
 	
-
-	NewDoor->LinkedRoom = _LinkRoom;
 	Doors.insert({ _Dir,NewDoor });
 }

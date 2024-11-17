@@ -7,6 +7,7 @@
 #include "Tear.h"
 #include "ContentsEnum.h"
 #include "PlayGameMode.h"
+#include "Bomb.h"
 
 AIsaac::AIsaac()
 {
@@ -146,7 +147,19 @@ void AIsaac::Tick(float _DeltaTime)
 			Attack(FVector2D::LEFT);
 		}
 
+		if (true == UEngineInput::GetInst().IsPress('E'))
+		{
+			if (BombCoolTime <= 0.0f) 
+			{
+				ABomb* NewBomb = GetWorld()->SpawnActor<ABomb>();
+				NewBomb->SetActorLocation(GetActorLocation());
+				BombCoolTime = 1.3f;
+				int a = 0;
+			}
+		}
+
 		BulletCoolTime -= _DeltaTime;
+		BombCoolTime -= _DeltaTime;
 		FSM.Update(_DeltaTime);
 		
 }
@@ -207,8 +220,7 @@ void AIsaac::Move(float _DeltaTime)
 	{
 
 		if (true == CanMove)
-		{
-			AActor* Result = CollisionComponent->CollisionOnce(ECollisionGroup::Door);
+		{AActor* Result = CollisionComponent->CollisionOnce(ECollisionGroup::Door);
 
 
 

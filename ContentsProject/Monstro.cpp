@@ -90,6 +90,9 @@ void AMonstro::BeginPlay()
 		}
 	);
 
+	APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
+	PlayGameMode->BGMPlayer.Off();
+	PlayGameMode->BGMPlayer = UEngineSound::Play("basic boss fight.ogg");
 	FSM.ChangeState(MonstroState::Idle);
 }
 
@@ -113,6 +116,7 @@ void AMonstro::Idle(float _DeltaTime)
 		ATrapDoor* NewTrapDoor = GetWorld()->SpawnActor<ATrapDoor>();
 		NewTrapDoor->SetActorLocation({ PlayGameMode->CurRoom->RoomPos.X + 52.0f * (0.0f), PlayGameMode->CurRoom->RoomPos.Y - 52.0f * (2.0f) });
 		DelayTime = 0.0f;
+		EffectPlayer = UEngineSound::Play("death burst large.wav");
 		FSM.ChangeState(MonstroState::Die);
 	}
 
@@ -151,6 +155,7 @@ void AMonstro::Move(float _DeltaTime)
 		ATrapDoor* NewTrapDoor = GetWorld()->SpawnActor<ATrapDoor>();
 		NewTrapDoor->SetActorLocation({ PlayGameMode->CurRoom->RoomPos.X + 52.0f * (0.0f), PlayGameMode->CurRoom->RoomPos.Y - 52.0f * (2.0f) });
 		DelayTime = 0.0f;
+		EffectPlayer = UEngineSound::Play("death burst large.wav");
 		FSM.ChangeState(MonstroState::Die);
 	}
 
@@ -202,6 +207,7 @@ void AMonstro::Attack(float _DeltaTime)
 		ATrapDoor* NewTrapDoor = GetWorld()->SpawnActor<ATrapDoor>();
 		NewTrapDoor->SetActorLocation({ PlayGameMode->CurRoom->RoomPos.X + 52.0f * (0.0f), PlayGameMode->CurRoom->RoomPos.Y - 52.0f * (2.0f) });
 		DelayTime = 0.0f;
+		EffectPlayer = UEngineSound::Play("death burst large.wav");
 		FSM.ChangeState(MonstroState::Die);
 
 	}
@@ -211,6 +217,7 @@ void AMonstro::Attack(float _DeltaTime)
 		if (BulletCoolTime < 0.0f)
 		{
 			AMonsterTear* NewTear = GetWorld()->SpawnActor<AMonsterTear>();
+			NewTear->BulletSpeed = 1.0f;
 			NewTear->SetActorLocation(GetActorLocation());
 			NewTear->Dir = GetWorld()->GetPawn()->GetActorLocation() - GetActorLocation();
 			BulletCoolTime = 1.5f;
@@ -266,6 +273,12 @@ void AMonstro::Jump(float _DeltaTime)
 	if (DelayTime > 1.8f)
 	{
 		ShadowRenderer->SetSpriteScale(1.0f);
+
+		if (DelayTime > 2.1f)
+		{
+			MonsterRenderer->SetComponentLocation({ 0,-40 });
+
+		}
 	}
 	
 		if (DelayTime > 2.6f)
@@ -284,8 +297,13 @@ void AMonstro::Die(float _DeltaTime)
 	DeathValue = true;
 	DelayTime += _DeltaTime;
 
+
+
 	if (DelayTime > 1.1f)
 	{
+		APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
+		PlayGameMode->BGMPlayer.Off();
+		PlayGameMode->BGMPlayer = UEngineSound::Play("secret to everyone.ogg");
 		Destroy();
 	}
 }

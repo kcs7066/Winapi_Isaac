@@ -74,6 +74,7 @@ void APurpleFly::Move(float _DeltaTime)
 		APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
 		PlayGameMode->CurRoom->MonsterNumber--;
 		DelayTime = 0.0f;
+		EffectPlayer = UEngineSound::Play("death burst small.wav");
 		FSM.ChangeState(PurpleFlyState::Die);
 	}
 

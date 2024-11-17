@@ -1,5 +1,6 @@
 #pragma once
 #include <EngineCore/GameMode.h>
+#include <EnginePlatform/EngineSound.h>
 
 class ATitleGameMode : public AGameMode
 {
@@ -20,6 +21,6 @@ protected:
 	void Tick(float _DeltaTime) override;
 
 private:
-
+	USoundPlayer BGMPlayer;
 };
 

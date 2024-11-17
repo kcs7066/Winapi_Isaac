@@ -16,6 +16,7 @@ public:
 	AMonsterTear& operator=(const AMonsterTear& _Other) = delete;
 	AMonsterTear& operator=(AMonsterTear&& _Other) noexcept = delete;
 	FVector2D Dir = FVector2D::ZERO;
+	float BulletSpeed = 500.0f;
 
 protected:
 
@@ -26,5 +27,5 @@ private:
 	class USpriteRenderer* SpriteRenderer;
 	U2DCollision* CollisionComponent;
 
-	float BulletSpeed = 500.0f;
+	
 };

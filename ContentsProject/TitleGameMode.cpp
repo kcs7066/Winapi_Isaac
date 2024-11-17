@@ -22,6 +22,7 @@ void ATitleGameMode::BeginPlay()
 {
 	Super::BeginPlay();
 	TitleLogo* NewActor = GetWorld()->SpawnActor<TitleLogo>();
+	BGMPlayer = UEngineSound::Play("title screen.ogg");
 }
 
 
@@ -31,6 +32,7 @@ void ATitleGameMode::Tick(float _DeltaTime)
 
 	if (true == UEngineInput::GetInst().IsDown('R'))
 	{
+		BGMPlayer.Off();
 		UEngineAPICore::GetCore()->OpenLevel("Play");
 	}
 

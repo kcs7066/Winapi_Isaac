@@ -31,11 +31,204 @@ APlayGameMode::APlayGameMode()
 
 APlayGameMode::~APlayGameMode()
 {
+	
+}
+
+
+
+void APlayGameMode::BeginPlay()
+{
+
+ AIsaac* Player = GetWorld()->GetPawn<AIsaac>();
+
+	CreateBossRoomPath();
+	CreateRestRoomPath(5);
+	CreateRestRoomPath(6);
+	CreateRestRoomPath(7);
+
+	CreateRoom("FirstRoom",RoomBind[0]);
+	Rooms[0]->CanSpawnNumber = 0;
+	CreateRoom("Room1", RoomBind[1]);
+	CreateRoom("Room2", RoomBind[2]);
+	CreateRoom("Room3", RoomBind[3]);
+	CreateRoom("BossRoom", RoomBind[4], RoomType::BOSS);
+	CreateRoom("AdditionalRoom1", RoomBind[5]);
+	CreateRoom("AdditionalRoom2", RoomBind[6]);
+	CreateRoom("GoldRoom", RoomBind[7], RoomType::GOLD);
+
+	Rooms[0]->RoomRenderer->SetSprite("FirstRoom.png");
+	Rooms[4]->RoomRenderer->SetSprite("Room_03.png");
+
+
+	Link(Rooms[0]);
+	Link(Rooms[1]);
+	Link(Rooms[2]);
+	Link(Rooms[3]);
+	Link(Rooms[4]);
+	Link(Rooms[5]);
+	Link(Rooms[6]);
+	Link(Rooms[7]);
+
+
+
+	CurRoom = Rooms[0];
+	PrevRoom = Rooms[0];
+	GetWorld()->SetCameraPos({ CurRoom->RoomPos.X - 480.0f ,CurRoom->RoomPos.Y - 270.0f });
+
+	
+	
+	BGMPlayer = UEngineSound::Play("diptera sonata.ogg");
+	
+
+
+
+}
+
+void APlayGameMode::Tick(float _DeltaTime)
+{
+	Super::Tick(_DeltaTime);
+
+	UEngineDebug::CoreOutPutString("Room : " + APlayGameMode::CurRoom->GetName());
+
+	if (true == UEngineInput::GetInst().IsDown('B'))
+	{
+		UEngineDebug::SwitchIsDebug();
+	}
+
+	if (true == UEngineInput::GetInst().IsDown('R'))
+	{
+		BGMPlayer.Off();
+		UEngineAPICore::GetCore()->OpenLevel("Title");
+	}
+
+
+	if (true == UEngineInput::GetInst().IsDown('1'))
+	{
+		ALevelTwoSpiderSmall* Monster = GetWorld()->SpawnActor<ALevelTwoSpiderSmall>();
+	}
+
+	if (true == UEngineInput::GetInst().IsDown('2'))
+	{
+		ABabyLongLegs* Monster = GetWorld()->SpawnActor<ABabyLongLegs>();
+	}
+
+	if (true == UEngineInput::GetInst().IsDown('3'))
+	{
+		ADip* Monster = GetWorld()->SpawnActor<ADip>();
+	}
+
+	if (true == UEngineInput::GetInst().IsDown('4'))
+	{
+		ARoundWorm* Monster = GetWorld()->SpawnActor<ARoundWorm>();
+	}
+
+	if (true == UEngineInput::GetInst().IsDown('5'))
+	{
+		AFly* Monster = GetWorld()->SpawnActor<AFly>();
+	}
+
+	if (true == UEngineInput::GetInst().IsDown('6'))
+	{
+		ARedFly* Monster = GetWorld()->SpawnActor<ARedFly>();
+	}
+
+	if (true == UEngineInput::GetInst().IsDown('7'))
+	{
+		AMonstro* Monster = GetWorld()->SpawnActor<AMonstro>();
+	}
+
+	if (true == UEngineInput::GetInst().IsDown('8'))
+	{
+		ASpider* Monster = GetWorld()->SpawnActor<ASpider>();
+	}
+
+	if (true == UEngineInput::GetInst().IsPress(VK_NUMPAD0))
+	{
+		CurRoom = Rooms[0];
+		
+	}
+	if (true == UEngineInput::GetInst().IsDown(VK_NUMPAD1))
+	{
+		CurRoom = Rooms[1];
+	}
+	if (true == UEngineInput::GetInst().IsDown(VK_NUMPAD2))
+	{
+		CurRoom = Rooms[2];
+	}
+	if (true == UEngineInput::GetInst().IsDown(VK_NUMPAD3))
+	{
+		CurRoom = Rooms[3];
+	}
+	if (true == UEngineInput::GetInst().IsDown(VK_NUMPAD4))
+	{
+		CurRoom = Rooms[4];
+	}
+	if (true == UEngineInput::GetInst().IsDown(VK_NUMPAD5))
+	{
+		CurRoom = Rooms[5];
+	}
+	if (true == UEngineInput::GetInst().IsDown(VK_NUMPAD6))
+	{
+		CurRoom = Rooms[6];
+	}
+	if (true == UEngineInput::GetInst().IsDown(VK_NUMPAD7))
+	{
+		CurRoom = Rooms[7];
+	}
+
+	if (CurRoom != PrevRoom)
+	{
+		AIsaac* Ptr = GetWorld()->GetPawn<AIsaac>();
+
+
+		RoomMoveCameraTime += _DeltaTime * 5;
+		FVector2D Size = UEngineAPICore::GetCore()->GetMainWindow().GetWindowSize();
+				
+		FVector2D StartCameraPos = { PrevRoom->RoomPos.X - 480.0f ,PrevRoom->RoomPos.Y - 270.0f };
+
+		FVector2D TargetCameraPos = { CurRoom->RoomPos.X - 480.0f ,CurRoom->RoomPos.Y - 270.0f };
+
+		FVector2D CurCameraPos = FVector2D::LerpClamp(StartCameraPos, TargetCameraPos, RoomMoveCameraTime);
+		
+	    GetWorld()->SetCameraPos(CurCameraPos);
+
+		if (1.0f <= RoomMoveCameraTime)
+		{
+			RoomMoveCameraTime = 0.0f;
+			PrevRoom = CurRoom;
+
+			GetWorld()->SetCameraPos({ CurRoom->RoomPos.X - 480.0f ,CurRoom->RoomPos.Y - 270.0f });
+			//GetWorld()->GetPawn()->SetActorLocation(CurRoom->RoomPos);
+
+			if (nullptr != Ptr)
+			{
+				Ptr->CanMove = true;
+			}
+			else {
+				int a = 0;
+			}
+
+			if (1 == CurRoom->CanSpawnNumber)
+			{
+				if(RoomType::GOLD != CurRoom->Type)
+				CreateMap();
+				CurRoom->RoomClear = false;
+				CurRoom->CanSpawnNumber--;
+
+			}
+
+
+		}
+
+		
+	
+	}
+
 }
 
 void APlayGameMode::CreateBossRoomPath()
 {
-	int RoomNumber =0;
+	int RoomNumber = 0;
 	FVector2D CreateRoomPos = { 0,0 };
 	RoomBind.insert({ RoomNumber, CreateRoomPos });
 	int RandomValue = Random.RandomInt(1, 4);
@@ -152,7 +345,7 @@ void APlayGameMode::CreateBossRoomPath()
 		break;
 
 	default:
-		break; 
+		break;
 	}
 
 }
@@ -202,195 +395,9 @@ void APlayGameMode::CreateRestRoomPath(int _RoomNumber)
 	}
 
 
-		RoomBind.insert({ _RoomNumber,CreateRoomPos });
-	
-}
-
-void APlayGameMode::BeginPlay()
-{
-
- AIsaac* Player = GetWorld()->GetPawn<AIsaac>();
-
-	CreateBossRoomPath();
-	CreateRestRoomPath(5);
-	CreateRestRoomPath(6);
-	CreateRestRoomPath(7);
-
-	CreateRoom("FirstRoom",RoomBind[0]);
-	Rooms[0]->CanSpawnNumber = 0;
-	CreateRoom("Room1", RoomBind[1]);
-	CreateRoom("Room2", RoomBind[2]);
-	CreateRoom("Room3", RoomBind[3]);
-	CreateRoom("BossRoom", RoomBind[4], RoomType::BOSS);
-	CreateRoom("AdditionalRoom1", RoomBind[5]);
-	CreateRoom("AdditionalRoom2", RoomBind[6]);
-	CreateRoom("GoldRoom", RoomBind[7], RoomType::GOLD);
-
-	Rooms[0]->RoomRenderer->SetSprite("FirstRoom.png");
-	Rooms[4]->RoomRenderer->SetSprite("Room_03.png");
-
-
-	Link(Rooms[0]);
-	Link(Rooms[1]);
-	Link(Rooms[2]);
-	Link(Rooms[3]);
-	Link(Rooms[4]);
-	Link(Rooms[5]);
-	Link(Rooms[6]);
-	Link(Rooms[7]);
-
-
-
-	CurRoom = Rooms[0];
-	PrevRoom = Rooms[0];
-	GetWorld()->SetCameraPos({ CurRoom->RoomPos.X - 480.0f ,CurRoom->RoomPos.Y - 270.0f });
-
-	
-	
-
+	RoomBind.insert({ _RoomNumber,CreateRoomPos });
 
 }
-
-void APlayGameMode::Tick(float _DeltaTime)
-{
-	Super::Tick(_DeltaTime);
-
-	UEngineDebug::CoreOutPutString("Room : " + APlayGameMode::CurRoom->GetName());
-
-	if (true == UEngineInput::GetInst().IsDown('B'))
-	{
-		UEngineDebug::SwitchIsDebug();
-	}
-
-	if (true == UEngineInput::GetInst().IsDown('R'))
-	{
-		UEngineAPICore::GetCore()->OpenLevel("Title");
-	}
-
-
-	if (true == UEngineInput::GetInst().IsDown('1'))
-	{
-		ALevelTwoSpiderSmall* Monster = GetWorld()->SpawnActor<ALevelTwoSpiderSmall>();
-	}
-
-	if (true == UEngineInput::GetInst().IsDown('2'))
-	{
-		ABabyLongLegs* Monster = GetWorld()->SpawnActor<ABabyLongLegs>();
-	}
-
-	if (true == UEngineInput::GetInst().IsDown('3'))
-	{
-		ADip* Monster = GetWorld()->SpawnActor<ADip>();
-	}
-
-	if (true == UEngineInput::GetInst().IsDown('4'))
-	{
-		ARoundWorm* Monster = GetWorld()->SpawnActor<ARoundWorm>();
-	}
-
-	if (true == UEngineInput::GetInst().IsDown('5'))
-	{
-		AFly* Monster = GetWorld()->SpawnActor<AFly>();
-	}
-
-	if (true == UEngineInput::GetInst().IsDown('6'))
-	{
-		ARedFly* Monster = GetWorld()->SpawnActor<ARedFly>();
-	}
-
-	if (true == UEngineInput::GetInst().IsDown('7'))
-	{
-		AMonstro* Monster = GetWorld()->SpawnActor<AMonstro>();
-	}
-
-	if (true == UEngineInput::GetInst().IsDown('8'))
-	{
-		ASpider* Monster = GetWorld()->SpawnActor<ASpider>();
-	}
-
-	if (true == UEngineInput::GetInst().IsPress(VK_NUMPAD0))
-	{
-		CurRoom = Rooms[0];
-		
-	}
-	if (true == UEngineInput::GetInst().IsDown(VK_NUMPAD1))
-	{
-		CurRoom = Rooms[1];
-	}
-	if (true == UEngineInput::GetInst().IsDown(VK_NUMPAD2))
-	{
-		CurRoom = Rooms[2];
-	}
-	if (true == UEngineInput::GetInst().IsDown(VK_NUMPAD3))
-	{
-		CurRoom = Rooms[3];
-	}
-	if (true == UEngineInput::GetInst().IsDown(VK_NUMPAD4))
-	{
-		CurRoom = Rooms[4];
-	}
-	if (true == UEngineInput::GetInst().IsDown(VK_NUMPAD5))
-	{
-		CurRoom = Rooms[5];
-	}
-	if (true == UEngineInput::GetInst().IsDown(VK_NUMPAD6))
-	{
-		CurRoom = Rooms[6];
-	}
-	if (true == UEngineInput::GetInst().IsDown(VK_NUMPAD7))
-	{
-		CurRoom = Rooms[7];
-	}
-
-	if (CurRoom != PrevRoom)
-	{
-		AIsaac* Ptr = GetWorld()->GetPawn<AIsaac>();
-
-
-		RoomMoveCameraTime += _DeltaTime * 5;
-		FVector2D Size = UEngineAPICore::GetCore()->GetMainWindow().GetWindowSize();
-				
-		FVector2D StartCameraPos = { PrevRoom->RoomPos.X - 480.0f ,PrevRoom->RoomPos.Y - 270.0f };
-
-		FVector2D TargetCameraPos = { CurRoom->RoomPos.X - 480.0f ,CurRoom->RoomPos.Y - 270.0f };
-
-		FVector2D CurCameraPos = FVector2D::LerpClamp(StartCameraPos, TargetCameraPos, RoomMoveCameraTime);
-		
-	    GetWorld()->SetCameraPos(CurCameraPos);
-
-		if (1.0f <= RoomMoveCameraTime)
-		{
-			RoomMoveCameraTime = 0.0f;
-			PrevRoom = CurRoom;
-
-			GetWorld()->SetCameraPos({ CurRoom->RoomPos.X - 480.0f ,CurRoom->RoomPos.Y - 270.0f });
-			//GetWorld()->GetPawn()->SetActorLocation(CurRoom->RoomPos);
-
-			if (nullptr != Ptr)
-			{
-				Ptr->CanMove = true;
-			}
-			else {
-				int a = 0;
-			}
-
-			if (1 == CurRoom->CanSpawnNumber)
-			{
-				CreateMap();
-				CurRoom->RoomClear = false;
-				CurRoom->CanSpawnNumber--;
-
-			}
-			
-		}
-
-		
-	
-	}
-
-}
-
-
 
 void APlayGameMode::CreateRoom(std::string_view _RoomName,FVector2D _Pos, RoomType _Type)
 {
@@ -403,7 +410,7 @@ void APlayGameMode::CreateRoom(std::string_view _RoomName,FVector2D _Pos, RoomTy
 	NewRoom->NomalizedRoomPos = _Pos;
 	NewRoom->RoomPos = { 960.0f * _Pos.X , 540.0f * _Pos.Y };
 	NewRoom->RoomRenderer->SetComponentLocation(NewRoom->RoomPos);
-
+	NewRoom->Type = _Type;
 
 	Rooms.insert({ RoomNumber,NewRoom });	
 	RoomNumber++;
@@ -455,7 +462,7 @@ void APlayGameMode::CreateMap()
 	}
 	else
 	{
-		int RandomValue = Random.RandomInt(2, 2);
+		int RandomValue = Random.RandomInt(1, 5);
 		switch (RandomValue)
 		{
 		case 1:

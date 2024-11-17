@@ -100,6 +100,7 @@ void ASpider::Idle(float _DeltaTime)
 		PlayGameMode->CurRoom->MonsterNumber--;
 		PlayGameMode->CurRoom->SpiderNumber--;
 		DelayTime = 0.0f;
+		EffectPlayer = UEngineSound::Play("death burst small.wav");
 		FSM.ChangeState(SpiderState::Die);
 	}
 
@@ -120,6 +121,7 @@ void ASpider::Move(float _DeltaTime)
 		PlayGameMode->CurRoom->MonsterNumber--;
 		PlayGameMode->CurRoom->SpiderNumber--;
 		DelayTime = 0.0f;
+		EffectPlayer = UEngineSound::Play("death burst small.wav");
 		FSM.ChangeState(SpiderState::Die);
 	}
 

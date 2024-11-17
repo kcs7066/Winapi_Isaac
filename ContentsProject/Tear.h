@@ -3,6 +3,8 @@
 #include <EngineBase/EngineMath.h>
 #include <EngineCore/2DCollision.h>
 #include <EngineBase/FSMStateManager.h>
+#include <EnginePlatform/EngineSound.h>
+#include <EngineBase/EngineRandom.h>
 
 enum class TearState
 {
@@ -42,4 +44,7 @@ private:
 
 	float Speed = 500.0f;
 	UFSMStateManager FSM = UFSMStateManager();
+	USoundPlayer BGMPlayer;
+	UEngineRandom Random;
+
 };

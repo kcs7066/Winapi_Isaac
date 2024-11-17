@@ -81,6 +81,10 @@ void IsaacContentsCore::BeginPlay()
 	UImageManager::GetInst().CuttingSprite("Structure_Poop_1.png", { 32, 32 });
 	UImageManager::GetInst().CuttingSprite("TrapDoor.png", { 64, 64 });
 	UImageManager::GetInst().CuttingSprite("BloodPoof.png", { 64, 64 });
+	UImageManager::GetInst().CuttingSprite("Pickup_Bomb.png", { 32, 32 });
+	UImageManager::GetInst().CuttingSprite("Effect_Explosion.png", { 128, 128 });
+	UImageManager::GetInst().CuttingSprite("Boss_Larryjr_Left.png", { 64, 64 });
+	UImageManager::GetInst().CuttingSprite("Boss_Larryjr_Right.png", { 64, 64 });
 
 
 
