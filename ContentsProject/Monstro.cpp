@@ -59,6 +59,7 @@ void AMonstro::BeginPlay()
 		[this]()
 		{
 			MonsterRenderer->ChangeAnimation("Idle_Monstro");
+			CollisionComponent->SetActive(true);
 		}
 	);
 
@@ -80,10 +81,18 @@ void AMonstro::BeginPlay()
 		[this]()
 		{
 			MonsterRenderer->ChangeAnimation("Jump_Monstro");
+			CollisionComponent->SetActive(false);
 		}
 	);
 
 	FSM.CreateState(MonstroState::Die, std::bind(&AMonstro::Die, this, std::placeholders::_1),
+		[this]()
+		{
+
+		}
+	);
+
+	FSM.CreateState(MonstroState::DieStay, std::bind(&AMonstro::DieStay, this, std::placeholders::_1),
 		[this]()
 		{
 			MonsterRenderer->ChangeAnimation("Die_Monstro");
@@ -295,15 +304,19 @@ void AMonstro::Jump(float _DeltaTime)
 void AMonstro::Die(float _DeltaTime)
 {
 	DeathValue = true;
+	APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
+	PlayGameMode->BGMPlayer.Off();
+	PlayGameMode->BGMPlayer = UEngineSound::Play("secret to everyone.ogg");
+	FSM.ChangeState(MonstroState::DieStay);
+}
+
+void AMonstro::DieStay(float _DeltaTime)
+{
+
 	DelayTime += _DeltaTime;
-
-
 
 	if (DelayTime > 1.1f)
 	{
-		APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
-		PlayGameMode->BGMPlayer.Off();
-		PlayGameMode->BGMPlayer = UEngineSound::Play("secret to everyone.ogg");
 		Destroy();
 	}
 }

@@ -10,7 +10,8 @@ enum class  RedFlyState
 {
 	Idle,
 	Move,
-	Die
+	Die,
+	DieStay
 
 };
 
@@ -33,7 +34,7 @@ public:
 	void Idle(float _DeltaTime);
 	void Move(float _DeltaTime);
 	void Die(float _DeltaTime);
-
+	void DieStay(float _DeltaTime);
 	
 protected:
 

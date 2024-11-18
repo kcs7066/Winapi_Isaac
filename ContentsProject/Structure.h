@@ -1,7 +1,6 @@
 #pragma once
 #include <EngineCore/Actor.h>
 
-// Ό³Έν :
 class AStructure : public AActor
 {
 public:

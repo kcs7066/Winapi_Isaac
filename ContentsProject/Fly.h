@@ -7,7 +7,8 @@
 enum class FlyState
 {
 	Move,
-	Die
+	Die,
+	DieStay
 };
 
 class AFly : public AMonster
@@ -29,6 +30,8 @@ public:
 	void Idle(float _DeltaTime);
 	void Move(float _DeltaTime);
 	void Die(float _DeltaTime);
+	void DieStay(float _DeltaTime);
+
 
 protected:
 

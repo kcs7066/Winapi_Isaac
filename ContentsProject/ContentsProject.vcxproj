@@ -201,6 +201,26 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="PickUp.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="PickUpBomb.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="PickUpCoin.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="PickUpHeart.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="PickUpKey.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="PlayGameMode.h">
       <SubType>
       </SubType>
@@ -248,6 +268,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="TrapDoor.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Ui.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -308,6 +332,26 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="PickUp.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="PickUpBomb.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="PickUpCoin.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="PickUpHeart.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="PickUpKey.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="PlayGameMode.cpp">
       <SubType>
       </SubType>
@@ -357,6 +401,10 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="TrapDoor.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Ui.cpp">
       <SubType>
       </SubType>
     </ClCompile>

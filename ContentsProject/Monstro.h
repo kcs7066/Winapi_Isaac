@@ -10,7 +10,8 @@ enum class MonstroState
 	Move,
 	Attack,
 	Jump,
-	Die
+	Die,
+	DieStay
 
 };
 
@@ -35,6 +36,7 @@ public:
 	void Attack(float _DeltaTime);
 	void Jump(float _DeltaTime);
 	void Die(float _DeltaTime);
+	void DieStay(float _DeltaTime);
 
 protected:
 

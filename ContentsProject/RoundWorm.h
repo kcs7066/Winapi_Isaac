@@ -10,7 +10,8 @@ enum class RoundWormState
 	Attack,
 	Idle2,
 	Move,
-	Die
+	Die,
+	DieStay
 
 };
 
@@ -35,7 +36,7 @@ public:
 	void Idle2(float _DeltaTime);
 	void Move(float _DeltaTime);
 	void Die(float _DeltaTime);
-
+	void DieStay(float _DeltaTime);
 
 protected:
 

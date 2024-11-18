@@ -2,6 +2,8 @@
 #include "Bomb.h"
 #include "ContentsEnum.h"
 #include <EngineCore/SpriteRenderer.h>
+#include "Monster.h"
+#include "Isaac.h"
 
 ABomb::ABomb()
 {
@@ -25,8 +27,8 @@ ABomb::ABomb()
 
 	{
 		CollisionComponent = CreateDefaultSubObject<U2DCollision>();
-		CollisionComponent->SetComponentScale({ 50, 50 });
-		CollisionComponent->SetCollisionGroup(ECollisionGroup::Tear);
+		CollisionComponent->SetComponentScale({ 200, 200 });
+		CollisionComponent->SetCollisionGroup(ECollisionGroup::Bomb);
 		CollisionComponent->SetCollisionType(ECollisionType::CirCle);
 
 		DebugOn();
@@ -51,6 +53,13 @@ void ABomb::BeginPlay()
 	);
 
 	FSM.CreateState(BombState::Explosion, std::bind(&ABomb::Explosion, this, std::placeholders::_1),
+		[this]()
+		{
+	
+		}
+	);
+
+	FSM.CreateState(BombState::ExplosionStay, std::bind(&ABomb::ExplosionStay, this, std::placeholders::_1),
 		[this]()
 		{
 			BombRenderer->ChangeAnimation("Explosion_Bomb");
@@ -79,12 +88,38 @@ void ABomb::Idle(float _DeltaTime)
 
 void ABomb::Explosion(float _DeltaTime)
 {
-	BombRenderer->SetComponentScale({ 275, 275 });
-	BombRenderer->SetComponentLocation({ 0,-60 });
-	DelayTime += _DeltaTime;
-	if (DelayTime > 0.48f)
+
+	std::vector<AActor*> Results = CollisionComponent->CollisionAll(ECollisionGroup::Monster, { 0,0 });
+
+	if (false == Results.empty())
 	{
 
+		std::vector<AActor*>::iterator StartIter = Results.begin();
+		std::vector<AActor*>::iterator EndIter = Results.end();
+
+		for (; StartIter != EndIter; ++StartIter)
+		{
+			AMonster* NewResult = dynamic_cast<AMonster*>(*StartIter);
+			NewResult->Hp -= 60.0f;
+		}
+	}
+
+	//AActor* Result = CollisionComponent->CollisionOnce(ECollisionGroup::Monster);
+	//if (nullptr != Result)
+	//{
+	//	AIsaac* NewResult = dynamic_cast<AIsaac*>(Result);
+	//	NewResult->Hp -= 2;
+	//}
+	FSM.ChangeState(BombState::ExplosionStay);
+}
+
+void ABomb::ExplosionStay(float _DeltaTime)
+{
+	DelayTime += _DeltaTime;
+	BombRenderer->SetComponentScale({ 275, 275 });
+	BombRenderer->SetComponentLocation({ 0,-60 });
+	if (DelayTime > 0.48f)
+	{
 		Destroy();
 	}
 }

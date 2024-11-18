@@ -9,7 +9,8 @@ enum class LevelTwoSpiderSmallState
 	Idle,
 	Move,
 	Jump,
-	Die
+	Die,
+	DieStay
 
 };
 
@@ -33,7 +34,7 @@ public:
 	void Move(float _DeltaTime);
 	void Jump(float _DeltaTime);
 	void Die(float _DeltaTime);
-
+	void DieStay(float _DeltaTime);
 
 protected:
 

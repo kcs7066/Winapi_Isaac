@@ -8,7 +8,6 @@ AMonsterTear::AMonsterTear()
 
 	{
 		SpriteRenderer = CreateDefaultSubObject<USpriteRenderer>();
-		SpriteRenderer->SetSprite("Tear.png");
 		SpriteRenderer->SetComponentScale({ 100, 100 });
 		SpriteRenderer->CreateAnimation("MonsterTear_Fly", "Tear.png", 13, 17, 0.1f);
 		SpriteRenderer->ChangeAnimation("MonsterTear_Fly");

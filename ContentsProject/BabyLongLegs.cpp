@@ -63,8 +63,17 @@ void ABabyLongLegs::BeginPlay()
 	FSM.CreateState(BabyLongLegsState::Die, std::bind(&ABabyLongLegs::Die, this, std::placeholders::_1),
 		[this]()
 		{
+
+		}
+
+	);
+
+	FSM.CreateState(BabyLongLegsState::DieStay, std::bind(&ABabyLongLegs::DieStay, this, std::placeholders::_1),
+		[this]()
+		{
 			MonsterRenderer->ChangeAnimation("Die_BabyLongLegs");
 		}
+
 	);
 
 	FSM.ChangeState(BabyLongLegsState::Move);
@@ -155,6 +164,12 @@ void ABabyLongLegs::Move(float _DeltaTime)
 void ABabyLongLegs::Die(float _DeltaTime)
 {
 	DeathValue = true;
+	FSM.ChangeState(BabyLongLegsState::DieStay);
+}
+
+void ABabyLongLegs::DieStay(float _DeltaTime)
+{
+
 	DelayTime += _DeltaTime;
 
 	if (DelayTime > 1.1f)

@@ -9,7 +9,8 @@ enum class BabyLongLegsState
 {
 	Move,
 	Attack,
-	Die
+	Die,
+	DieStay
 };
 
 class ABabyLongLegs : public AMonster
@@ -31,6 +32,7 @@ public:
 	void Attack(float _DeltaTime);
 	void Move(float _DeltaTime);
 	void Die(float _DeltaTime);
+	void DieStay(float _DeltaTime);
 
 protected:
 

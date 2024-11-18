@@ -48,6 +48,33 @@ AIsaac::AIsaac()
 		HeadRenderer->CreateAnimation("Run_LeftHead", "Head.png", 1, 1, 0.1f);
 	}
 
+	//FirstHeartRenderer = CreateDefaultSubObject<USpriteRenderer>();
+	//FirstHeartRenderer->SetOrder(ERenderOrder::UI);
+	//FirstHeartRenderer->SetComponentScale({ 30, 30 });
+	//FirstHeartRenderer->SetComponentLocation({ -350,-225 });
+	//FirstHeartRenderer->CreateAnimation("Full_Heart", "Ui_Hearts.png", 0, 0, 0.1f);
+	//FirstHeartRenderer->CreateAnimation("Half_Heart", "Ui_Hearts.png", 1, 1, 0.1f);
+	//FirstHeartRenderer->CreateAnimation("Empty_Heart", "Ui_Hearts.png", 2, 2, 0.1f);
+	//FirstHeartRenderer->ChangeAnimation("Full_Heart");
+
+	//SecondHeartRenderer = CreateDefaultSubObject<USpriteRenderer>();
+	//SecondHeartRenderer->SetOrder(ERenderOrder::UI);
+	//SecondHeartRenderer->SetComponentScale({ 30, 30 });
+	//SecondHeartRenderer->SetComponentLocation({ -325,-225 });
+	//SecondHeartRenderer->CreateAnimation("Full_Heart", "Ui_Hearts.png", 0, 0, 0.1f);
+	//SecondHeartRenderer->CreateAnimation("Half_Heart", "Ui_Hearts.png", 1, 1, 0.1f);
+	//SecondHeartRenderer->CreateAnimation("Empty_Heart", "Ui_Hearts.png", 2, 2, 0.1f);
+	//SecondHeartRenderer->ChangeAnimation("Full_Heart");
+
+	//ThirdHeartRenderer = CreateDefaultSubObject<USpriteRenderer>();
+	//ThirdHeartRenderer->SetOrder(ERenderOrder::UI);
+	//ThirdHeartRenderer->SetComponentScale({ 30, 30 });
+	//ThirdHeartRenderer->SetComponentLocation({ -300,-225 });
+	//ThirdHeartRenderer->CreateAnimation("Full_Heart", "Ui_Hearts.png", 0, 0, 0.1f);
+	//ThirdHeartRenderer->CreateAnimation("Half_Heart", "Ui_Hearts.png", 1, 1, 0.1f);
+	//ThirdHeartRenderer->CreateAnimation("Empty_Heart", "Ui_Hearts.png", 2, 2, 0.1f);
+	//ThirdHeartRenderer->ChangeAnimation("Full_Heart");
+
 	CollisionComponent = CreateDefaultSubObject<U2DCollision>();
 	CollisionComponent->SetComponentLocation({ 0, 0 });
 	CollisionComponent->SetComponentScale({ 35, 35 });
@@ -147,16 +174,71 @@ void AIsaac::Tick(float _DeltaTime)
 			Attack(FVector2D::LEFT);
 		}
 
+		if (true == UEngineInput::GetInst().IsPress(VK_NUMPAD0))
+		{
+			BombNumber = 99;
+			APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
+			PlayGameMode->BombUi->SetValue(BombNumber);
+		}
+
 		if (true == UEngineInput::GetInst().IsPress('E'))
 		{
-			if (BombCoolTime <= 0.0f) 
+			if (BombNumber > 0)
 			{
-				ABomb* NewBomb = GetWorld()->SpawnActor<ABomb>();
-				NewBomb->SetActorLocation(GetActorLocation());
-				BombCoolTime = 1.3f;
-				int a = 0;
+				if (BombCoolTime <= 0.0f)
+				{
+					ABomb* NewBomb = GetWorld()->SpawnActor<ABomb>();
+					NewBomb->SetActorLocation(GetActorLocation());
+					BombCoolTime = 1.3f;
+					APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
+					BombNumber--;
+					PlayGameMode->BombUi->SetValue(BombNumber);
+				}
 			}
 		}
+
+		//if (6 == Hp)
+		//{
+		//	FirstHeartRenderer->ChangeAnimation("Full_Heart");
+		//	SecondHeartRenderer->ChangeAnimation("Full_Heart");
+		//	ThirdHeartRenderer->ChangeAnimation("Full_Heart");
+		//}
+		//else if (5 == Hp)
+		//{
+		//	FirstHeartRenderer->ChangeAnimation("Half_Heart");
+		//	SecondHeartRenderer->ChangeAnimation("Full_Heart");
+		//	ThirdHeartRenderer->ChangeAnimation("Full_Heart");
+		//}
+		//else if (4 == Hp)
+		//{
+		//	FirstHeartRenderer->ChangeAnimation("Empty_Heart");
+		//	SecondHeartRenderer->ChangeAnimation("Full_Heart");
+		//	ThirdHeartRenderer->ChangeAnimation("Full_Heart");
+		//}
+		//else if (3 == Hp)
+		//{
+		//	FirstHeartRenderer->ChangeAnimation("Empty_Heart");
+		//	SecondHeartRenderer->ChangeAnimation("Half_Heart");
+		//	ThirdHeartRenderer->ChangeAnimation("Full_Heart");
+		//}
+		//else if (2 == Hp)
+		//{
+		//	FirstHeartRenderer->ChangeAnimation("Empty_Heart");
+		//	SecondHeartRenderer->ChangeAnimation("Empty_Heart");
+		//	ThirdHeartRenderer->ChangeAnimation("Full_Heart");
+		//}
+		//else if (1 == Hp)
+		//{
+		//	FirstHeartRenderer->ChangeAnimation("Empty_Heart");
+		//	SecondHeartRenderer->ChangeAnimation("Empty_Heart");
+		//	ThirdHeartRenderer->ChangeAnimation("Half_Heart");
+		//}
+		//else
+		//{
+		//	FirstHeartRenderer->ChangeAnimation("Empty_Heart");
+		//	SecondHeartRenderer->ChangeAnimation("Empty_Heart");
+		//	ThirdHeartRenderer->ChangeAnimation("Empty_Heart");
+		//}
 
 		BulletCoolTime -= _DeltaTime;
 		BombCoolTime -= _DeltaTime;
@@ -220,7 +302,8 @@ void AIsaac::Move(float _DeltaTime)
 	{
 
 		if (true == CanMove)
-		{AActor* Result = CollisionComponent->CollisionOnce(ECollisionGroup::Door);
+		{
+			AActor* Result = CollisionComponent->CollisionOnce(ECollisionGroup::Door);
 
 
 

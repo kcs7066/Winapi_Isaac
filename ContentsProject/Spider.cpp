@@ -74,6 +74,13 @@ void ASpider::BeginPlay()
 	FSM.CreateState(SpiderState::Die, std::bind(&ASpider::Die, this, std::placeholders::_1),
 		[this]()
 		{
+		
+		}
+	);
+
+	FSM.CreateState(SpiderState::DieStay, std::bind(&ASpider::DieStay, this, std::placeholders::_1),
+		[this]()
+		{
 			MonsterRenderer->ChangeAnimation("Die_Spider");
 		}
 	);
@@ -157,6 +164,12 @@ void ASpider::Move(float _DeltaTime)
 void ASpider::Die(float _DeltaTime)
 {
 	DeathValue = true;
+	FSM.ChangeState(SpiderState::DieStay);
+}
+
+void ASpider::DieStay(float _DeltaTime)
+{
+
 	DelayTime += _DeltaTime;
 
 	if (DelayTime > 1.1f)

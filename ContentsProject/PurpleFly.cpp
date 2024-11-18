@@ -50,6 +50,12 @@ void APurpleFly::BeginPlay()
 	FSM.CreateState(PurpleFlyState::Die, std::bind(&APurpleFly::Die, this, std::placeholders::_1),
 		[this]()
 		{
+		}
+	);
+
+	FSM.CreateState(PurpleFlyState::DieStay, std::bind(&APurpleFly::DieStay, this, std::placeholders::_1),
+		[this]()
+		{
 			MonsterRenderer->ChangeAnimation("Die_PurpleFly");
 		}
 	);
@@ -101,6 +107,12 @@ void APurpleFly::Move(float _DeltaTime)
 void APurpleFly::Die(float _DeltaTime)
 {
 	DeathValue = true;
+	FSM.ChangeState(PurpleFlyState::DieStay);
+}
+
+void APurpleFly::DieStay(float _DeltaTime)
+{
+
 	DelayTime += _DeltaTime;
 
 	if (DelayTime > 1.1f)

@@ -53,6 +53,7 @@ void ARoundWorm::BeginPlay()
 		[this]()
 		{
 			MonsterRenderer->ChangeAnimation("Idle_RoundWorm");
+			CollisionComponent->SetActive(true);
 		}
 	);
 
@@ -74,10 +75,17 @@ void ARoundWorm::BeginPlay()
 		[this]()
 		{
 			MonsterRenderer->ChangeAnimation("Move_RoundWorm");
+			CollisionComponent->SetActive(false);CollisionComponent->SetActive(false);
 		}
 	);
 
 	FSM.CreateState(RoundWormState::Die, std::bind(&ARoundWorm::Die, this, std::placeholders::_1),
+		[this]()
+		{
+		}
+	);
+
+	FSM.CreateState(RoundWormState::DieStay, std::bind(&ARoundWorm::DieStay, this, std::placeholders::_1),
 		[this]()
 		{
 			MonsterRenderer->ChangeAnimation("Die_RoundWorm");
@@ -187,6 +195,12 @@ void ARoundWorm::Move(float _DeltaTime)
 void ARoundWorm::Die(float _DeltaTime)
 {
 	DeathValue = true;
+	FSM.ChangeState(RoundWormState::DieStay);
+}
+
+void ARoundWorm::DieStay(float _DeltaTime)
+{
+
 	DelayTime += _DeltaTime;
 
 	if (DelayTime > 1.1f)

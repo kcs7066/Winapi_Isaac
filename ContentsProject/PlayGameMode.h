@@ -10,6 +10,7 @@
 #include "RoundWorm.h"
 #include "Dip.h"
 #include "Larryjr.h"
+#include "Ui.h"
 
 
 class APlayGameMode : public AGameMode
@@ -124,11 +125,19 @@ public:
 
 	USoundPlayer BGMPlayer;
 
+	class AUi* HeartUi;
+	class AUi* SecondHeartUi;
+	class AUi* ThirdHeartUi;
+	class AUi* CoinUi;
+	class AUi* BombUi;
+	class AUi* KeyUi;
+
 	void CreateMap();
 
 protected:
 	
 private:
+
 
 	
 

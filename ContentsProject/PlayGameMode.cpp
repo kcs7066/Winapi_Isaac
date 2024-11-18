@@ -24,6 +24,10 @@
 #include "Rock.h"
 #include "Poop.h"
 #include "Larryjr.h"
+#include "PickUpBomb.h"
+#include "PickUpCoin.h"
+#include "PickUpKey.h"
+#include "PickUpHeart.h"
 
 
 APlayGameMode::APlayGameMode()
@@ -76,7 +80,90 @@ void APlayGameMode::BeginPlay()
 	PrevRoom = Rooms[0];
 	GetWorld()->SetCameraPos({ CurRoom->RoomPos.X - 480.0f ,CurRoom->RoomPos.Y - 270.0f });
 
-	
+	{
+	CoinUi = GetWorld()->SpawnActor<AUi>();
+	CoinUi->SetActorLocation({80, 105});
+	CoinUi->SetTextSpriteName("Number.png");
+	CoinUi->SetOrder(ERenderOrder::UI);
+	CoinUi->SetTextScale({30, 30});
+	CoinUi->SetValue(0);
+	CoinUi->HUDRenderer = CreateDefaultSubObject<USpriteRenderer>();	
+	CoinUi->HUDRenderer->SetCameraEffect(false);
+	CoinUi->HUDRenderer->SetOrder(ERenderOrder::UI);
+	CoinUi->HUDRenderer->SetComponentScale({ 30, 30 });
+	CoinUi->HUDRenderer->SetComponentLocation({ -430, -168 });
+	CoinUi->HUDRenderer->CreateAnimation("HUD_Coin", "HUDPickups.png", 0, 0, 0.1f);
+	CoinUi->HUDRenderer->ChangeAnimation("HUD_Coin");
+
+    }
+	{
+		BombUi = GetWorld()->SpawnActor<AUi>();
+		BombUi->SetActorLocation({ 80, 130 });
+		BombUi->SetTextSpriteName("Number.png");
+		BombUi->SetOrder(ERenderOrder::UI);
+		BombUi->SetTextScale({ 30, 30 });
+		BombUi->SetValue(1);
+		BombUi->HUDRenderer = CreateDefaultSubObject<USpriteRenderer>();
+		BombUi->HUDRenderer->SetOrder(ERenderOrder::UI);
+		BombUi->HUDRenderer->SetComponentScale({ 30, 30 });
+		BombUi->HUDRenderer->SetComponentLocation({ -430, -143 });
+		BombUi->HUDRenderer->CreateAnimation("HUD_Bomb", "HUDPickups.png", 8, 8, 0.1f);
+		BombUi->HUDRenderer->ChangeAnimation("HUD_Bomb");
+	}
+	{
+		KeyUi = GetWorld()->SpawnActor<AUi>();
+		KeyUi->SetActorLocation({ 80, 155 });
+		KeyUi->SetTextSpriteName("Number.png");
+		KeyUi->SetOrder(ERenderOrder::UI);
+		KeyUi->SetTextScale({ 30, 30 });
+		KeyUi->SetValue(0);
+		KeyUi->HUDRenderer = CreateDefaultSubObject<USpriteRenderer>();
+		KeyUi->HUDRenderer->SetOrder(ERenderOrder::UI);
+		KeyUi->HUDRenderer->SetComponentScale({ 30, 30 });
+		KeyUi->HUDRenderer->SetComponentLocation({ -430, -118 });
+		KeyUi->HUDRenderer->CreateAnimation("HUD_Key", "HUDPickups.png", 1, 1, 0.1f);
+		KeyUi->HUDRenderer->ChangeAnimation("HUD_Key");
+	}
+
+	{
+		HeartUi = GetWorld()->SpawnActor<AUi>();
+		HeartUi->SetActorLocation({ 120, -120 });
+		HeartUi->SetTextSpriteName("Number.png");
+		HeartUi->SetOrder(ERenderOrder::UI);
+		
+		HeartUi->HUDRenderer = CreateDefaultSubObject<USpriteRenderer>();
+		HeartUi->HUDRenderer->SetOrder(ERenderOrder::UI);
+		HeartUi->HUDRenderer->SetComponentScale({ 30, 30 });
+		HeartUi->HUDRenderer->SetComponentLocation({ -350, -220 });
+		HeartUi->HUDRenderer->CreateAnimation("Full_Heart", "Ui_Hearts.png", 0, 0, 0.1f);
+		HeartUi->HUDRenderer->ChangeAnimation("Full_Heart");
+	}
+	{
+		SecondHeartUi = GetWorld()->SpawnActor<AUi>();
+		SecondHeartUi->SetActorLocation({ 120, -120 });
+		SecondHeartUi->SetTextSpriteName("Number.png");
+		SecondHeartUi->SetOrder(ERenderOrder::UI);
+
+		SecondHeartUi->HUDRenderer = CreateDefaultSubObject<USpriteRenderer>();
+		SecondHeartUi->HUDRenderer->SetOrder(ERenderOrder::UI);
+		SecondHeartUi->HUDRenderer->SetComponentScale({ 30, 30 });
+		SecondHeartUi->HUDRenderer->SetComponentLocation({ -325, -220 });
+		SecondHeartUi->HUDRenderer->CreateAnimation("Full_Heart", "Ui_Hearts.png", 0, 0, 0.1f);
+		SecondHeartUi->HUDRenderer->ChangeAnimation("Full_Heart");
+	}
+	{
+		ThirdHeartUi = GetWorld()->SpawnActor<AUi>();
+		ThirdHeartUi->SetActorLocation({ 120, -120 });
+		ThirdHeartUi->SetTextSpriteName("Number.png");
+		ThirdHeartUi->SetOrder(ERenderOrder::UI);
+
+		ThirdHeartUi->HUDRenderer = CreateDefaultSubObject<USpriteRenderer>();
+		ThirdHeartUi->HUDRenderer->SetOrder(ERenderOrder::UI);
+		ThirdHeartUi->HUDRenderer->SetComponentScale({ 30, 30 });
+		ThirdHeartUi->HUDRenderer->SetComponentLocation({ -300, -220 });
+		ThirdHeartUi->HUDRenderer->CreateAnimation("Full_Heart", "Ui_Hearts.png", 0, 0, 0.1f);
+		ThirdHeartUi->HUDRenderer->ChangeAnimation("Full_Heart");
+	}
 	
 	BGMPlayer = UEngineSound::Play("diptera sonata.ogg");
 	
@@ -148,26 +235,22 @@ void APlayGameMode::Tick(float _DeltaTime)
 		ALarryjr* Monster = GetWorld()->SpawnActor<ALarryjr>();
 	}
 
-	if (true == UEngineInput::GetInst().IsPress(VK_NUMPAD0))
-	{
-		CurRoom = Rooms[0];
-		
-	}
 	if (true == UEngineInput::GetInst().IsDown(VK_NUMPAD1))
 	{
-		CurRoom = Rooms[1];
+		APickUpBomb* Bomb = GetWorld()->SpawnActor<APickUpBomb>();
 	}
+	
 	if (true == UEngineInput::GetInst().IsDown(VK_NUMPAD2))
 	{
-		CurRoom = Rooms[2];
+		APickUpCoin* Coin = GetWorld()->SpawnActor<APickUpCoin>();
 	}
 	if (true == UEngineInput::GetInst().IsDown(VK_NUMPAD3))
 	{
-		CurRoom = Rooms[3];
+		APickUpKey* Key = GetWorld()->SpawnActor<APickUpKey>();
 	}
 	if (true == UEngineInput::GetInst().IsDown(VK_NUMPAD4))
 	{
-		CurRoom = Rooms[4];
+		APickUpHeart* Heart = GetWorld()->SpawnActor<APickUpHeart>();
 	}
 	if (true == UEngineInput::GetInst().IsDown(VK_NUMPAD5))
 	{
@@ -463,7 +546,7 @@ void APlayGameMode::CreateMap()
 	
 	if (Rooms[4] == CurRoom)
 	{
-		int RandomValue = Random.RandomInt(2, 2);
+		int RandomValue = Random.RandomInt(1, 2);
 
 		switch (RandomValue)
 		{
@@ -474,6 +557,8 @@ void APlayGameMode::CreateMap()
 			break;
 		case 2:
 			Monster7 = SetMonster<ALarryjr>({ CurRoom->RoomPos.X + 52.0f * (2.0f), CurRoom->RoomPos.Y - 52.0f * (0.0f) });
+			Monster7->MonsterRenderer->SetComponentLocation({ 0,-25 });
+			Monster7 -> ShadowRenderer->SetSpriteScale(0.5f);
 			Monster7->Part = LarryjrPart::HEAD;
 			Monster8 = SetMonster<ALarryjr>({ CurRoom->RoomPos.X + 52.0f * (1.0f), CurRoom->RoomPos.Y - 52.0f * (0.0f) });
 			Monster8->Part = LarryjrPart::BODY;
@@ -484,22 +569,22 @@ void APlayGameMode::CreateMap()
 			Monster11 = SetMonster<ALarryjr>({ CurRoom->RoomPos.X + 52.0f * (-2.0f), CurRoom->RoomPos.Y - 52.0f * (0.0f) });
 			Monster11->Part = LarryjrPart::TAIL;
 
-			Monster7->LinkedParts[Dir::Back] = Monster8;
-			Monster8->LinkedParts[Dir::Front] = Monster7;
-			Monster8->LinkedParts[Dir::Back] = Monster9;
-			Monster9->LinkedParts[Dir::Front] = Monster8;
-			Monster9->LinkedParts[Dir::Back] = Monster10;
-			Monster10->LinkedParts[Dir::Front] = Monster9;
-			Monster10->LinkedParts[Dir::Back] = Monster11;
-			Monster11->LinkedParts[Dir::Front] = Monster10;
-
+			Monster7->LinkedParts[LinkDir::Back] = Monster8;
+			Monster8->LinkedParts[LinkDir::Front] = Monster7;
+			Monster8->LinkedParts[LinkDir::Back] = Monster9;
+			Monster9->LinkedParts[LinkDir::Front] = Monster8;
+			Monster9->LinkedParts[LinkDir::Back] = Monster10;
+			Monster10->LinkedParts[LinkDir::Front] = Monster9;
+			Monster10->LinkedParts[LinkDir::Back] = Monster11;
+			Monster11->LinkedParts[LinkDir::Front] = Monster10;
+			break;
 		default:
 			break;
 		}
 	}
 	else
 	{
-		int RandomValue = Random.RandomInt(3, 3);
+		int RandomValue = Random.RandomInt(1, 5);
 		switch (RandomValue)
 		{
 		case 1:

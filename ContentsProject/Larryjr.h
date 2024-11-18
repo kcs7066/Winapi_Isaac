@@ -8,14 +8,14 @@
 
 enum class LarryjrState
 {
+	DirChange,
 	UpMove,
 	RightMove,
 	DownMove,
     LeftMove,
 	Poop,
-	Separate,
-	Die
-
+	Die,
+	DieStay
 };
 
 enum class LarryjrDir
@@ -34,7 +34,7 @@ enum class LarryjrPart
 
 };
 
-enum class Dir
+enum class LinkDir
 {
 	Front,
 	Back
@@ -56,13 +56,16 @@ public:
 	void BeginPlay() override;
 	void Tick(float _DeltaTime) override;
 
+	void DirChange(float _DeltaTime);
 	void UpMove(float _DeltaTime);
 	void RightMove(float _DeltaTime);
 	void DownMove(float _DeltaTime);
 	void LeftMove(float _DeltaTime);
 	void Poop(float _DeltaTime);
-	void Separate(float _DeltaTime);
+
 	void Die(float _DeltaTime);
+	void DieStay(float _DeltaTime);
+
 
 	int Poopkey(FVector2D _Pos)
 	{
@@ -79,14 +82,17 @@ public:
 
 	LarryjrPart Part = LarryjrPart::BODY;
 
-	std::map<Dir, ALarryjr*> LinkedParts;
+	std::map<LinkDir, ALarryjr*> LinkedParts;
+
+	//ALarryjr* LinkedFront = nullptr;
+	//ALarryjr* LinkedBack = nullptr;
 
 	std::map<int, FVector2D> PoopBind;
 	std::map<int, APoop*> PoopPos;
-	FVector2D HeadFuturePos = { 0.0f,0.0f };
-	FVector2D BodyFuturePos = { 0.0f,0.0f };
+	FVector2D FuturePos = { 0.0f,0.0f };
+	//FVector2D BodyFuturePos = { 0.0f,0.0f };
 	float Speed = 208.0f;
-	//FVector2D Dir = { 1,0 };
+	FVector2D Dir = { 1,0 };
 
 protected:
 

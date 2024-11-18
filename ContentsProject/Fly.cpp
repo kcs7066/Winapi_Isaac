@@ -54,6 +54,12 @@ void AFly::BeginPlay()
 	FSM.CreateState(FlyState::Die, std::bind(&AFly::Die, this, std::placeholders::_1),
 		[this]()
 		{
+		}
+	);
+
+	FSM.CreateState(FlyState::DieStay, std::bind(&AFly::DieStay, this, std::placeholders::_1),
+		[this]()
+		{
 			MonsterRenderer->ChangeAnimation("Die_Fly");
 		}
 	);
@@ -108,9 +114,16 @@ void AFly::Move(float _DeltaTime)
 
 }
 
+
 void AFly::Die(float _DeltaTime)
 {
 	DeathValue = true;
+	FSM.ChangeState(FlyState::DieStay);
+}
+
+void AFly::DieStay(float _DeltaTime)
+{
+
 	DelayTime += _DeltaTime;
 
 	if (DelayTime > 1.1f)

@@ -7,7 +7,8 @@
 enum class BombState
 {
 	Idle,
-	Explosion
+	Explosion,
+	ExplosionStay
 };
 
 class ABomb : public AActor
@@ -30,6 +31,7 @@ protected:
 
 	void Idle(float _DeltaTime);
 	void Explosion(float _DeltaTime);
+	void ExplosionStay(float _DeltaTime);
 	float DelayTime = 0.0f;
 
 

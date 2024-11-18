@@ -31,6 +31,12 @@
     <Filter Include="ContentsObject\Structure">
       <UniqueIdentifier>{d2c67f18-59b7-435a-a730-50f9f0e5020a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameMode">
+      <UniqueIdentifier>{ce87788f-1d91-499e-ae4f-bc452dee2ba6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ContentsObject\PickUp">
+      <UniqueIdentifier>{cbac22ce-3787-46a6-96be-d3f01a26919d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PreCompile.cpp">
@@ -49,9 +55,6 @@
       <Filter>ContentsObject\End</Filter>
     </ClCompile>
     <ClCompile Include="Room.cpp">
-      <Filter>ContentsObject\Play</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayGameMode.cpp">
       <Filter>ContentsObject\Play</Filter>
     </ClCompile>
     <ClCompile Include="TitleGameMode.cpp">
@@ -123,6 +126,27 @@
     <ClCompile Include="Larryjr.cpp">
       <Filter>ContentsObject\Monster</Filter>
     </ClCompile>
+    <ClCompile Include="PickUp.cpp">
+      <Filter>ContentsObject\Global</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayGameMode.cpp">
+      <Filter>GameMode</Filter>
+    </ClCompile>
+    <ClCompile Include="Ui.cpp">
+      <Filter>ContentsObject\Global</Filter>
+    </ClCompile>
+    <ClCompile Include="PickUpCoin.cpp">
+      <Filter>ContentsObject\PickUp</Filter>
+    </ClCompile>
+    <ClCompile Include="PickUpBomb.cpp">
+      <Filter>ContentsObject\PickUp</Filter>
+    </ClCompile>
+    <ClCompile Include="PickUpKey.cpp">
+      <Filter>ContentsObject\PickUp</Filter>
+    </ClCompile>
+    <ClCompile Include="PickUpHeart.cpp">
+      <Filter>ContentsObject\PickUp</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PreCompile.h">
@@ -141,9 +165,6 @@
       <Filter>ContentsObject\End</Filter>
     </ClInclude>
     <ClInclude Include="Room.h">
-      <Filter>ContentsObject\Play</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayGameMode.h">
       <Filter>ContentsObject\Play</Filter>
     </ClInclude>
     <ClInclude Include="TitleGameMode.h">
@@ -214,6 +235,27 @@
     </ClInclude>
     <ClInclude Include="Larryjr.h">
       <Filter>ContentsObject\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="PickUp.h">
+      <Filter>ContentsObject\Global</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayGameMode.h">
+      <Filter>GameMode</Filter>
+    </ClInclude>
+    <ClInclude Include="Ui.h">
+      <Filter>ContentsObject\Global</Filter>
+    </ClInclude>
+    <ClInclude Include="PickUpCoin.h">
+      <Filter>ContentsObject\PickUp</Filter>
+    </ClInclude>
+    <ClInclude Include="PickUpBomb.h">
+      <Filter>ContentsObject\PickUp</Filter>
+    </ClInclude>
+    <ClInclude Include="PickUpKey.h">
+      <Filter>ContentsObject\PickUp</Filter>
+    </ClInclude>
+    <ClInclude Include="PickUpHeart.h">
+      <Filter>ContentsObject\PickUp</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

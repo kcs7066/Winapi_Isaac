@@ -12,6 +12,9 @@ enum class ERenderOrder
 	STRUCTURE = -300,
 	SHADOW = -200,
 	MONSTER = -100,
+
+	PICKUP = -75,
+
 	BOMB = -50,
 	
 	PLAYER = 0,
@@ -25,6 +28,9 @@ enum class ECollisionGroup
 	Structure,
 	TrapDoor,
 	Tear,
+	Bomb,
+	PickUp,
+
 	
 	MonsterTear,
 	Door

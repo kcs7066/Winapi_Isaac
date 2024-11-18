@@ -52,6 +52,13 @@ public:
 	float Damage = 100.0f;
 	FVector2D PrevPos;
 
+	int Hp = 6;
+	int CoinNumber = 0;
+	int BombNumber = 1;
+	int KeyNumber = 0;
+
+
+
 protected:
 
 private:
@@ -65,6 +72,7 @@ private:
 
 	class USpriteRenderer* BodyRenderer = nullptr;
 	class USpriteRenderer* ShadowRenderer = nullptr;
+
 	UFSMStateManager FSM = UFSMStateManager();
 	int Test = 0;
 	float BulletCoolTime = 0.5f;
