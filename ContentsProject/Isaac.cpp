@@ -149,6 +149,8 @@ void AIsaac::Tick(float _DeltaTime)
 		UEngineDebug::CoreOutPutString("FPS : " + std::to_string(1.0f / _DeltaTime));
 		UEngineDebug::CoreOutPutString("PlayerPos : " + GetActorLocation().ToString());
 
+		APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
+
 		if (true == UEngineInput::GetInst().IsPress(VK_UP))
 		{
 			HeadRenderer->ChangeAnimation("Attack_UpHead");
@@ -177,7 +179,7 @@ void AIsaac::Tick(float _DeltaTime)
 		if (true == UEngineInput::GetInst().IsPress(VK_NUMPAD0))
 		{
 			BombNumber = 99;
-			APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
+
 			PlayGameMode->BombUi->SetValue(BombNumber);
 		}
 
@@ -190,55 +192,65 @@ void AIsaac::Tick(float _DeltaTime)
 					ABomb* NewBomb = GetWorld()->SpawnActor<ABomb>();
 					NewBomb->SetActorLocation(GetActorLocation());
 					BombCoolTime = 1.3f;
-					APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
+
 					BombNumber--;
 					PlayGameMode->BombUi->SetValue(BombNumber);
 				}
 			}
 		}
 
-		//if (6 == Hp)
-		//{
-		//	FirstHeartRenderer->ChangeAnimation("Full_Heart");
-		//	SecondHeartRenderer->ChangeAnimation("Full_Heart");
-		//	ThirdHeartRenderer->ChangeAnimation("Full_Heart");
-		//}
-		//else if (5 == Hp)
-		//{
-		//	FirstHeartRenderer->ChangeAnimation("Half_Heart");
-		//	SecondHeartRenderer->ChangeAnimation("Full_Heart");
-		//	ThirdHeartRenderer->ChangeAnimation("Full_Heart");
-		//}
-		//else if (4 == Hp)
-		//{
-		//	FirstHeartRenderer->ChangeAnimation("Empty_Heart");
-		//	SecondHeartRenderer->ChangeAnimation("Full_Heart");
-		//	ThirdHeartRenderer->ChangeAnimation("Full_Heart");
-		//}
-		//else if (3 == Hp)
-		//{
-		//	FirstHeartRenderer->ChangeAnimation("Empty_Heart");
-		//	SecondHeartRenderer->ChangeAnimation("Half_Heart");
-		//	ThirdHeartRenderer->ChangeAnimation("Full_Heart");
-		//}
-		//else if (2 == Hp)
-		//{
-		//	FirstHeartRenderer->ChangeAnimation("Empty_Heart");
-		//	SecondHeartRenderer->ChangeAnimation("Empty_Heart");
-		//	ThirdHeartRenderer->ChangeAnimation("Full_Heart");
-		//}
-		//else if (1 == Hp)
-		//{
-		//	FirstHeartRenderer->ChangeAnimation("Empty_Heart");
-		//	SecondHeartRenderer->ChangeAnimation("Empty_Heart");
-		//	ThirdHeartRenderer->ChangeAnimation("Half_Heart");
-		//}
-		//else
-		//{
-		//	FirstHeartRenderer->ChangeAnimation("Empty_Heart");
-		//	SecondHeartRenderer->ChangeAnimation("Empty_Heart");
-		//	ThirdHeartRenderer->ChangeAnimation("Empty_Heart");
-		//}
+		switch (Hp)
+		{
+
+		case 6:
+			PlayGameMode->HeartUi->HUDRenderer->ChangeAnimation("Full_Heart");
+			PlayGameMode->SecondHeartUi->HUDRenderer->ChangeAnimation("Full_Heart");
+			PlayGameMode->ThirdHeartUi->HUDRenderer->ChangeAnimation("Full_Heart");
+			break;
+
+		case 5:
+			PlayGameMode->HeartUi->HUDRenderer->ChangeAnimation("Full_Heart");
+			PlayGameMode->SecondHeartUi->HUDRenderer->ChangeAnimation("Full_Heart");
+			PlayGameMode->ThirdHeartUi->HUDRenderer->ChangeAnimation("Half_Heart");
+			break;
+
+		case 4:
+			PlayGameMode->HeartUi->HUDRenderer->ChangeAnimation("Full_Heart");
+			PlayGameMode->SecondHeartUi->HUDRenderer->ChangeAnimation("Full_Heart");
+			PlayGameMode->ThirdHeartUi->HUDRenderer->ChangeAnimation("Empty_Heart");
+			break;
+
+		case 3:
+			PlayGameMode->HeartUi->HUDRenderer->ChangeAnimation("Full_Heart");
+			PlayGameMode->SecondHeartUi->HUDRenderer->ChangeAnimation("Half_Heart");
+			PlayGameMode->ThirdHeartUi->HUDRenderer->ChangeAnimation("Empty_Heart");
+			break;
+
+		case 2:
+			PlayGameMode->HeartUi->HUDRenderer->ChangeAnimation("Full_Heart");
+			PlayGameMode->SecondHeartUi->HUDRenderer->ChangeAnimation("Empty_Heart");
+			PlayGameMode->ThirdHeartUi->HUDRenderer->ChangeAnimation("Empty_Heart");
+			break;
+
+		case 1:
+			PlayGameMode->HeartUi->HUDRenderer->ChangeAnimation("Half_Heart");
+			PlayGameMode->SecondHeartUi->HUDRenderer->ChangeAnimation("Empty_Heart");
+			PlayGameMode->ThirdHeartUi->HUDRenderer->ChangeAnimation("Empty_Heart");
+			break;
+
+		case 0:
+		case -1:
+			PlayGameMode->HeartUi->HUDRenderer->ChangeAnimation("Empty_Heart");
+			PlayGameMode->SecondHeartUi->HUDRenderer->ChangeAnimation("Empty_Heart");
+			PlayGameMode->ThirdHeartUi->HUDRenderer->ChangeAnimation("Empty_Heart");
+			break;
+
+		default:
+			PlayGameMode->HeartUi->HUDRenderer->ChangeAnimation("Full_Heart");
+			PlayGameMode->SecondHeartUi->HUDRenderer->ChangeAnimation("Full_Heart");
+			PlayGameMode->ThirdHeartUi->HUDRenderer->ChangeAnimation("Full_Heart");
+			break;
+		}
 
 		BulletCoolTime -= _DeltaTime;
 		BombCoolTime -= _DeltaTime;

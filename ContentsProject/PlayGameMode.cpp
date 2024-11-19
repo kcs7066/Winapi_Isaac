@@ -91,7 +91,7 @@ void APlayGameMode::BeginPlay()
 	CoinUi->HUDRenderer->SetCameraEffect(false);
 	CoinUi->HUDRenderer->SetOrder(ERenderOrder::UI);
 	CoinUi->HUDRenderer->SetComponentScale({ 30, 30 });
-	CoinUi->HUDRenderer->SetComponentLocation({ -430, -168 });
+	CoinUi->HUDRenderer->SetComponentLocation({ 50, 102 });
 	CoinUi->HUDRenderer->CreateAnimation("HUD_Coin", "HUDPickups.png", 0, 0, 0.1f);
 	CoinUi->HUDRenderer->ChangeAnimation("HUD_Coin");
 
@@ -104,9 +104,10 @@ void APlayGameMode::BeginPlay()
 		BombUi->SetTextScale({ 30, 30 });
 		BombUi->SetValue(1);
 		BombUi->HUDRenderer = CreateDefaultSubObject<USpriteRenderer>();
+		BombUi->HUDRenderer->SetCameraEffect(false);
 		BombUi->HUDRenderer->SetOrder(ERenderOrder::UI);
 		BombUi->HUDRenderer->SetComponentScale({ 30, 30 });
-		BombUi->HUDRenderer->SetComponentLocation({ -430, -143 });
+		BombUi->HUDRenderer->SetComponentLocation({ 50, 127 });
 		BombUi->HUDRenderer->CreateAnimation("HUD_Bomb", "HUDPickups.png", 8, 8, 0.1f);
 		BombUi->HUDRenderer->ChangeAnimation("HUD_Bomb");
 	}
@@ -118,9 +119,10 @@ void APlayGameMode::BeginPlay()
 		KeyUi->SetTextScale({ 30, 30 });
 		KeyUi->SetValue(0);
 		KeyUi->HUDRenderer = CreateDefaultSubObject<USpriteRenderer>();
+		KeyUi->HUDRenderer->SetCameraEffect(false);
 		KeyUi->HUDRenderer->SetOrder(ERenderOrder::UI);
 		KeyUi->HUDRenderer->SetComponentScale({ 30, 30 });
-		KeyUi->HUDRenderer->SetComponentLocation({ -430, -118 });
+		KeyUi->HUDRenderer->SetComponentLocation({ 50, 152 });
 		KeyUi->HUDRenderer->CreateAnimation("HUD_Key", "HUDPickups.png", 1, 1, 0.1f);
 		KeyUi->HUDRenderer->ChangeAnimation("HUD_Key");
 	}
@@ -132,10 +134,13 @@ void APlayGameMode::BeginPlay()
 		HeartUi->SetOrder(ERenderOrder::UI);
 		
 		HeartUi->HUDRenderer = CreateDefaultSubObject<USpriteRenderer>();
+		HeartUi->HUDRenderer->SetCameraEffect(false);
 		HeartUi->HUDRenderer->SetOrder(ERenderOrder::UI);
 		HeartUi->HUDRenderer->SetComponentScale({ 30, 30 });
-		HeartUi->HUDRenderer->SetComponentLocation({ -350, -220 });
+		HeartUi->HUDRenderer->SetComponentLocation({ 120, 45 });
 		HeartUi->HUDRenderer->CreateAnimation("Full_Heart", "Ui_Hearts.png", 0, 0, 0.1f);
+		HeartUi->HUDRenderer->CreateAnimation("Half_Heart", "Ui_Hearts.png", 1, 1, 0.1f);
+		HeartUi->HUDRenderer->CreateAnimation("Empty_Heart", "Ui_Hearts.png", 2, 2, 0.1f);
 		HeartUi->HUDRenderer->ChangeAnimation("Full_Heart");
 	}
 	{
@@ -145,10 +150,13 @@ void APlayGameMode::BeginPlay()
 		SecondHeartUi->SetOrder(ERenderOrder::UI);
 
 		SecondHeartUi->HUDRenderer = CreateDefaultSubObject<USpriteRenderer>();
+		SecondHeartUi->HUDRenderer->SetCameraEffect(false);
 		SecondHeartUi->HUDRenderer->SetOrder(ERenderOrder::UI);
 		SecondHeartUi->HUDRenderer->SetComponentScale({ 30, 30 });
-		SecondHeartUi->HUDRenderer->SetComponentLocation({ -325, -220 });
+		SecondHeartUi->HUDRenderer->SetComponentLocation({ 145, 45 });
 		SecondHeartUi->HUDRenderer->CreateAnimation("Full_Heart", "Ui_Hearts.png", 0, 0, 0.1f);
+		SecondHeartUi->HUDRenderer->CreateAnimation("Half_Heart", "Ui_Hearts.png", 1, 1, 0.1f);
+		SecondHeartUi->HUDRenderer->CreateAnimation("Empty_Heart", "Ui_Hearts.png", 2, 2, 0.1f);
 		SecondHeartUi->HUDRenderer->ChangeAnimation("Full_Heart");
 	}
 	{
@@ -158,10 +166,13 @@ void APlayGameMode::BeginPlay()
 		ThirdHeartUi->SetOrder(ERenderOrder::UI);
 
 		ThirdHeartUi->HUDRenderer = CreateDefaultSubObject<USpriteRenderer>();
+		ThirdHeartUi->HUDRenderer->SetCameraEffect(false);
 		ThirdHeartUi->HUDRenderer->SetOrder(ERenderOrder::UI);
 		ThirdHeartUi->HUDRenderer->SetComponentScale({ 30, 30 });
-		ThirdHeartUi->HUDRenderer->SetComponentLocation({ -300, -220 });
+		ThirdHeartUi->HUDRenderer->SetComponentLocation({ 170, 45 });
 		ThirdHeartUi->HUDRenderer->CreateAnimation("Full_Heart", "Ui_Hearts.png", 0, 0, 0.1f);
+		ThirdHeartUi->HUDRenderer->CreateAnimation("Half_Heart", "Ui_Hearts.png", 1, 1, 0.1f);
+		ThirdHeartUi->HUDRenderer->CreateAnimation("Empty_Heart", "Ui_Hearts.png", 2, 2, 0.1f);
 		ThirdHeartUi->HUDRenderer->ChangeAnimation("Full_Heart");
 	}
 	

@@ -104,12 +104,13 @@ void ABomb::Explosion(float _DeltaTime)
 		}
 	}
 
-	//AActor* Result = CollisionComponent->CollisionOnce(ECollisionGroup::Monster);
-	//if (nullptr != Result)
-	//{
-	//	AIsaac* NewResult = dynamic_cast<AIsaac*>(Result);
-	//	NewResult->Hp -= 2;
-	//}
+	AActor* Result = CollisionComponent->CollisionOnce(ECollisionGroup::Player);
+	if (nullptr != Result)
+	{
+		AIsaac* NewResult = dynamic_cast<AIsaac*>(Result);
+		NewResult->Hp -= 2;
+	}
+
 	FSM.ChangeState(BombState::ExplosionStay);
 }
 
