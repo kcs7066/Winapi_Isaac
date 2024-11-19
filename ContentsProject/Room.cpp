@@ -12,7 +12,15 @@ ARoom::ARoom()
 	RoomRenderer->SetOrder(ERenderOrder::BACKGROUND);
 	RoomRenderer->SetSprite("Room_01.png");
     RoomRenderer->SetSpriteScale(1.0f);
-	
+
+	MiniMapRenderer = CreateDefaultSubObject<USpriteRenderer>();
+	MiniMapRenderer->SetCameraEffect(false);
+	MiniMapRenderer->SetOrder(ERenderOrder::UI);
+	MiniMapRenderer->SetComponentScale({30,30});
+	MiniMapRenderer->CreateAnimation("Clear", "Minimap2.png", 0, 0, 0.1f);
+	MiniMapRenderer->CreateAnimation("Now", "Minimap2.png", 1, 1, 0.1f);
+	MiniMapRenderer->CreateAnimation("Dark", "Minimap2.png", 2, 2, 0.1f);
+	MiniMapRenderer->ChangeAnimation("Dark");
 }
 
 ARoom::~ARoom()

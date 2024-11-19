@@ -1,7 +1,6 @@
 #pragma once
 #include "Structure.h"
-#include <EngineCore/SpriteRenderer.h>
-#include <EngineCore/2DCollision.h>
+
 
 class ARock : public AStructure
 {
@@ -20,7 +19,5 @@ protected:
 
 private:
 
-	USpriteRenderer* RockRenderer;
-	U2DCollision* CollisionComponent;
 };
 

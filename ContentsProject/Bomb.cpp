@@ -4,7 +4,10 @@
 #include <EngineCore/SpriteRenderer.h>
 #include "Monster.h"
 #include "Isaac.h"
-
+#include "Structure.h"
+#include "Poop.h"
+#include "Rock.h"
+ 
 ABomb::ABomb()
 {
 
@@ -89,7 +92,7 @@ void ABomb::Idle(float _DeltaTime)
 void ABomb::Explosion(float _DeltaTime)
 {
 
-	std::vector<AActor*> Results = CollisionComponent->CollisionAll(ECollisionGroup::Monster, { 0,0 });
+	std::vector<AActor*> Results = CollisionComponent->CollisionAll(ECollisionGroup::Monster, FVector2D::ZERO);
 
 	if (false == Results.empty())
 	{
@@ -103,13 +106,45 @@ void ABomb::Explosion(float _DeltaTime)
 			NewResult->Hp -= 60.0f;
 		}
 	}
-
+	
 	AActor* Result = CollisionComponent->CollisionOnce(ECollisionGroup::Player);
 	if (nullptr != Result)
 	{
 		AIsaac* NewResult = dynamic_cast<AIsaac*>(Result);
-		NewResult->Hp -= 2;
-		NewResult->HitStart();
+
+		if (0.0f >= NewResult->HitCoolTime)
+		{
+			NewResult->Hp -= 2;
+			NewResult->HitStart();
+		}
+	}
+
+	std::vector<AActor*> StructureResults = CollisionComponent->CollisionAll(ECollisionGroup::Structure, FVector2D::ZERO);
+	if (false == StructureResults.empty())
+	{
+
+		std::vector<AActor*>::iterator StartIter = StructureResults.begin();
+		std::vector<AActor*>::iterator EndIter = StructureResults.end();
+
+		for (; StartIter != EndIter; ++StartIter)
+		{
+			AStructure* NewStructureResult = dynamic_cast<AStructure*>(*StartIter);
+			NewStructureResult->Hp = 0.0f;
+
+			APoop* ResultPoop = dynamic_cast<APoop*>(NewStructureResult);
+			ARock* ResultRock = dynamic_cast<ARock*>(NewStructureResult);
+			if (nullptr != ResultPoop)
+			{
+					ResultPoop->StructureRenderer->ChangeAnimation("Poop0");
+					ResultPoop->CollisionComponent->SetActive(false);
+			}
+			else if(nullptr != ResultRock)
+			{
+				ResultRock->StructureRenderer->ChangeAnimation("Rock0");
+				ResultRock->CollisionComponent->SetActive(false);
+			}
+
+		}
 	}
 
 	FSM.ChangeState(BombState::ExplosionStay);

@@ -1,8 +1,6 @@
 #pragma once
 #include "Monster.h"
-#include <EngineCore/SpriteRenderer.h>
-#include <EngineBase/FSMStateManager.h>
-#include <EngineCore/2DCollision.h>
+
 
 enum class RoundWormState
 {
@@ -37,6 +35,8 @@ public:
 	void Move(float _DeltaTime);
 	void Die(float _DeltaTime);
 	void DieStart();
+
+	bool FindPos = false;
 
 protected:
 

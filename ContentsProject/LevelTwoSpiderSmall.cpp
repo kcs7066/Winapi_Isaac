@@ -5,39 +5,28 @@
 #include <EngineBase/EngineMath.h>
 #include "PlayGameMode.h"
 #include "Spider.h"
+#include <EngineCore/SpriteRenderer.h>
+#include <EngineBase/FSMStateManager.h>
+#include <EngineCore/2DCollision.h>
 
 
 ALevelTwoSpiderSmall::ALevelTwoSpiderSmall()
+	: AMonster()
 {
-	SetActorLocation({ 200, 0 });
+	MonsterRenderer->SetComponentScale({ 100, 65 });
+	MonsterRenderer->SetComponentLocation({ 0, -20 });
 
-	{
-		MonsterRenderer = CreateDefaultSubObject<USpriteRenderer>();
-		MonsterRenderer->SetOrder(ERenderOrder::MONSTER);
-
-		MonsterRenderer->SetComponentScale({ 100, 65	 });
-		MonsterRenderer->SetComponentLocation({ 0, -20 });
-
-
-		MonsterRenderer->CreateAnimation("Idle_LevelTwoSpiderSmall", "Monster_LevelTwoSpiderSmall.png", 4, 4, 0.1f);
-		MonsterRenderer->CreateAnimation("Move_LevelTwoSpiderSmall", "Monster_LevelTwoSpiderSmall.png", 0, 3, 0.1f);
-		MonsterRenderer->CreateAnimation("Attack_LevelTwoSpiderSmall", "Monster_LevelTwoSpiderSmall.png", 
+	MonsterRenderer->CreateAnimation("Idle_LevelTwoSpiderSmall", "Monster_LevelTwoSpiderSmall.png", 4, 4, 0.1f);
+	MonsterRenderer->CreateAnimation("Move_LevelTwoSpiderSmall", "Monster_LevelTwoSpiderSmall.png", 0, 3, 0.1f);
+	MonsterRenderer->CreateAnimation("Attack_LevelTwoSpiderSmall", "Monster_LevelTwoSpiderSmall.png", 
 			{5, 6, 7, 6, 5}, { 0.1f, 0.1f, 0.1f, 0.1f, 0.1f });
-		MonsterRenderer->CreateAnimation("Die_LevelTwoSpiderSmall", "BloodPoof.png", 0, 10, 0.1f);
+	MonsterRenderer->CreateAnimation("Die_LevelTwoSpiderSmall", "BloodPoof.png", 0, 10, 0.1f);
 
-
-
-		MonsterRenderer->ChangeAnimation("Idle_LevelTwoSpiderSmall");
-	}
-
-	ShadowRenderer = CreateDefaultSubObject<USpriteRenderer>();
-	ShadowRenderer->SetOrder(ERenderOrder::SHADOW);
-	ShadowRenderer->SetSprite("Shadow.png");
+	MonsterRenderer->ChangeAnimation("Idle_LevelTwoSpiderSmall");
+	
 	ShadowRenderer->SetSpriteScale(0.25f);
 
-
-
-	CollisionComponent->SetComponentScale({ 80, 50 });
+	CollisionComponent->SetComponentScale({ 35, 35 });
 
 	DebugOn();
 

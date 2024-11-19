@@ -28,10 +28,32 @@
 #include "PickUpCoin.h"
 #include "PickUpKey.h"
 #include "PickUpHeart.h"
+#include "TheInnerEye.h"
 
 
 APlayGameMode::APlayGameMode()
 {
+	MapRenderer = CreateDefaultSubObject<USpriteRenderer>();
+	MapRenderer->SetCameraEffect(false);
+	MapRenderer->SetOrder(ERenderOrder::MAPBOARD);
+	MapRenderer->SetSprite("Minimap1.png");
+	MapRenderer->SetSpriteScale(2.0f);
+	MapRenderer->SetComponentLocation({850,80});
+
+	BossMiniMapRenderer = CreateDefaultSubObject<USpriteRenderer>();
+	BossMiniMapRenderer->SetCameraEffect(false);
+	BossMiniMapRenderer->SetOrder(ERenderOrder::ICON);
+	BossMiniMapRenderer->SetComponentScale({ 30,30 });
+	BossMiniMapRenderer->CreateAnimation("Boss", "Minimap_Icons.png", 9, 9, 0.1f);	
+	BossMiniMapRenderer->ChangeAnimation("Boss");
+	
+
+	GoldMiniMapRenderer = CreateDefaultSubObject<USpriteRenderer>();
+	GoldMiniMapRenderer->SetCameraEffect(false);
+	GoldMiniMapRenderer->SetOrder(ERenderOrder::ICON);
+	GoldMiniMapRenderer->SetComponentScale({ 30,30 });
+	GoldMiniMapRenderer->CreateAnimation("Gold", "Minimap_Icons.png", 4, 4, 0.1f);
+	GoldMiniMapRenderer->ChangeAnimation("Gold");
 }
 
 APlayGameMode::~APlayGameMode()
@@ -60,6 +82,8 @@ void APlayGameMode::BeginPlay()
 	CreateRoom("AdditionalRoom1", RoomBind[5]);
 	CreateRoom("AdditionalRoom2", RoomBind[6]);
 	CreateRoom("GoldRoom", RoomBind[7], RoomType::GOLD);
+
+	Rooms[0]->MiniMapRenderer->ChangeAnimation("Now");
 
 	Rooms[0]->RoomRenderer->SetSprite("FirstRoom.png");
 	Rooms[4]->RoomRenderer->SetSprite("Room_03.png");
@@ -265,7 +289,7 @@ void APlayGameMode::Tick(float _DeltaTime)
 	}
 	if (true == UEngineInput::GetInst().IsDown(VK_NUMPAD5))
 	{
-		CurRoom = Rooms[5];
+		ATheInnerEye* Item = GetWorld()->SpawnActor<ATheInnerEye>();
 	}
 	if (true == UEngineInput::GetInst().IsDown(VK_NUMPAD6))
 	{
@@ -295,6 +319,7 @@ void APlayGameMode::Tick(float _DeltaTime)
 		if (1.0f <= RoomMoveCameraTime)
 		{
 			RoomMoveCameraTime = 0.0f;
+			PrevRoom->MiniMapRenderer->ChangeAnimation("Clear");
 			PrevRoom = CurRoom;
 
 			GetWorld()->SetCameraPos({ CurRoom->RoomPos.X - 480.0f ,CurRoom->RoomPos.Y - 270.0f });
@@ -310,13 +335,23 @@ void APlayGameMode::Tick(float _DeltaTime)
 
 			if (1 == CurRoom->CanSpawnNumber)
 			{
-				if(RoomType::GOLD != CurRoom->Type)
-				CreateMap();
-				CurRoom->RoomClear = false;
-				CurRoom->CanSpawnNumber--;
+				if (RoomType::GOLD == CurRoom->Type)
+				{
+					CreateItem();
+					CurRoom->CanSpawnNumber--;
+				}
+
+				else
+				{
+					CreateMap();
+					CurRoom->RoomClear = false;
+					CurRoom->CanSpawnNumber--;
+				}
 
 			}
 
+
+			CurRoom->MiniMapRenderer->ChangeAnimation("Now");
 
 		}
 
@@ -508,6 +543,15 @@ void APlayGameMode::CreateRoom(std::string_view _RoomName,FVector2D _Pos, RoomTy
 	
 	
 	NewRoom->NomalizedRoomPos = _Pos;
+	NewRoom->MiniMapRenderer->SetComponentLocation({ 850.0f + (_Pos.X * 16.2f) , 80.0f + (_Pos.Y * 14.4f) });
+	if (RoomType::GOLD == _Type)
+	{
+		GoldMiniMapRenderer->SetComponentLocation({ 854.0f + (_Pos.X * 16.2f) , 84.0f + (_Pos.Y * 14.4f) });
+	}
+	else if (RoomType::BOSS == _Type)
+	{
+		BossMiniMapRenderer->SetComponentLocation({ 854.0f + (_Pos.X * 16.2f) , 84.0f + (_Pos.Y * 14.4f) });
+	}
 	NewRoom->RoomPos = { 960.0f * _Pos.X , 540.0f * _Pos.Y };
 	NewRoom->RoomRenderer->SetComponentLocation(NewRoom->RoomPos);
 	NewRoom->Type = _Type;
@@ -550,6 +594,12 @@ void APlayGameMode::Link(ARoom* _Room)
 		_Room->CreateDoor(RoomDir::LEFT, _Room->RoomPos, Rooms[Key]);
 	}
 
+}
+
+void APlayGameMode::CreateItem()
+{
+	ATheInnerEye* Item = GetWorld()->SpawnActor<ATheInnerEye>();
+	Item->SetActorLocation(CurRoom->RoomPos);
 }
 
 void APlayGameMode::CreateMap()

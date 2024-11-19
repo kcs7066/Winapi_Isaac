@@ -3,29 +3,21 @@
 
 #include <EnginePlatform/EngineInput.h>
 #include "PlayGameMode.h"
-
+#include <EngineCore/SpriteRenderer.h>
+#include <EngineBase/FSMStateManager.h>
+#include <EngineCore/2DCollision.h>
 
 
 AFly::AFly()
+	: AMonster()
 {
-	SetActorLocation({ 200, 0 });
-
+	MonsterRenderer->SetComponentScale({ 150, 150 });
+	MonsterRenderer->SetComponentLocation({ 0,-40 });
+	MonsterRenderer->CreateAnimation("Move_Fly", "Monster_Fly.png", 0, 1, 0.1f);
+	MonsterRenderer->ChangeAnimation("Move_Fly");
+	MonsterRenderer->CreateAnimation("Die_Fly", "BloodPoof.png", 0, 10, 0.1f);
 	
-		MonsterRenderer = CreateDefaultSubObject<USpriteRenderer>();
-		MonsterRenderer->SetOrder(ERenderOrder::MONSTER);
-
-		MonsterRenderer->SetComponentScale({ 150, 150 });
-		MonsterRenderer->SetComponentLocation({ 0,-40 });
-		MonsterRenderer->CreateAnimation("Move_Fly", "Monster_Fly.png", 0, 1, 0.1f);
-		MonsterRenderer->ChangeAnimation("Move_Fly");
-		MonsterRenderer->CreateAnimation("Die_Fly", "BloodPoof.png", 0, 10, 0.1f);
-	
-		ShadowRenderer = CreateDefaultSubObject<USpriteRenderer>();
-		ShadowRenderer->SetOrder(ERenderOrder::SHADOW);
-		ShadowRenderer->SetSprite("Shadow.png");
-		ShadowRenderer->SetSpriteScale(0.3f);
-
-
+	ShadowRenderer->SetSpriteScale(0.3f);
 
 	CollisionComponent->SetComponentScale({ 55, 55 });
 

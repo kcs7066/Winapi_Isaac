@@ -1,8 +1,6 @@
 #pragma once
 #include "Monster.h"
-#include <EngineCore/SpriteRenderer.h>
-#include <EngineBase/FSMStateManager.h>
-#include <EngineCore/2DCollision.h>
+
 
 enum class PurpleFlyState
 {

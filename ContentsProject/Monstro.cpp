@@ -5,43 +5,33 @@
 #include "MonsterTear.h"
 #include "PlayGameMode.h"
 #include "TrapDoor.h"
+#include <EngineCore/SpriteRenderer.h>
+#include <EngineBase/FSMStateManager.h>
+#include <EngineCore/2DCollision.h>
 
 
 AMonstro::AMonstro()
+	: AMonster()
 {
-	SetActorLocation({ 200, 0 });
+	MonsterRenderer->SetComponentScale({ 250, 250 });
+	MonsterRenderer->SetComponentLocation({ 0,-40 });
 
-	{
-		MonsterRenderer = CreateDefaultSubObject<USpriteRenderer>();
-		MonsterRenderer->SetOrder(ERenderOrder::MONSTER);
+	MonsterRenderer->CreateAnimation("Idle_Monstro", "Boss_Monstro.png", 0, 0, 0.1f);
+	MonsterRenderer->CreateAnimation("Move_Monstro", "Boss_Monstro.png", 1, 2, 0.5f);
+	MonsterRenderer->CreateAnimation("Attack_Monstro", "Boss_Monstro.png", { 3,4 }, { 0.5f,0.5f });
+	MonsterRenderer->CreateAnimation("Jump_Monstro", "Boss_Monstro.png", { 5,9,6,7 }, { 0.3f,1.5f,0.3f,0.5f });
+	MonsterRenderer->CreateAnimation("Die_Monstro", "BloodPoof.png", 0, 10, 0.1f);
 
-		MonsterRenderer->SetComponentScale({ 250, 250 });
-		MonsterRenderer->SetComponentLocation({ 0,-40 });
+	MonsterRenderer->ChangeAnimation("Idle_Monstro");
 
-		MonsterRenderer->CreateAnimation("Idle_Monstro", "Boss_Monstro.png", 0, 0, 0.1f);
-		MonsterRenderer->CreateAnimation("Move_Monstro", "Boss_Monstro.png", 1, 2, 0.5f);
-		MonsterRenderer->CreateAnimation("Attack_Monstro", "Boss_Monstro.png", { 3,4 }, { 0.5f,0.5f });
-		MonsterRenderer->CreateAnimation("Jump_Monstro", "Boss_Monstro.png", { 5,9,6,7 }, { 0.3f,1.5f,0.3f,0.5f });
-		MonsterRenderer->CreateAnimation("Die_Monstro", "BloodPoof.png", 0, 10, 0.1f);
-
-		MonsterRenderer->ChangeAnimation("Idle_Monstro");
-	}
-
-	ShadowRenderer = CreateDefaultSubObject<USpriteRenderer>();
-	ShadowRenderer->SetOrder(ERenderOrder::SHADOW);
-	ShadowRenderer->SetSprite("Shadow.png");
 	ShadowRenderer->SetSpriteScale(1.0f);
 
-
-	
 	CollisionComponent->SetComponentScale({ 100, 100 });
 	CollisionComponent->SetComponentLocation({ 0, -10 });
-
 
 	DebugOn();
 
 	SetHp(250.0f);
-
 }
 
 AMonstro::~AMonstro()

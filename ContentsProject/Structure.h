@@ -1,6 +1,7 @@
 #pragma once
 #include <EngineCore/Actor.h>
 
+
 class AStructure : public AActor
 {
 public:
@@ -15,6 +16,10 @@ public:
 	AStructure& operator=(AStructure&& _Other) noexcept = delete;
 
 	FVector2D Pos;
+	class USpriteRenderer* StructureRenderer;
+	class U2DCollision* CollisionComponent;
+
+	int Hp = 4;
 
 protected:
 

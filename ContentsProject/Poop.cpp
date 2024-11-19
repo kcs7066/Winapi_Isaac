@@ -1,25 +1,21 @@
 #include "PreCompile.h"
 #include "Poop.h"
 #include "ContentsEnum.h"
+#include <EngineCore/SpriteRenderer.h>
+#include <EngineCore/2DCollision.h>
 
 APoop::APoop()
+	:AStructure()
 {
-
-	{
-		PoopRenderer = CreateDefaultSubObject<USpriteRenderer>();
-		PoopRenderer->SetOrder(ERenderOrder::STRUCTURE);
-		PoopRenderer->SetComponentScale({ 75, 75 });
-		PoopRenderer->CreateAnimation("Idle_Poop", "Structure_Poop_1.png", 0, 0, 0.1f);
-		PoopRenderer->ChangeAnimation("Idle_Poop");
-	}
-
-
-
-	CollisionComponent = CreateDefaultSubObject<U2DCollision>();
+	StructureRenderer->SetComponentScale({ 75, 75 });
+	StructureRenderer->CreateAnimation("Poop4", "Structure_Poop_1.png", 0, 0, 0.1f);
+	StructureRenderer->CreateAnimation("Poop3", "Structure_Poop_1.png", 1, 1, 0.1f);
+	StructureRenderer->CreateAnimation("Poop2", "Structure_Poop_1.png", 2, 2, 0.1f);
+	StructureRenderer->CreateAnimation("Poop1", "Structure_Poop_1.png", 3, 3, 0.1f);
+	StructureRenderer->CreateAnimation("Poop0", "Structure_Poop_1.png", 4, 4, 0.1f);
+	StructureRenderer->ChangeAnimation("Poop4");
 	
 	CollisionComponent->SetComponentScale({ 50,50 });
-	CollisionComponent->SetCollisionGroup(ECollisionGroup::Structure);
-	CollisionComponent->SetCollisionType(ECollisionType::Rect);
 
 	DebugOn();
 }
@@ -27,4 +23,5 @@ APoop::APoop()
 APoop::~APoop()
 {
 }
+
 

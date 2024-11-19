@@ -3,32 +3,26 @@
 
 #include <EnginePlatform/EngineInput.h>
 #include "PlayGameMode.h"
-
+#include <EngineCore/SpriteRenderer.h>
+#include <EngineBase/FSMStateManager.h>
+#include <EngineCore/2DCollision.h>
 
 ASpider::ASpider()
+	: AMonster()
 {
-	SetActorLocation({ 200, 0 });
+	MonsterRenderer->SetComponentScale({ 100, 100 });
+	MonsterRenderer->SetComponentLocation({ 0, -5 });
 
-	{
-		MonsterRenderer = CreateDefaultSubObject<USpriteRenderer>();
-		MonsterRenderer->SetOrder(ERenderOrder::MONSTER);
+	MonsterRenderer->CreateAnimation("Idle_Spider", "Monster_Spider.png", 0, 0, 0.1f);
+	MonsterRenderer->CreateAnimation("Move_Spider_Right", "Monster_Spider.png", 2, 3, 0.1f);
+	MonsterRenderer->CreateAnimation("Move_Spider_Left", "Monster_Spider.png", 6, 7, 0.1f);
+	MonsterRenderer->CreateAnimation("Move_Spider_Up", "Monster_Spider.png", 4, 5, 0.1f);
+	MonsterRenderer->CreateAnimation("Move_Spider_Down", "Monster_Spider.png", 0, 1, 0.1f);
+	MonsterRenderer->CreateAnimation("Die_Spider", "BloodPoof.png", 0, 10, 0.1f);
 
-		MonsterRenderer->SetComponentScale({ 100, 100 });
-		MonsterRenderer->SetComponentLocation({ 0, -5 });
+	MonsterRenderer->ChangeAnimation("Idle_Spider");
+	
 
-		MonsterRenderer->CreateAnimation("Idle_Spider", "Monster_Spider.png", 0, 0, 0.1f);
-		MonsterRenderer->CreateAnimation("Move_Spider_Right", "Monster_Spider.png", 2, 3, 0.1f);
-		MonsterRenderer->CreateAnimation("Move_Spider_Left", "Monster_Spider.png", 6, 7, 0.1f);
-		MonsterRenderer->CreateAnimation("Move_Spider_Up", "Monster_Spider.png", 4, 5, 0.1f);
-		MonsterRenderer->CreateAnimation("Move_Spider_Down", "Monster_Spider.png", 0, 1, 0.1f);
-		MonsterRenderer->CreateAnimation("Die_Spider", "BloodPoof.png", 0, 10, 0.1f);
-
-		MonsterRenderer->ChangeAnimation("Idle_Spider");
-	}
-
-	ShadowRenderer = CreateDefaultSubObject<USpriteRenderer>();
-	ShadowRenderer->SetOrder(ERenderOrder::SHADOW);
-	ShadowRenderer->SetSprite("Shadow.png");
 	ShadowRenderer->SetSpriteScale(0.2f);
 
 	CollisionComponent->SetComponentScale({ 25, 25 });

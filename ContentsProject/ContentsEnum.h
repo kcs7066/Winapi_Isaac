@@ -16,9 +16,13 @@ enum class ERenderOrder
 	PICKUP = -75,
 
 	BOMB = -50,
+
+	ITEM = -25,
 	
 	PLAYER = 0,
-	UI = 10000
+	MAPBOARD = 9999,
+	UI = 10000,
+	ICON = 10001
 };
 
 enum class ECollisionGroup
@@ -30,6 +34,7 @@ enum class ECollisionGroup
 	Tear,
 	Bomb,
 	PickUp,
+	Item,
 
 	
 	MonsterTear,

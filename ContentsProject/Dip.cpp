@@ -1,43 +1,34 @@
 #include "PreCompile.h"
 #include "Dip.h"
-
+#include <EngineCore/SpriteRenderer.h>
+#include <EngineBase/FSMStateManager.h>
+#include <EngineCore/2DCollision.h>
 #include <EnginePlatform/EngineInput.h>
 #include <EngineBase/EngineMath.h>
 #include "PlayGameMode.h"
 #include "Structure.h"
+#include "ContentsEnum.h"
 
 
 
 ADip::ADip()
 	: AMonster()
 {
-	SetActorLocation({ 200, 0 });
+	MonsterRenderer->SetComponentScale({ 70, 70 });
+	MonsterRenderer->SetComponentLocation({ 0, -15 });
 
-	{
-		MonsterRenderer = CreateDefaultSubObject<USpriteRenderer>();
-		MonsterRenderer->SetOrder(ERenderOrder::MONSTER);
+	MonsterRenderer->CreateAnimation("Idle_Dip_Left", "Monster_Dip_Left.png", 0, 1, 0.1f);
+	MonsterRenderer->CreateAnimation("Idle_Dip_Right", "Monster_Dip_Right.png", 0, 1, 0.1f);
+	MonsterRenderer->CreateAnimation("Move_Dip_Left", "Monster_Dip_Left.png", 0, 4, 0.1f);
+	MonsterRenderer->CreateAnimation("Move_Dip_Right", "Monster_Dip_Right.png", 0, 4, 0.1f);
+	MonsterRenderer->CreateAnimation("Die_Dip", "BloodPoof.png", 0, 10, 0.1f);
 
-		MonsterRenderer->SetComponentScale({ 70, 70 });
-		MonsterRenderer->SetComponentLocation({ 0, -15 });
-
-		MonsterRenderer->CreateAnimation("Idle_Dip_Left", "Monster_Dip_Left.png", 0, 1, 0.1f);
-		MonsterRenderer->CreateAnimation("Idle_Dip_Right", "Monster_Dip_Right.png", 0, 1, 0.1f);
-		MonsterRenderer->CreateAnimation("Move_Dip_Left", "Monster_Dip_Left.png", 0, 4, 0.1f);
-		MonsterRenderer->CreateAnimation("Move_Dip_Right", "Monster_Dip_Right.png", 0, 4, 0.1f);
-		MonsterRenderer->CreateAnimation("Die_Dip", "BloodPoof.png", 0, 10, 0.1f);
+	MonsterRenderer->ChangeAnimation("Idle_Dip_Right");
 
 
-		MonsterRenderer->ChangeAnimation("Idle_Dip_Right");
-	}
-
-	ShadowRenderer = CreateDefaultSubObject<USpriteRenderer>();
-	ShadowRenderer->SetOrder(ERenderOrder::SHADOW);
-	ShadowRenderer->SetSprite("Shadow.png");
 	ShadowRenderer->SetSpriteScale(0.25f);
 
-
 	CollisionComponent->SetComponentScale({ 30, 30 });
-
 
 	DebugOn();
 

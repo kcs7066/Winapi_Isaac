@@ -4,22 +4,21 @@
 #include <EnginePlatform/EngineInput.h>
 #include "PlayGameMode.h"
 
+#include <EngineCore/SpriteRenderer.h>
+#include <EngineBase/FSMStateManager.h>
+#include <EngineCore/2DCollision.h>
+
 
 APurpleFly::APurpleFly()
+	: AMonster()
 {
-	SetActorLocation({ 200, 0 });
+	MonsterRenderer->SetComponentScale({ 100, 100 });
+	MonsterRenderer->CreateAnimation("Move_PurpleFly", "Monster_Fly.png", 12,13, 0.1f);
+	MonsterRenderer->CreateAnimation("Die_PurpleFly", "BloodPoof.png", 0, 10, 0.1f);
 
-	{
-		MonsterRenderer = CreateDefaultSubObject<USpriteRenderer>();
-		MonsterRenderer->SetOrder(ERenderOrder::MONSTER);
+	MonsterRenderer->ChangeAnimation("Move_PurpleFly");
 
-		MonsterRenderer->SetComponentScale({ 100, 100 });
-		MonsterRenderer->CreateAnimation("Move_PurpleFly", "Monster_Fly.png", 12,13, 0.1f);
-		MonsterRenderer->CreateAnimation("Die_PurpleFly", "BloodPoof.png", 0, 10, 0.1f);
-
-		MonsterRenderer->ChangeAnimation("Move_PurpleFly");
-
-	}
+	ShadowRenderer->SetSpriteScale(0.3f);
 
 	CollisionComponent->SetComponentScale({ 50, 70 });
 

@@ -92,6 +92,31 @@ void ATear::Fly(float _DeltaTime)
 		AActor* ResultStructure = CollisionComponent->CollisionOnce(ECollisionGroup::Structure);
 		if (nullptr != ResultStructure)
 		{
+			APoop* ResultPoop = dynamic_cast<APoop*>(ResultStructure);
+			if (nullptr != ResultPoop)
+			{
+				ResultPoop->Hp--;
+				switch (ResultPoop->Hp)
+				{
+				case 4:
+					ResultPoop->StructureRenderer->ChangeAnimation("Poop4");
+						break;
+				case 3:
+					ResultPoop->StructureRenderer->ChangeAnimation("Poop3");
+					break;
+				case 2:
+					ResultPoop->StructureRenderer->ChangeAnimation("Poop2");
+					break;
+				case 1:
+					ResultPoop->StructureRenderer->ChangeAnimation("Poop1");
+					break;
+				default:
+					ResultPoop->StructureRenderer->ChangeAnimation("Poop0");
+					ResultPoop->CollisionComponent->SetActive(false);
+					break;
+				}
+            }
+
 			DelayTime = 0.0f;
 			FSM.ChangeState(TearState::Poof);
 			BGMPlayer = UEngineSound::Play("tear block.wav");

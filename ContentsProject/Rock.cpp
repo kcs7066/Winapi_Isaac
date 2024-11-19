@@ -1,25 +1,17 @@
 #include "PreCompile.h"
 #include "Rock.h"
 #include "ContentsEnum.h"
+#include <EngineCore/SpriteRenderer.h>
+#include <EngineCore/2DCollision.h>
 
 ARock::ARock()
 {
+	StructureRenderer->SetComponentScale({ 75, 75 });
+	StructureRenderer->CreateAnimation("Rock4", "Structure_Rock.png", 0, 0, 0.1f);
+	StructureRenderer->CreateAnimation("Rock0", "Structure_Rock.png", 3, 3, 0.1f);
+	StructureRenderer->ChangeAnimation("Rock4");
 
-
-	{
-		RockRenderer = CreateDefaultSubObject<USpriteRenderer>();
-		RockRenderer->SetOrder(ERenderOrder::STRUCTURE);
-		RockRenderer->SetComponentScale({ 75, 75 });
-		RockRenderer->CreateAnimation("Idle_Rock", "Structure_Rock.png", 0, 0, 0.1f);
-		RockRenderer->ChangeAnimation("Idle_Rock");
-	}
-
-
-
-	CollisionComponent = CreateDefaultSubObject<U2DCollision>();
 	CollisionComponent->SetComponentScale({ 50,50 });
-	CollisionComponent->SetCollisionGroup(ECollisionGroup::Structure);
-	CollisionComponent->SetCollisionType(ECollisionType::Rect);
 
 	DebugOn();
 }

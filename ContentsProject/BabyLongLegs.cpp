@@ -1,6 +1,8 @@
 #include "PreCompile.h"
 #include "BabyLongLegs.h"
-
+#include <EngineCore/SpriteRenderer.h>
+#include <EngineBase/FSMStateManager.h>
+#include <EngineCore/2DCollision.h>
 #include <EnginePlatform/EngineInput.h>
 #include <EngineBase/EngineMath.h>
 #include "PlayGameMode.h"
@@ -9,23 +11,12 @@
 ABabyLongLegs::ABabyLongLegs()
 	: AMonster()
 {
-	SetActorLocation({ 200, 0 });
-
-	{
-		MonsterRenderer = CreateDefaultSubObject<USpriteRenderer>();
-		MonsterRenderer->SetOrder(ERenderOrder::MONSTER);
-
-		MonsterRenderer->SetComponentScale({ 250 , 250 });
-
-		MonsterRenderer->CreateAnimation("Move_BabyLongLegs", "Monster_BabyLongLegs.png", 0, 4, 0.033f);
-		MonsterRenderer->CreateAnimation("Attack_BabyLongLegs", "Monster_BabyLongLegs.png", 5, 7, 0.1f);
-		MonsterRenderer->CreateAnimation("Die_BabyLongLegs", "BloodPoof.png", 0, 10, 0.1f);
-		MonsterRenderer->ChangeAnimation("Move_BabyLongLegs");
-	}
-
-	ShadowRenderer = CreateDefaultSubObject<USpriteRenderer>();
-	ShadowRenderer->SetOrder(ERenderOrder::SHADOW);
-	ShadowRenderer->SetSprite("Shadow.png");
+	MonsterRenderer->SetComponentScale({ 250 , 250 });
+	MonsterRenderer->CreateAnimation("Move_BabyLongLegs", "Monster_BabyLongLegs.png", 0, 4, 0.033f);
+	MonsterRenderer->CreateAnimation("Attack_BabyLongLegs", "Monster_BabyLongLegs.png", 5, 7, 0.1f);
+	MonsterRenderer->CreateAnimation("Die_BabyLongLegs", "BloodPoof.png", 0, 10, 0.1f);
+	MonsterRenderer->ChangeAnimation("Move_BabyLongLegs");
+	
 	ShadowRenderer->SetSpriteScale(0.25f);
 
 	CollisionComponent->SetComponentScale({ 40, 40 });

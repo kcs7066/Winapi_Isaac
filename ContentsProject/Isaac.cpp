@@ -65,32 +65,32 @@ AIsaac::AIsaac()
 	CollisionComponent->SetCollisionType(ECollisionType::CirCle);
 
 
-	GetWorld()->CollisionGroupLink(ECollisionGroup::Player, ECollisionGroup::Monster);
+	//GetWorld()->CollisionGroupLink(ECollisionGroup::Player, ECollisionGroup::Monster);
 	//GetWorld()->CollisionGroupLink(ECollisionGroup::Monster, ECollisionGroup::Player);
 
 
-	CollisionComponent->SetCollisionEnter(std::bind(&AIsaac::CollisionEnter, this, std::placeholders::_1));
-	CollisionComponent->SetCollisionStay(std::bind(&AIsaac::CollisionStay, this, std::placeholders::_1));
-	CollisionComponent->SetCollisionEnd(std::bind(&AIsaac::CollisionEnd, this, std::placeholders::_1));
+	//CollisionComponent->SetCollisionEnter(std::bind(&AIsaac::CollisionEnter, this, std::placeholders::_1));
+	//CollisionComponent->SetCollisionStay(std::bind(&AIsaac::CollisionStay, this, std::placeholders::_1));
+	//CollisionComponent->SetCollisionEnd(std::bind(&AIsaac::CollisionEnd, this, std::placeholders::_1));
 
 
 	DebugOn();
 }
 
-void AIsaac::CollisionEnter(AActor* _ColActor)
-{
-	int a = 0;
-}
-
-void AIsaac::CollisionStay(AActor* _ColActor)
-{
-	int a = 0;
-}
-
-void AIsaac::CollisionEnd(AActor* _ColActor)
-{
-	int  a = 0;
-}
+//void AIsaac::CollisionEnter(AActor* _ColActor)
+//{
+//	int a = 0;
+//}
+//
+//void AIsaac::CollisionStay(AActor* _ColActor)
+//{
+//	int a = 0;
+//}
+//
+//void AIsaac::CollisionEnd(AActor* _ColActor)
+//{
+//	int  a = 0;
+//}
 
 AIsaac::~AIsaac()
 {
@@ -109,9 +109,11 @@ void AIsaac::BeginPlay()
 	FSM.CreateState(NewPlayerState::Idle, std::bind(&AIsaac::Idle, this, std::placeholders::_1),
 		[this]()
 		{  
-			HitRenderer->ChangeAnimation("None");
+			HitRenderer->SetComponentScale({ 0, 0 });
 			HeadRenderer->ChangeAnimation("Idle_Head");
+			HeadRenderer->SetComponentScale({ 70, 70 });
 			BodyRenderer->ChangeAnimation("Idle_Body");
+			BodyRenderer->SetComponentScale({ 70, 70 });
 		}
 	);
 
@@ -127,16 +129,17 @@ void AIsaac::BeginPlay()
 		[this]()
 		{
 			//CollisionComponent->SetActive(false);
-			HeadRenderer->ChangeAnimation("None");
-			BodyRenderer->ChangeAnimation("None");
+			HeadRenderer->SetComponentScale({ 0, 0 });
+			BodyRenderer->SetComponentScale({ 0, 0 });
 			HitRenderer->ChangeAnimation("Hit_Isaac");
+			HitRenderer->SetComponentScale({ 130, 130 });
 		}
 	);
 
 	FSM.CreateState(NewPlayerState::Die, std::bind(&AIsaac::Die, this, std::placeholders::_1),
 		[this]()
 		{
-			//CollisionComponent->SetActive(false);
+			CollisionComponent->SetActive(false);
 			HeadRenderer->Destroy();
 			BodyRenderer->Destroy();
 			ShadowRenderer->Destroy();
@@ -216,16 +219,24 @@ void AIsaac::Tick(float _DeltaTime)
 
 void AIsaac::Idle(float _DeltaTime)
 {
-
-
 	HpCheck();
 	if (true == UEngineInput::GetInst().IsPress('A') ||
 		true == UEngineInput::GetInst().IsPress('D') ||
 		true == UEngineInput::GetInst().IsPress('W') ||
 		true == UEngineInput::GetInst().IsPress('S'))
+	{
+		FSM.ChangeState(NewPlayerState::Move);
+	}
 
-			FSM.ChangeState(NewPlayerState::Move);
-		
+	AActor* MonsterResult = CollisionComponent->CollisionOnce(ECollisionGroup::Monster);
+	if (nullptr != MonsterResult)
+	{
+		if (0.0f >= HitCoolTime)
+		{
+			Hp--;
+			HitStart();
+		}
+	}
 }
 
 
@@ -348,6 +359,15 @@ void AIsaac::Move(float _DeltaTime)
 
 	}
 
+	AActor* MonsterResult = CollisionComponent->CollisionOnce(ECollisionGroup::Monster);
+	if (nullptr != MonsterResult)
+	{
+		if (0.0f >= HitCoolTime)
+		{
+			Hp--;
+			HitStart();
+		}
+	}
 
 }
 
@@ -368,7 +388,7 @@ void AIsaac::Attack(FVector2D _Dir)
 void AIsaac::HitStart()
 {
 	DelayTime = 0.0f;
-	HitCoolTime = 0.5f;
+	HitCoolTime = 1.0f;
 	FSM.ChangeState(NewPlayerState::Hit);
 }
 

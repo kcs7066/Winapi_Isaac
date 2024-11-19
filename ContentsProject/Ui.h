@@ -35,7 +35,7 @@ public:
 	void SetOrder(int _Order);
 
 	void SetValue(int _Score);
-	USpriteRenderer* HUDRenderer;
+	class USpriteRenderer* HUDRenderer;
 	int Number = 0;
 
 protected:

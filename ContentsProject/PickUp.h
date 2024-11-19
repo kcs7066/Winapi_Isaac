@@ -1,7 +1,6 @@
 #pragma once
 #include <EngineCore/Actor.h>
-#include <EngineCore/SpriteRenderer.h>
-#include <EngineCore/2DCollision.h>
+
 
 class APickUp : public AActor
 {
@@ -19,7 +18,7 @@ public:
 
 	class USpriteRenderer* ShadowRenderer = nullptr;
 	class USpriteRenderer* PickUpRenderer;
-	U2DCollision* CollisionComponent;
+	class U2DCollision* CollisionComponent;
 
 protected:
 

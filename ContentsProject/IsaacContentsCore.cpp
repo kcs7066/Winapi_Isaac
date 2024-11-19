@@ -94,7 +94,9 @@ void IsaacContentsCore::BeginPlay()
 	UImageManager::GetInst().CuttingSprite("Pickup_Heart.png", { 32, 32 });
 	UImageManager::GetInst().CuttingSprite("Character_Isaac.png", { 64, 64 });
 	UImageManager::GetInst().CuttingSprite("Ghost.png", { 64, 64 });
-
+	UImageManager::GetInst().CuttingSprite("Minimap2.png", { 16, 16 });
+	UImageManager::GetInst().CuttingSprite("Minimap_Icons.png", { 16, 16 });
+	
 
 
 

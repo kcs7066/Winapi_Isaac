@@ -1,12 +1,8 @@
 #pragma once
 #include <EngineCore/Actor.h>
-#include <EngineCore/SpriteRenderer.h>
 #include <EngineBase/FSMStateManager.h>
-#include <EngineCore/2DCollision.h>
 #include <EngineBase/EngineRandom.h>
-#include "ContentsEnum.h"
 #include <EnginePlatform/EngineSound.h>
-
 
 // Ό³Έν :
 class AMonster : public AActor
@@ -31,11 +27,13 @@ public:
 	bool DeathValue = false;
 	float DelayTime = 0.0f;
 	float Hp = 1.0f;
+
 	class USpriteRenderer* ShadowRenderer = nullptr;
 	class USpriteRenderer* MonsterRenderer = nullptr;
-	UFSMStateManager FSM = UFSMStateManager();
-	U2DCollision* CollisionComponent;
-	UEngineRandom Random = UEngineRandom();
+	class U2DCollision* CollisionComponent;
+
+	UFSMStateManager FSM;
+	UEngineRandom Random;
 	USoundPlayer EffectPlayer;
 
 

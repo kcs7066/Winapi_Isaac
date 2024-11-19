@@ -1,34 +1,33 @@
 #include "PreCompile.h"
 #include "RoundWorm.h"
 
+#include "ContentsEnum.h"
 #include <EnginePlatform/EngineInput.h>
 #include "MonsterTear.h"
 #include "PlayGameMode.h"
 
+#include <EngineCore/SpriteRenderer.h>
+#include <EngineBase/FSMStateManager.h>
+#include <EngineCore/2DCollision.h>
+
 
 
 ARoundWorm::ARoundWorm()
+	: AMonster()
 {
-	SetActorLocation({ 200, 0 });
+	MonsterRenderer->SetComponentScale({ 140, 140 });
+	MonsterRenderer->SetComponentLocation({ 0, -20 });
 
-	{
-		MonsterRenderer = CreateDefaultSubObject<USpriteRenderer>();
-		MonsterRenderer->SetOrder(ERenderOrder::MONSTER);
+	MonsterRenderer->CreateAnimation("Idle_RoundWorm", "Monster_RoundWorm.png", 0, 1, 0.1f);
+	MonsterRenderer->CreateAnimation("Attack_RoundWorm", "Monster_RoundWorm.png", 2, 3, 0.1f);
+	MonsterRenderer->CreateAnimation("Move_RoundWorm", "Monster_RoundWorm.png", { 4,5,4 },{0.1f,0.8f,0.1f});
+	MonsterRenderer->CreateAnimation("Die_RoundWorm", "BloodPoof.png", 0, 10, 0.1f);
 
-		
-		MonsterRenderer->SetComponentScale({ 140, 140 });
-		MonsterRenderer->SetComponentLocation({ 0, -20 });
-
-		MonsterRenderer->CreateAnimation("Idle_RoundWorm", "Monster_RoundWorm.png", 0, 1, 0.1f);
-		MonsterRenderer->CreateAnimation("Attack_RoundWorm", "Monster_RoundWorm.png", 2, 3, 0.1f);
-		MonsterRenderer->CreateAnimation("Move_RoundWorm", "Monster_RoundWorm.png", { 4,5,4 },{0.1f,0.8f,0.1f});
-		MonsterRenderer->CreateAnimation("Die_RoundWorm", "BloodPoof.png", 0, 10, 0.1f);
-
-		MonsterRenderer->ChangeAnimation("Idle_RoundWorm");
-	}
+	MonsterRenderer->ChangeAnimation("Idle_RoundWorm");
+	
+	ShadowRenderer->SetSpriteScale(0.0f);
 
 	CollisionComponent->SetComponentScale({ 40, 40 });
-
 
 	DebugOn();
 
@@ -170,14 +169,29 @@ void ARoundWorm::Move(float _DeltaTime)
 
 	if (DelayTime > 0.9f)
 	{
+		if (false == FindPos)
+		{
+			APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
+			while (true)
+			{
+				float NewX = Random.Randomfloat(-338.0f, 338.0f);
+				float NewY = Random.Randomfloat(-182.0f, 182.0f);
+				SetActorLocation({ PlayGameMode->CurRoom->RoomPos.X + NewX , PlayGameMode->CurRoom->RoomPos.Y + NewY });
+				AActor* Result = CollisionComponent->CollisionOnce(ECollisionGroup::Structure);
+				if (nullptr == Result)
+				{
+					FindPos = true;
+					break;
+				}
+			}
+		}
 
-		FSM.ChangeState(RoundWormState::Idle);
-
-		APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
-		float NewX = Random.Randomfloat(-338.0f, 338.0f);
-		float NewY = Random.Randomfloat(-182.0f, 182.0f);
-		SetActorLocation({ PlayGameMode->CurRoom->RoomPos.X + NewX , PlayGameMode->CurRoom->RoomPos.Y + NewY });
-		DelayTime = 0.0f;
+		if (DelayTime > 1.0f)
+		{
+			FSM.ChangeState(RoundWormState::Idle);
+			FindPos = false;
+			DelayTime = 0.0f;
+		}
 	}
 
 }

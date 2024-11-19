@@ -101,9 +101,13 @@ void AMonsterTear::Fly(float _DeltaTime)
 		AIsaac* NewResult = dynamic_cast<AIsaac*>(Result);
 		if (nullptr != Result)
 		{
-
+			
 			AIsaac* Ptr = GetWorld()->GetPawn<AIsaac>();
-			Ptr->Hp--;
+			if (0.0f >= Ptr->HitCoolTime)
+			{
+				Ptr->Hp--;
+				Ptr->HitStart();
+			}
 			DelayTime = 0.0f;
 			FSM.ChangeState(MonsterTearState::Poof);
 			BGMPlayer = UEngineSound::Play("tear block.wav");

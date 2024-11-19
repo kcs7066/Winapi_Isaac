@@ -65,7 +65,7 @@ public:
 	int CoinNumber = 0;
 	int BombNumber = 1;
 	int KeyNumber = 0;
-
+	float HitCoolTime = 0.0f;
 
 
 protected:
@@ -91,7 +91,7 @@ private:
 	UFSMStateManager FSM = UFSMStateManager();
 	int Test = 0;
 	float BulletCoolTime = 0.5f;
-	float HitCoolTime = 0.0f;
+
 	float BombCoolTime = 0.0f; 
 	float GhostPos = -15.0f;
 

@@ -50,6 +50,7 @@ public:
 	std::map<RoomDir, ADoor*> Doors;
 
 	USpriteRenderer* RoomRenderer;
+	USpriteRenderer* MiniMapRenderer;
 
 	RoomType Type = RoomType::NORMAL;
 

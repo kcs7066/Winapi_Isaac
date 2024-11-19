@@ -133,6 +133,7 @@ public:
 	class AUi* KeyUi;
 
 	void CreateMap();
+	void CreateItem();
 
 protected:
 	
@@ -149,6 +150,7 @@ private:
 	void CreateBossRoomPath();
 	void CreateRestRoomPath(int _RoomNumber);
 	void CreateRoom(std::string_view _RoomName,FVector2D _Pos,RoomType _Type = RoomType::NORMAL);
+
 
 	template<typename ActorType>
 	ActorType* SetMonster(FVector2D _Pos)
@@ -173,7 +175,9 @@ private:
 
 	UEngineRandom Random;
 	USpriteRenderer* SpriteRenderer = nullptr;
-
+	USpriteRenderer* MapRenderer = nullptr;
+	USpriteRenderer* BossMiniMapRenderer = nullptr;
+	USpriteRenderer* GoldMiniMapRenderer = nullptr;
 
 	float RoomMoveCameraTime = 0.0f;
 

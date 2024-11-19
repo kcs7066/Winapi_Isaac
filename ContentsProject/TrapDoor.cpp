@@ -27,27 +27,27 @@ ATrapDoor::ATrapDoor()
 	DebugOn();
 }
 
+ATrapDoor::~ATrapDoor()
+{
+}
+
 void ATrapDoor::Tick(float _DeltaTime)
 {
 	Super::Tick(_DeltaTime);
 
 
-		AActor* Result = CollisionComponent->CollisionOnce(ECollisionGroup::Player);
+	AActor* Result = CollisionComponent->CollisionOnce(ECollisionGroup::Player);
 
 
-		if (nullptr != Result)
-		{
-			AIsaac* NewResult = dynamic_cast<AIsaac*>(Result);
-			APlayGameMode* Mode = GetWorld()->GetGameMode<APlayGameMode>();
-			Mode->BGMPlayer.Off();
-			UEngineAPICore::GetCore()->OpenLevel("Title");
-			Destroy();
-		}
-	
+	if (nullptr != Result)
+	{
+		AIsaac* NewResult = dynamic_cast<AIsaac*>(Result);
+		APlayGameMode* Mode = GetWorld()->GetGameMode<APlayGameMode>();
+		Mode->BGMPlayer.Off();
+		UEngineAPICore::GetCore()->OpenLevel("Title");
+		Destroy();
+	}
 
-}
 
-ATrapDoor::~ATrapDoor()
-{
 }
 

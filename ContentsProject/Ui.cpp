@@ -70,7 +70,7 @@ void AUi::SetValue(int _Score)
 		Renders[i]->SetSprite(TextSpriteName, Value);
 		Renders[i]->SetComponentScale(TextScale);
 		Renders[i]->SetComponentLocation(Pos);
-		Pos.X += TextScale.X;
+		Pos.X += 15.0f;
 		Renders[i]->SetActive(true);
 	}
 

@@ -37,6 +37,9 @@
     <Filter Include="ContentsObject\PickUp">
       <UniqueIdentifier>{cbac22ce-3787-46a6-96be-d3f01a26919d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ContentsObject\Item">
+      <UniqueIdentifier>{8dafbd0f-af96-4453-b5b0-98aa56f5f15a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PreCompile.cpp">
@@ -147,6 +150,12 @@
     <ClCompile Include="PickUpHeart.cpp">
       <Filter>ContentsObject\PickUp</Filter>
     </ClCompile>
+    <ClCompile Include="TheInnerEye.cpp">
+      <Filter>ContentsObject\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>ContentsObject\Global</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PreCompile.h">
@@ -256,6 +265,12 @@
     </ClInclude>
     <ClInclude Include="PickUpHeart.h">
       <Filter>ContentsObject\PickUp</Filter>
+    </ClInclude>
+    <ClInclude Include="TheInnerEye.h">
+      <Filter>ContentsObject\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>ContentsObject\Global</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
