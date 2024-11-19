@@ -26,11 +26,7 @@ ARedFly::ARedFly()
 	ShadowRenderer->SetSprite("Shadow.png");
 	ShadowRenderer->SetSpriteScale(0.3f);
 
-
-	CollisionComponent = CreateDefaultSubObject<U2DCollision>();
 	CollisionComponent->SetComponentScale({ 55, 55 });
-	CollisionComponent->SetCollisionGroup(ECollisionGroup::Monster);
-	CollisionComponent->SetCollisionType(ECollisionType::CirCle);
 
 	DebugOn();
 	SetHp(5.0f);

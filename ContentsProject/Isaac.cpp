@@ -66,6 +66,7 @@ AIsaac::AIsaac()
 
 
 	GetWorld()->CollisionGroupLink(ECollisionGroup::Player, ECollisionGroup::Monster);
+	//GetWorld()->CollisionGroupLink(ECollisionGroup::Monster, ECollisionGroup::Player);
 
 
 	CollisionComponent->SetCollisionEnter(std::bind(&AIsaac::CollisionEnter, this, std::placeholders::_1));
@@ -224,7 +225,6 @@ void AIsaac::Idle(float _DeltaTime)
 		true == UEngineInput::GetInst().IsPress('S'))
 
 			FSM.ChangeState(NewPlayerState::Move);
-			return;
 		
 }
 
@@ -338,14 +338,16 @@ void AIsaac::Move(float _DeltaTime)
 
 	}
 
+
 	if (false == UEngineInput::GetInst().IsPress('A') &&
 		false == UEngineInput::GetInst().IsPress('D') &&
 		false == UEngineInput::GetInst().IsPress('W') &&
 		false == UEngineInput::GetInst().IsPress('S'))
 	{
 		FSM.ChangeState(NewPlayerState::Idle);
-		return;
+
 	}
+
 
 }
 
@@ -465,7 +467,7 @@ void AIsaac::Hit(float _DeltaTime)
 		}
 
 	}
-	if (0.5f <= DelayTime)
+	if (0.3f <= DelayTime)
 	{
 
 		FSM.ChangeState(NewPlayerState::Idle);

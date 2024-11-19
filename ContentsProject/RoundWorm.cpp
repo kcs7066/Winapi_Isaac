@@ -27,12 +27,8 @@ ARoundWorm::ARoundWorm()
 		MonsterRenderer->ChangeAnimation("Idle_RoundWorm");
 	}
 
-
-
-	CollisionComponent = CreateDefaultSubObject<U2DCollision>();
 	CollisionComponent->SetComponentScale({ 40, 40 });
-	CollisionComponent->SetCollisionGroup(ECollisionGroup::Monster);
-	CollisionComponent->SetCollisionType(ECollisionType::CirCle);
+
 
 	DebugOn();
 

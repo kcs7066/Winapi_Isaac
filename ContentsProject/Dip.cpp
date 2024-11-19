@@ -9,6 +9,7 @@
 
 
 ADip::ADip()
+	: AMonster()
 {
 	SetActorLocation({ 200, 0 });
 
@@ -34,10 +35,9 @@ ADip::ADip()
 	ShadowRenderer->SetSprite("Shadow.png");
 	ShadowRenderer->SetSpriteScale(0.25f);
 
-	CollisionComponent = CreateDefaultSubObject<U2DCollision>();
+
 	CollisionComponent->SetComponentScale({ 30, 30 });
-	CollisionComponent->SetCollisionGroup(ECollisionGroup::Monster);
-	CollisionComponent->SetCollisionType(ECollisionType::CirCle);
+
 
 	DebugOn();
 

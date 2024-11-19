@@ -8,6 +8,7 @@
 
 
 ALarryjr::ALarryjr()
+	: AMonster()
 {
 	SetActorLocation({ 200, 0 });
 
@@ -36,12 +37,8 @@ ALarryjr::ALarryjr()
 	ShadowRenderer->SetSprite("Shadow.png");
 	ShadowRenderer->SetSpriteScale(0.4f);
 
-
-	CollisionComponent = CreateDefaultSubObject<U2DCollision>();
 	CollisionComponent->SetComponentScale({ 50, 50 });
 	CollisionComponent->SetComponentLocation({ 0, 0 });
-	CollisionComponent->SetCollisionGroup(ECollisionGroup::Monster);
-	CollisionComponent->SetCollisionType(ECollisionType::CirCle);
 
 	DebugOn();
 

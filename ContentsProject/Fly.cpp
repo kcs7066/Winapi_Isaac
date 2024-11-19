@@ -27,10 +27,7 @@ AFly::AFly()
 
 
 
-	CollisionComponent = CreateDefaultSubObject<U2DCollision>();
 	CollisionComponent->SetComponentScale({ 55, 55 });
-	CollisionComponent->SetCollisionGroup(ECollisionGroup::Monster);
-	CollisionComponent->SetCollisionType(ECollisionType::CirCle);
 
 	DebugOn();
 

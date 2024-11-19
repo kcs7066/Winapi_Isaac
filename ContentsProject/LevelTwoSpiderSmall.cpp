@@ -37,10 +37,7 @@ ALevelTwoSpiderSmall::ALevelTwoSpiderSmall()
 
 
 
-	CollisionComponent = CreateDefaultSubObject<U2DCollision>();
 	CollisionComponent->SetComponentScale({ 80, 50 });
-	CollisionComponent->SetCollisionGroup(ECollisionGroup::Monster);
-	CollisionComponent->SetCollisionType(ECollisionType::Rect);
 
 	DebugOn();
 

@@ -7,6 +7,7 @@
 #include "Spider.h"
 
 ABabyLongLegs::ABabyLongLegs()
+	: AMonster()
 {
 	SetActorLocation({ 200, 0 });
 
@@ -27,10 +28,7 @@ ABabyLongLegs::ABabyLongLegs()
 	ShadowRenderer->SetSprite("Shadow.png");
 	ShadowRenderer->SetSpriteScale(0.25f);
 
-	CollisionComponent = CreateDefaultSubObject<U2DCollision>();
 	CollisionComponent->SetComponentScale({ 40, 40 });
-	CollisionComponent->SetCollisionGroup(ECollisionGroup::Monster);
-	CollisionComponent->SetCollisionType(ECollisionType::CirCle);
 
 	DebugOn();
 

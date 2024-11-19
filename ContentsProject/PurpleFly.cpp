@@ -21,12 +21,7 @@ APurpleFly::APurpleFly()
 
 	}
 
-
-
-	CollisionComponent = CreateDefaultSubObject<U2DCollision>();
 	CollisionComponent->SetComponentScale({ 50, 70 });
-	CollisionComponent->SetCollisionGroup(ECollisionGroup::Monster);
-	CollisionComponent->SetCollisionType(ECollisionType::Rect);
 
 	DebugOn();
 

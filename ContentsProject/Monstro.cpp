@@ -33,11 +33,10 @@ AMonstro::AMonstro()
 	ShadowRenderer->SetSpriteScale(1.0f);
 
 
-	CollisionComponent = CreateDefaultSubObject<U2DCollision>();
+	
 	CollisionComponent->SetComponentScale({ 100, 100 });
 	CollisionComponent->SetComponentLocation({ 0, -10 });
-	CollisionComponent->SetCollisionGroup(ECollisionGroup::Monster);
-	CollisionComponent->SetCollisionType(ECollisionType::CirCle);
+
 
 	DebugOn();
 
