@@ -82,12 +82,6 @@ void ARoundWorm::BeginPlay()
 	FSM.CreateState(RoundWormState::Die, std::bind(&ARoundWorm::Die, this, std::placeholders::_1),
 		[this]()
 		{
-		}
-	);
-
-	FSM.CreateState(RoundWormState::DieStay, std::bind(&ARoundWorm::DieStay, this, std::placeholders::_1),
-		[this]()
-		{
 			MonsterRenderer->ChangeAnimation("Die_RoundWorm");
 		}
 	);
@@ -114,7 +108,7 @@ void ARoundWorm::Idle(float _DeltaTime)
 		PlayGameMode->CurRoom->MonsterNumber--;
 		DelayTime = 0.0f;
 		EffectPlayer = UEngineSound::Play("death burst small.wav");
-		FSM.ChangeState(RoundWormState::Die);
+		DieStart();
 	}
 
 	if (DelayTime > 1.0f)
@@ -134,7 +128,7 @@ void ARoundWorm::Attack(float _DeltaTime)
 		PlayGameMode->CurRoom->MonsterNumber--;
 		DelayTime = 0.0f;
 		EffectPlayer = UEngineSound::Play("death burst small.wav");
-		FSM.ChangeState(RoundWormState::Die);
+		DieStart();
 	}
 
 	if (BulletCoolTime < 0.0f)
@@ -164,7 +158,7 @@ void ARoundWorm::Idle2(float _DeltaTime)
 		PlayGameMode->CurRoom->MonsterNumber--;
 		DelayTime = 0.0f;
 		EffectPlayer = UEngineSound::Play("death burst small.wav");
-		FSM.ChangeState(RoundWormState::Die);
+		DieStart();
 	}
 
 	if (DelayTime > 0.6f)
@@ -192,13 +186,13 @@ void ARoundWorm::Move(float _DeltaTime)
 
 }
 
-void ARoundWorm::Die(float _DeltaTime)
+void ARoundWorm::DieStart()
 {
-	DeathValue = true;
-	FSM.ChangeState(RoundWormState::DieStay);
+	CollisionComponent->SetActive(false);
+	FSM.ChangeState(RoundWormState::Die);
 }
 
-void ARoundWorm::DieStay(float _DeltaTime)
+void ARoundWorm::Die(float _DeltaTime)
 {
 
 	DelayTime += _DeltaTime;

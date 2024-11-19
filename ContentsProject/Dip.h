@@ -11,8 +11,8 @@ enum class DipState
 	IdleLeft,
 	MoveRight,
 	MoveLeft,
-	Die,
-	DieStay
+	Die
+
 };
 
 class ADip : public AMonster
@@ -34,7 +34,7 @@ public:
 	void Idle(float _DeltaTime);
 	void Move(float _DeltaTime);
 	void Die(float _DeltaTime);
-	void DieStay(float _DeltaTime);
+	void DieStart();
 
 
 

@@ -109,6 +109,7 @@ void ABomb::Explosion(float _DeltaTime)
 	{
 		AIsaac* NewResult = dynamic_cast<AIsaac*>(Result);
 		NewResult->Hp -= 2;
+		NewResult->HitStart();
 	}
 
 	FSM.ChangeState(BombState::ExplosionStay);

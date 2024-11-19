@@ -80,15 +80,10 @@ void ALevelTwoSpiderSmall::BeginPlay()
 	FSM.CreateState(LevelTwoSpiderSmallState::Die, std::bind(&ALevelTwoSpiderSmall::Die, this, std::placeholders::_1),
 		[this]()
 		{
-		}
-	);
-
-	FSM.CreateState(LevelTwoSpiderSmallState::DieStay, std::bind(&ALevelTwoSpiderSmall::DieStay, this, std::placeholders::_1),
-		[this]()
-		{
 			MonsterRenderer->ChangeAnimation("Die_LevelTwoSpiderSmall");
 		}
 	);
+
 
 	FSM.ChangeState(LevelTwoSpiderSmallState::Idle);
 }
@@ -111,7 +106,7 @@ void ALevelTwoSpiderSmall::Idle(float _DeltaTime)
 		PlayGameMode->CurRoom->MonsterNumber--;
 		DelayTime = 0.0f;
 		EffectPlayer = UEngineSound::Play("death burst small.wav");
-		FSM.ChangeState(LevelTwoSpiderSmallState::Die);
+		DieStart();
 	}
 
 	if (DelayTime > 1.0f)
@@ -147,7 +142,7 @@ void ALevelTwoSpiderSmall::Jump(float _DeltaTime)
 		PlayGameMode->CurRoom->MonsterNumber--;
 		DelayTime = 0.0f;
 		EffectPlayer = UEngineSound::Play("death burst small.wav");
-		FSM.ChangeState(LevelTwoSpiderSmallState::Die);
+		DieStart();
 	}
 
 	if (DelayTime < 0.25f)
@@ -198,7 +193,7 @@ void ALevelTwoSpiderSmall::Move(float _DeltaTime)
 		PlayGameMode->CurRoom->MonsterNumber--;
 		DelayTime = 0.0f;
 		EffectPlayer = UEngineSound::Play("death burst small.wav");
-		FSM.ChangeState(LevelTwoSpiderSmallState::Die);
+		DieStart();
 	}
 
 	Dir = GetWorld()->GetPawn()->GetActorLocation() - GetActorLocation() ;
@@ -230,13 +225,13 @@ void ALevelTwoSpiderSmall::Move(float _DeltaTime)
 
 }
 
-void ALevelTwoSpiderSmall::Die(float _DeltaTime)
+void ALevelTwoSpiderSmall::DieStart()
 {
-	DeathValue = true;
-	FSM.ChangeState(LevelTwoSpiderSmallState::DieStay);
+	CollisionComponent->SetActive(false);
+	FSM.ChangeState(LevelTwoSpiderSmallState::Die);
 }
 
-void ALevelTwoSpiderSmall::DieStay(float _DeltaTime)
+void ALevelTwoSpiderSmall::Die(float _DeltaTime)
 {
 
 	DelayTime += _DeltaTime;

@@ -50,12 +50,6 @@ void APurpleFly::BeginPlay()
 	FSM.CreateState(PurpleFlyState::Die, std::bind(&APurpleFly::Die, this, std::placeholders::_1),
 		[this]()
 		{
-		}
-	);
-
-	FSM.CreateState(PurpleFlyState::DieStay, std::bind(&APurpleFly::DieStay, this, std::placeholders::_1),
-		[this]()
-		{
 			MonsterRenderer->ChangeAnimation("Die_PurpleFly");
 		}
 	);
@@ -81,7 +75,7 @@ void APurpleFly::Move(float _DeltaTime)
 		PlayGameMode->CurRoom->MonsterNumber--;
 		DelayTime = 0.0f;
 		EffectPlayer = UEngineSound::Play("death burst small.wav");
-		FSM.ChangeState(PurpleFlyState::Die);
+		DieStart();
 	}
 
 
@@ -104,13 +98,13 @@ void APurpleFly::Move(float _DeltaTime)
 
 }
 
-void APurpleFly::Die(float _DeltaTime)
+void APurpleFly::DieStart()
 {
-	DeathValue = true;
-	FSM.ChangeState(PurpleFlyState::DieStay);
+	CollisionComponent->SetActive(false);
+	FSM.ChangeState(PurpleFlyState::Die);
 }
 
-void APurpleFly::DieStay(float _DeltaTime)
+void APurpleFly::Die(float _DeltaTime)
 {
 
 	DelayTime += _DeltaTime;

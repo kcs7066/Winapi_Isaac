@@ -63,14 +63,6 @@ void ABabyLongLegs::BeginPlay()
 	FSM.CreateState(BabyLongLegsState::Die, std::bind(&ABabyLongLegs::Die, this, std::placeholders::_1),
 		[this]()
 		{
-
-		}
-
-	);
-
-	FSM.CreateState(BabyLongLegsState::DieStay, std::bind(&ABabyLongLegs::DieStay, this, std::placeholders::_1),
-		[this]()
-		{
 			MonsterRenderer->ChangeAnimation("Die_BabyLongLegs");
 		}
 
@@ -100,7 +92,7 @@ void ABabyLongLegs::Attack(float _DeltaTime)
 		PlayGameMode->CurRoom->MonsterNumber--;
 		DelayTime = 0.0f;
 		EffectPlayer = UEngineSound::Play("death burst small.wav");
-		FSM.ChangeState(BabyLongLegsState::Die);
+		DieStart();
 	}
 
 	if (DelayTime > 0.3f)
@@ -129,7 +121,7 @@ void ABabyLongLegs::Move(float _DeltaTime)
 		PlayGameMode->CurRoom->MonsterNumber--;
 		DelayTime = 0.0f;
 		EffectPlayer = UEngineSound::Play("death burst small.wav");
-		FSM.ChangeState(BabyLongLegsState::Die);
+		DieStart();
 	}
 
 	Dir = GetActorLocation() - GetWorld()->GetPawn()->GetActorLocation();
@@ -161,13 +153,13 @@ void ABabyLongLegs::Move(float _DeltaTime)
 
 }
 
-void ABabyLongLegs::Die(float _DeltaTime)
+void ABabyLongLegs::DieStart()
 {
-	DeathValue = true;
-	FSM.ChangeState(BabyLongLegsState::DieStay);
+	CollisionComponent->SetActive(false);
+	FSM.ChangeState(BabyLongLegsState::Die);
 }
 
-void ABabyLongLegs::DieStay(float _DeltaTime)
+void ABabyLongLegs::Die(float _DeltaTime)
 {
 
 	DelayTime += _DeltaTime;

@@ -88,13 +88,6 @@ void AMonstro::BeginPlay()
 	FSM.CreateState(MonstroState::Die, std::bind(&AMonstro::Die, this, std::placeholders::_1),
 		[this]()
 		{
-
-		}
-	);
-
-	FSM.CreateState(MonstroState::DieStay, std::bind(&AMonstro::DieStay, this, std::placeholders::_1),
-		[this]()
-		{
 			MonsterRenderer->ChangeAnimation("Die_Monstro");
 		}
 	);
@@ -126,7 +119,7 @@ void AMonstro::Idle(float _DeltaTime)
 		NewTrapDoor->SetActorLocation({ PlayGameMode->CurRoom->RoomPos.X + 52.0f * (0.0f), PlayGameMode->CurRoom->RoomPos.Y - 52.0f * (2.0f) });
 		DelayTime = 0.0f;
 		EffectPlayer = UEngineSound::Play("death burst large.wav");
-		FSM.ChangeState(MonstroState::Die);
+		DieStart();
 	}
 
 	if (DelayTime > 2.0f)
@@ -165,7 +158,7 @@ void AMonstro::Move(float _DeltaTime)
 		NewTrapDoor->SetActorLocation({ PlayGameMode->CurRoom->RoomPos.X + 52.0f * (0.0f), PlayGameMode->CurRoom->RoomPos.Y - 52.0f * (2.0f) });
 		DelayTime = 0.0f;
 		EffectPlayer = UEngineSound::Play("death burst large.wav");
-		FSM.ChangeState(MonstroState::Die);
+		DieStart();
 	}
 
 	if (DelayTime < 0.5f)
@@ -217,7 +210,7 @@ void AMonstro::Attack(float _DeltaTime)
 		NewTrapDoor->SetActorLocation({ PlayGameMode->CurRoom->RoomPos.X + 52.0f * (0.0f), PlayGameMode->CurRoom->RoomPos.Y - 52.0f * (2.0f) });
 		DelayTime = 0.0f;
 		EffectPlayer = UEngineSound::Play("death burst large.wav");
-		FSM.ChangeState(MonstroState::Die);
+		DieStart();
 
 	}
 
@@ -226,7 +219,7 @@ void AMonstro::Attack(float _DeltaTime)
 		if (BulletCoolTime < 0.0f)
 		{
 			AMonsterTear* NewTear = GetWorld()->SpawnActor<AMonsterTear>();
-			NewTear->BulletSpeed = 1.0f;
+			NewTear->TearSpeed = 1.0f;
 			NewTear->SetActorLocation(GetActorLocation());
 			NewTear->Dir = GetWorld()->GetPawn()->GetActorLocation() - GetActorLocation();
 			BulletCoolTime = 1.5f;
@@ -301,16 +294,16 @@ void AMonstro::Jump(float _DeltaTime)
 
 }
 
-void AMonstro::Die(float _DeltaTime)
+void AMonstro::DieStart()
 {
-	DeathValue = true;
+	CollisionComponent->SetActive(false);
 	APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
 	PlayGameMode->BGMPlayer.Off();
 	PlayGameMode->BGMPlayer = UEngineSound::Play("secret to everyone.ogg");
-	FSM.ChangeState(MonstroState::DieStay);
+	FSM.ChangeState(MonstroState::Die);
 }
 
-void AMonstro::DieStay(float _DeltaTime)
+void AMonstro::Die(float _DeltaTime)
 {
 
 	DelayTime += _DeltaTime;

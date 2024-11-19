@@ -24,18 +24,19 @@ AIsaac::AIsaac()
 		BodyRenderer = CreateDefaultSubObject<USpriteRenderer>();
 		BodyRenderer->SetOrder(ERenderOrder::PLAYER);
 		BodyRenderer->SetComponentScale({ 70, 70 });
-		BodyRenderer->SetComponentLocation({ 0,-15 });
+		BodyRenderer->SetComponentLocation({ 0,-10 });
 		BodyRenderer->CreateAnimation("Idle_Body", "Body.png", 29, 29, 0.1f);
 		BodyRenderer->CreateAnimation("Run_RightBody", "Body.png", 10, 19, 0.1f);
 		BodyRenderer->CreateAnimation("Run_DownBody", "Body.png", 20, 29, 0.1f);
 		BodyRenderer->CreateAnimation("Run_LeftBody", "Body.png", 0, 9, 0.1f);
+		BodyRenderer->CreateAnimation("None", "Character_Isaac.png", 14, 14, 0.1f);
 	}
 
 	{
 		HeadRenderer = CreateDefaultSubObject<USpriteRenderer>();
 		HeadRenderer->SetOrder(ERenderOrder::PLAYER);
 		HeadRenderer->SetComponentScale({ 70, 70 });
-		HeadRenderer->SetComponentLocation({ 0,-45 });
+		HeadRenderer->SetComponentLocation({ 0,-40 });
 
 
 		HeadRenderer->CreateAnimation("Idle_Head", "Head.png", 7, 7, 0.1f);
@@ -46,34 +47,16 @@ AIsaac::AIsaac()
 		HeadRenderer->CreateAnimation("Run_UpHead", "Head.png", 5, 5, 0.1f);
 		HeadRenderer->CreateAnimation("Run_RightHead", "Head.png", 3, 3, 0.1f);
 		HeadRenderer->CreateAnimation("Run_LeftHead", "Head.png", 1, 1, 0.1f);
+		HeadRenderer->CreateAnimation("None", "Character_Isaac.png", 14, 14, 0.1f);
 	}
 
-	//FirstHeartRenderer = CreateDefaultSubObject<USpriteRenderer>();
-	//FirstHeartRenderer->SetOrder(ERenderOrder::UI);
-	//FirstHeartRenderer->SetComponentScale({ 30, 30 });
-	//FirstHeartRenderer->SetComponentLocation({ -350,-225 });
-	//FirstHeartRenderer->CreateAnimation("Full_Heart", "Ui_Hearts.png", 0, 0, 0.1f);
-	//FirstHeartRenderer->CreateAnimation("Half_Heart", "Ui_Hearts.png", 1, 1, 0.1f);
-	//FirstHeartRenderer->CreateAnimation("Empty_Heart", "Ui_Hearts.png", 2, 2, 0.1f);
-	//FirstHeartRenderer->ChangeAnimation("Full_Heart");
-
-	//SecondHeartRenderer = CreateDefaultSubObject<USpriteRenderer>();
-	//SecondHeartRenderer->SetOrder(ERenderOrder::UI);
-	//SecondHeartRenderer->SetComponentScale({ 30, 30 });
-	//SecondHeartRenderer->SetComponentLocation({ -325,-225 });
-	//SecondHeartRenderer->CreateAnimation("Full_Heart", "Ui_Hearts.png", 0, 0, 0.1f);
-	//SecondHeartRenderer->CreateAnimation("Half_Heart", "Ui_Hearts.png", 1, 1, 0.1f);
-	//SecondHeartRenderer->CreateAnimation("Empty_Heart", "Ui_Hearts.png", 2, 2, 0.1f);
-	//SecondHeartRenderer->ChangeAnimation("Full_Heart");
-
-	//ThirdHeartRenderer = CreateDefaultSubObject<USpriteRenderer>();
-	//ThirdHeartRenderer->SetOrder(ERenderOrder::UI);
-	//ThirdHeartRenderer->SetComponentScale({ 30, 30 });
-	//ThirdHeartRenderer->SetComponentLocation({ -300,-225 });
-	//ThirdHeartRenderer->CreateAnimation("Full_Heart", "Ui_Hearts.png", 0, 0, 0.1f);
-	//ThirdHeartRenderer->CreateAnimation("Half_Heart", "Ui_Hearts.png", 1, 1, 0.1f);
-	//ThirdHeartRenderer->CreateAnimation("Empty_Heart", "Ui_Hearts.png", 2, 2, 0.1f);
-	//ThirdHeartRenderer->ChangeAnimation("Full_Heart");
+	HitRenderer = CreateDefaultSubObject<USpriteRenderer>();
+	HitRenderer->SetOrder(ERenderOrder::PLAYER);
+	HitRenderer->SetComponentScale({ 130, 130 });
+	HitRenderer->SetComponentLocation({ 10,-30 });
+	HitRenderer->CreateAnimation("Hit_Isaac", "Character_Isaac.png", 0, 0, 0.1f);
+	HitRenderer->CreateAnimation("None", "Character_Isaac.png", 14, 14, 0.1f);
+	HitRenderer->ChangeAnimation("None");
 
 	CollisionComponent = CreateDefaultSubObject<U2DCollision>();
 	CollisionComponent->SetComponentLocation({ 0, 0 });
@@ -124,7 +107,8 @@ void AIsaac::BeginPlay()
 	
 	FSM.CreateState(NewPlayerState::Idle, std::bind(&AIsaac::Idle, this, std::placeholders::_1),
 		[this]()
-		{
+		{  
+			HitRenderer->ChangeAnimation("None");
 			HeadRenderer->ChangeAnimation("Idle_Head");
 			BodyRenderer->ChangeAnimation("Idle_Body");
 		}
@@ -135,6 +119,27 @@ void AIsaac::BeginPlay()
 		{
 			HeadRenderer->ChangeAnimation("Idle_Head");
 			BodyRenderer->ChangeAnimation("Run_DownBody");
+		}
+	);
+
+	FSM.CreateState(NewPlayerState::Hit, std::bind(&AIsaac::Hit, this, std::placeholders::_1),
+		[this]()
+		{
+			//CollisionComponent->SetActive(false);
+			HeadRenderer->ChangeAnimation("None");
+			BodyRenderer->ChangeAnimation("None");
+			HitRenderer->ChangeAnimation("Hit_Isaac");
+		}
+	);
+
+	FSM.CreateState(NewPlayerState::Die, std::bind(&AIsaac::Die, this, std::placeholders::_1),
+		[this]()
+		{
+			//CollisionComponent->SetActive(false);
+			HeadRenderer->Destroy();
+			BodyRenderer->Destroy();
+			ShadowRenderer->Destroy();
+			DeathRenderer->ChangeAnimation("Death_Isaac");
 		}
 	);
 
@@ -199,61 +204,9 @@ void AIsaac::Tick(float _DeltaTime)
 			}
 		}
 
-		switch (Hp)
-		{
-
-		case 6:
-			PlayGameMode->HeartUi->HUDRenderer->ChangeAnimation("Full_Heart");
-			PlayGameMode->SecondHeartUi->HUDRenderer->ChangeAnimation("Full_Heart");
-			PlayGameMode->ThirdHeartUi->HUDRenderer->ChangeAnimation("Full_Heart");
-			break;
-
-		case 5:
-			PlayGameMode->HeartUi->HUDRenderer->ChangeAnimation("Full_Heart");
-			PlayGameMode->SecondHeartUi->HUDRenderer->ChangeAnimation("Full_Heart");
-			PlayGameMode->ThirdHeartUi->HUDRenderer->ChangeAnimation("Half_Heart");
-			break;
-
-		case 4:
-			PlayGameMode->HeartUi->HUDRenderer->ChangeAnimation("Full_Heart");
-			PlayGameMode->SecondHeartUi->HUDRenderer->ChangeAnimation("Full_Heart");
-			PlayGameMode->ThirdHeartUi->HUDRenderer->ChangeAnimation("Empty_Heart");
-			break;
-
-		case 3:
-			PlayGameMode->HeartUi->HUDRenderer->ChangeAnimation("Full_Heart");
-			PlayGameMode->SecondHeartUi->HUDRenderer->ChangeAnimation("Half_Heart");
-			PlayGameMode->ThirdHeartUi->HUDRenderer->ChangeAnimation("Empty_Heart");
-			break;
-
-		case 2:
-			PlayGameMode->HeartUi->HUDRenderer->ChangeAnimation("Full_Heart");
-			PlayGameMode->SecondHeartUi->HUDRenderer->ChangeAnimation("Empty_Heart");
-			PlayGameMode->ThirdHeartUi->HUDRenderer->ChangeAnimation("Empty_Heart");
-			break;
-
-		case 1:
-			PlayGameMode->HeartUi->HUDRenderer->ChangeAnimation("Half_Heart");
-			PlayGameMode->SecondHeartUi->HUDRenderer->ChangeAnimation("Empty_Heart");
-			PlayGameMode->ThirdHeartUi->HUDRenderer->ChangeAnimation("Empty_Heart");
-			break;
-
-		case 0:
-		case -1:
-			PlayGameMode->HeartUi->HUDRenderer->ChangeAnimation("Empty_Heart");
-			PlayGameMode->SecondHeartUi->HUDRenderer->ChangeAnimation("Empty_Heart");
-			PlayGameMode->ThirdHeartUi->HUDRenderer->ChangeAnimation("Empty_Heart");
-			break;
-
-		default:
-			PlayGameMode->HeartUi->HUDRenderer->ChangeAnimation("Full_Heart");
-			PlayGameMode->SecondHeartUi->HUDRenderer->ChangeAnimation("Full_Heart");
-			PlayGameMode->ThirdHeartUi->HUDRenderer->ChangeAnimation("Full_Heart");
-			break;
-		}
-
 		BulletCoolTime -= _DeltaTime;
 		BombCoolTime -= _DeltaTime;
+		HitCoolTime -= _DeltaTime;
 		FSM.Update(_DeltaTime);
 		
 }
@@ -262,6 +215,9 @@ void AIsaac::Tick(float _DeltaTime)
 
 void AIsaac::Idle(float _DeltaTime)
 {
+
+
+	HpCheck();
 	if (true == UEngineInput::GetInst().IsPress('A') ||
 		true == UEngineInput::GetInst().IsPress('D') ||
 		true == UEngineInput::GetInst().IsPress('W') ||
@@ -277,7 +233,10 @@ void AIsaac::Idle(float _DeltaTime)
 
 void AIsaac::Move(float _DeltaTime)
 {
-	
+	APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
+
+	HpCheck();
+
 	FVector2D Vector = FVector2D::ZERO;
 
 	if (true == UEngineInput::GetInst().IsPress('D'))
@@ -307,8 +266,6 @@ void AIsaac::Move(float _DeltaTime)
 	}
 
 	Vector.Normalize();
-
-	APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
 
 	if (true == PlayGameMode->CurRoom->RoomClear)
 	{
@@ -394,6 +351,7 @@ void AIsaac::Move(float _DeltaTime)
 
 void AIsaac::Attack(FVector2D _Dir)
 {
+
 	if (BulletCoolTime < 0.0f)
 	{
 		ATear* NewTear = GetWorld()->SpawnActor<ATear>();
@@ -405,8 +363,200 @@ void AIsaac::Attack(FVector2D _Dir)
 	}
 }
 
+void AIsaac::HitStart()
+{
+	DelayTime = 0.0f;
+	HitCoolTime = 0.5f;
+	FSM.ChangeState(NewPlayerState::Hit);
+}
+
+void AIsaac::Hit(float _DeltaTime)
+{
+	DelayTime += _DeltaTime;
+
+	FVector2D Vector = FVector2D::ZERO;
+
+	if (true == UEngineInput::GetInst().IsPress('D'))
+	{
+		Vector += FVector2D::RIGHT;
+	}
+
+	if (true == UEngineInput::GetInst().IsPress('A'))
+	{
+		Vector += FVector2D::LEFT;
+	}
+	if (true == UEngineInput::GetInst().IsPress('S'))
+	{
+		Vector += FVector2D::DOWN;
+	}
+	if (true == UEngineInput::GetInst().IsPress('W'))
+	{
+		Vector += FVector2D::UP;
+	}
+
+	Vector.Normalize();
+	APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
+	if (true == PlayGameMode->CurRoom->RoomClear)
+	{
+
+		if (true == CanMove)
+		{
+			AActor* Result = CollisionComponent->CollisionOnce(ECollisionGroup::Door);
+
+
+
+			if (nullptr != Result)
+			{
+				CanMove = false;
+				ADoor* NewResult = dynamic_cast<ADoor*>(Result);
+				PlayGameMode->CurRoom = NewResult->LinkedRoom;
+
+
+				switch (NewResult->Dir)
+				{
+				case DoorDir::UP:
+					this->SetActorLocation({ PlayGameMode->CurRoom->RoomPos.X,PlayGameMode->CurRoom->RoomPos.Y + 104.0f });
+					break;
+				case DoorDir::RIGHT:
+					this->SetActorLocation({ PlayGameMode->CurRoom->RoomPos.X - 312.f,PlayGameMode->CurRoom->RoomPos.Y });
+					break;
+				case DoorDir::DOWN:
+					this->SetActorLocation({ PlayGameMode->CurRoom->RoomPos.X,PlayGameMode->CurRoom->RoomPos.Y - 104.0f });
+					break;
+				case DoorDir::LEFT:
+					this->SetActorLocation({ PlayGameMode->CurRoom->RoomPos.X + 312.f,PlayGameMode->CurRoom->RoomPos.Y });
+					break;
+
+				default:
+					break;
+				}
+
+			}
+		}
+	}
+
+
+
+	FVector2D Location = GetActorLocation() += Vector * _DeltaTime * Speed;
+
+	if
+		(
+			PlayGameMode->CurRoom->RoomPos.X - Location.X > 338.0f ||
+			PlayGameMode->CurRoom->RoomPos.X - Location.X < -338.0f ||
+			PlayGameMode->CurRoom->RoomPos.Y - Location.Y > 182.0f ||
+			PlayGameMode->CurRoom->RoomPos.Y - Location.Y < -182.0f
+			)
+	{
+	}
+
+	else
+	{
+
+		PrevPos = GetActorLocation();
+		if (true == CanMove) {
+			AddActorLocation(Vector * _DeltaTime * Speed);
+		}
+		AActor* StructureResult = CollisionComponent->CollisionOnce(ECollisionGroup::Structure);
+
+
+		if (nullptr != StructureResult)
+		{
+			SetActorLocation(PrevPos);
+		}
+
+	}
+	if (0.5f <= DelayTime)
+	{
+
+		FSM.ChangeState(NewPlayerState::Idle);
+	}
+}
+
+void AIsaac::Die(float _DeltaTime)
+{
+	GhostPos -= _DeltaTime * 200.0f;
+	GhostRenderer->SetComponentLocation({ 20.0f,GhostPos });
+
+}
+
+void AIsaac::DieStart()
+{
+	DeathRenderer = CreateDefaultSubObject<USpriteRenderer>();
+	DeathRenderer->SetOrder(ERenderOrder::PLAYER);
+	DeathRenderer->SetComponentScale({ 130, 130 });
+	DeathRenderer->SetComponentLocation({ 20,-15 });
+	DeathRenderer->CreateAnimation("Death_Isaac", "Character_Isaac.png", { 2, 1 }, { 0.2f,9999.0f });
+	DeathRenderer->ChangeAnimation("Death_Isaac");
+
+	GhostRenderer = CreateDefaultSubObject<USpriteRenderer>();
+	GhostRenderer->SetOrder(ERenderOrder::PLAYER);
+	GhostRenderer->SetComponentScale({ 130, 130 });
+	GhostRenderer->SetComponentLocation({ 20,-15 });
+	GhostRenderer->CreateAnimation("Ghost", "Ghost.png", 0, 4 , 0.1f);
+	GhostRenderer->ChangeAnimation("Ghost");
+
+	FSM.ChangeState(NewPlayerState::Die);
+}
 
 void AIsaac::LevelChangeStart()
 {
 	int a = 0;
+}
+
+void AIsaac::HpCheck()
+{
+	APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
+	switch (Hp)
+	{
+
+	case 6:
+		PlayGameMode->HeartUi->HUDRenderer->ChangeAnimation("Full_Heart");
+		PlayGameMode->SecondHeartUi->HUDRenderer->ChangeAnimation("Full_Heart");
+		PlayGameMode->ThirdHeartUi->HUDRenderer->ChangeAnimation("Full_Heart");
+		break;
+
+	case 5:
+		PlayGameMode->HeartUi->HUDRenderer->ChangeAnimation("Full_Heart");
+		PlayGameMode->SecondHeartUi->HUDRenderer->ChangeAnimation("Full_Heart");
+		PlayGameMode->ThirdHeartUi->HUDRenderer->ChangeAnimation("Half_Heart");
+		break;
+
+	case 4:
+		PlayGameMode->HeartUi->HUDRenderer->ChangeAnimation("Full_Heart");
+		PlayGameMode->SecondHeartUi->HUDRenderer->ChangeAnimation("Full_Heart");
+		PlayGameMode->ThirdHeartUi->HUDRenderer->ChangeAnimation("Empty_Heart");
+		break;
+
+	case 3:
+		PlayGameMode->HeartUi->HUDRenderer->ChangeAnimation("Full_Heart");
+		PlayGameMode->SecondHeartUi->HUDRenderer->ChangeAnimation("Half_Heart");
+		PlayGameMode->ThirdHeartUi->HUDRenderer->ChangeAnimation("Empty_Heart");
+		break;
+
+	case 2:
+		PlayGameMode->HeartUi->HUDRenderer->ChangeAnimation("Full_Heart");
+		PlayGameMode->SecondHeartUi->HUDRenderer->ChangeAnimation("Empty_Heart");
+		PlayGameMode->ThirdHeartUi->HUDRenderer->ChangeAnimation("Empty_Heart");
+		break;
+
+	case 1:
+		PlayGameMode->HeartUi->HUDRenderer->ChangeAnimation("Half_Heart");
+		PlayGameMode->SecondHeartUi->HUDRenderer->ChangeAnimation("Empty_Heart");
+		PlayGameMode->ThirdHeartUi->HUDRenderer->ChangeAnimation("Empty_Heart");
+		break;
+
+	case 0:
+	case -1:
+		PlayGameMode->HeartUi->HUDRenderer->ChangeAnimation("Empty_Heart");
+		PlayGameMode->SecondHeartUi->HUDRenderer->ChangeAnimation("Empty_Heart");
+		PlayGameMode->ThirdHeartUi->HUDRenderer->ChangeAnimation("Empty_Heart");
+		DieStart();
+		break;
+
+	default:
+		PlayGameMode->HeartUi->HUDRenderer->ChangeAnimation("Full_Heart");
+		PlayGameMode->SecondHeartUi->HUDRenderer->ChangeAnimation("Full_Heart");
+		PlayGameMode->ThirdHeartUi->HUDRenderer->ChangeAnimation("Full_Heart");
+		break;
+	}
 }

@@ -61,12 +61,6 @@ void ARedFly::BeginPlay()
 	FSM.CreateState(RedFlyState::Die, std::bind(&ARedFly::Die, this, std::placeholders::_1),
 		[this]()
 		{
-		}
-	);
-
-	FSM.CreateState(RedFlyState::DieStay, std::bind(&ARedFly::DieStay, this, std::placeholders::_1),
-		[this]()
-		{
 			MonsterRenderer->ChangeAnimation("Die_RedFly");
 		}
 	);
@@ -104,7 +98,7 @@ void ARedFly::Move(float _DeltaTime)
 		PlayGameMode->CurRoom->MonsterNumber--;
 		DelayTime = 0.0f;
 		EffectPlayer = UEngineSound::Play("death burst small.wav");
-		FSM.ChangeState(RedFlyState::Die);
+		DieStart();
 	}
 
 	Dir = GetWorld()->GetPawn()->GetActorLocation() - GetActorLocation();
@@ -132,13 +126,13 @@ void ARedFly::Move(float _DeltaTime)
 
 }
 
-void ARedFly::Die(float _DeltaTime)
+void ARedFly::DieStart()
 {
-	DeathValue = true;
-	FSM.ChangeState(RedFlyState::DieStay);
+	CollisionComponent->SetActive(false);
+	FSM.ChangeState(RedFlyState::Die);
 }
 
-void ARedFly::DieStay(float _DeltaTime)
+void ARedFly::Die(float _DeltaTime)
 {
 
 	DelayTime += _DeltaTime;

@@ -139,17 +139,9 @@ void ALarryjr::BeginPlay()
 	FSM.CreateState(LarryjrState::Die, std::bind(&ALarryjr::Die, this, std::placeholders::_1),
 		[this]()
 		{
-	
-		}
-	);
-
-	FSM.CreateState(LarryjrState::DieStay, std::bind(&ALarryjr::DieStay, this, std::placeholders::_1),
-		[this]()
-		{
 			MonsterRenderer->ChangeAnimation("Die_Larryjr");
 		}
 	);
-
 
 	APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
 	PlayGameMode->BGMPlayer.Off();
@@ -324,7 +316,7 @@ void ALarryjr::DirChange(float _DeltaTime)
 {
 	if (this->Hp <= 0.0f || true == LinkedParts.empty())
 	{
-		FSM.ChangeState(LarryjrState::Die);
+		DieStart();
 	}
 
 	if 
@@ -459,7 +451,7 @@ void ALarryjr::UpMove(float _DeltaTime)
 
 	if (this->Hp <= 0.0f || true == LinkedParts.empty())
 	{
-		FSM.ChangeState(LarryjrState::Die);
+		DieStart();
 	}
 
 	    float ExpectPos = FuturePos.iY(); 
@@ -481,7 +473,7 @@ void ALarryjr::RightMove(float _DeltaTime)
 {
 	if (this->Hp <= 0.0f || true == LinkedParts.empty())
 	{
-		FSM.ChangeState(LarryjrState::Die);
+		DieStart();
 	}
 
 	float ExpectPos = FuturePos.iX();
@@ -502,7 +494,7 @@ void ALarryjr::DownMove(float _DeltaTime)
 {
 	if (this->Hp <= 0.0f || true == LinkedParts.empty())
 	{
-		FSM.ChangeState(LarryjrState::Die);
+		DieStart();
 	}
 
 	float ExpectPos = FuturePos.iY();
@@ -523,7 +515,7 @@ void ALarryjr::LeftMove(float _DeltaTime)
 {
 	if (this->Hp <= 0.0f || true == LinkedParts.empty())
 	{
-		FSM.ChangeState(LarryjrState::Die);
+		DieStart();
 	}
 
 	float ExpectPos = FuturePos.iX();
@@ -547,7 +539,7 @@ void ALarryjr::Poop(float _DeltaTime)
 	
 	if (this->Hp <= 0.0f || true == LinkedParts.empty())
 	{
-		FSM.ChangeState(LarryjrState::Die);
+		DieStart();
 	}
 
 	if (LarryjrPart::TAIL == this->Part)
@@ -561,9 +553,9 @@ void ALarryjr::Poop(float _DeltaTime)
 }
 
 
-void ALarryjr::Die(float _DeltaTime)
+void ALarryjr::DieStart()
 {
-	DeathValue = true;
+	CollisionComponent->SetActive(false);
 
 
 	APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
@@ -589,10 +581,10 @@ void ALarryjr::Die(float _DeltaTime)
 	}
 
 	DelayTime = 0.0f;
-	FSM.ChangeState(LarryjrState::DieStay);
+	FSM.ChangeState(LarryjrState::Die);
 }
 
-void ALarryjr::DieStay(float _DeltaTime)
+void ALarryjr::Die(float _DeltaTime)
 {
 
 	DelayTime += _DeltaTime;

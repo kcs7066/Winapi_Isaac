@@ -15,7 +15,7 @@ ATear::ATear()
 		TearRenderer->SetComponentScale({ 80, 80 });
 		TearRenderer->SetComponentLocation({ 0, -40 });
 
-		TearRenderer->CreateAnimation("Tear_Fly", "Tear.png", 5, 5, 0.1f);
+		TearRenderer->CreateAnimation("Tear_Fly", "TearPoof.png", 0, 0, 0.1f);
 		TearRenderer->CreateAnimation("Tear_Poof", "TearPoof.png", 0, 14, 0.05f);
 		TearRenderer->ChangeAnimation("Tear_Fly");
 	}
@@ -101,41 +101,17 @@ void ATear::Fly(float _DeltaTime)
 		AMonster* NewResult = dynamic_cast<AMonster*>(Result);
 		if (nullptr != Result)
 		{
-			
 
-			if (false == NewResult->DeathValue)
-			{
 				AIsaac* Ptr = GetWorld()->GetPawn<AIsaac>();
 				NewResult->Hp -= Ptr->Damage;
 				DelayTime = 0.0f;
 				FSM.ChangeState(TearState::Poof);
 				BGMPlayer = UEngineSound::Play("tear block.wav");
-			}
-			else
-			{
-				FVector2D NewLocation = GetActorLocation() += Dir * _DeltaTime * Speed;
-				APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
-
-				if (PlayGameMode->CurRoom->RoomPos.X - NewLocation.X > 338.0f ||
-					PlayGameMode->CurRoom->RoomPos.X - NewLocation.X < -338.0f ||
-					PlayGameMode->CurRoom->RoomPos.Y - NewLocation.Y > 182.0f ||
-					PlayGameMode->CurRoom->RoomPos.Y - NewLocation.Y < -182.0f
-					)
-				{
-					DelayTime = 0.0f;
-					FSM.ChangeState(TearState::Poof);
-					BGMPlayer = UEngineSound::Play("tear block.wav");
-				}
-				else
-				{
-					AddActorLocation(Dir * _DeltaTime * Speed);
-				}
-			}
-				
+	
 	    }
 		else
 		{
-				FVector2D NewLocation = GetActorLocation() += Dir * _DeltaTime * Speed;
+				FVector2D NewLocation = GetActorLocation() += Dir * _DeltaTime * TearSpeed;
 				APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
 
 				if (PlayGameMode->CurRoom->RoomPos.X - NewLocation.X > 338.0f ||
@@ -150,7 +126,7 @@ void ATear::Fly(float _DeltaTime)
 				}
 				else
 				{
-					AddActorLocation(Dir * _DeltaTime * Speed);
+					AddActorLocation(Dir * _DeltaTime * TearSpeed);
 				}
 		}
 	    

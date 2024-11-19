@@ -83,13 +83,6 @@ void ADip::BeginPlay()
 	FSM.CreateState(DipState::Die, std::bind(&ADip::Die, this, std::placeholders::_1),
 		[this]()
 		{
-			
-		}
-	);
-
-	FSM.CreateState(DipState::DieStay, std::bind(&ADip::DieStay, this, std::placeholders::_1),
-		[this]()
-		{
 			MonsterRenderer->ChangeAnimation("Die_Dip");
 		}
 	);
@@ -117,7 +110,7 @@ void ADip::Idle(float _DeltaTime)
 		PlayGameMode->CurRoom->MonsterNumber--;
 		DelayTime = 0.0f;
 		EffectPlayer = UEngineSound::Play("death burst small.wav");
-		FSM.ChangeState(DipState::Die);
+		DieStart();
 	}
 
 	if (DelayTime > 1.6f)
@@ -137,7 +130,7 @@ void ADip::Move(float _DeltaTime)
 		PlayGameMode->CurRoom->MonsterNumber--;
 		DelayTime = 0.0f;
 		EffectPlayer = UEngineSound::Play("death burst small.wav");
-		FSM.ChangeState(DipState::Die);
+		DieStart();
 	}
 
 	FVector2D NewLocation = GetActorLocation() += RandomDir * _DeltaTime * Speed;
@@ -207,12 +200,13 @@ void ADip::Move(float _DeltaTime)
 
 }
 
-void ADip::Die(float _DeltaTime)
+void ADip::DieStart()
 {
-	DeathValue = true;
-	FSM.ChangeState(DipState::DieStay);
+	CollisionComponent->SetActive(false);
+	FSM.ChangeState(DipState::Die);
 }
-void ADip::DieStay(float _DeltaTime)
+
+void ADip::Die(float _DeltaTime)
 {
 
 	DelayTime += _DeltaTime;

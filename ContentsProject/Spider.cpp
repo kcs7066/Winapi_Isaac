@@ -74,26 +74,20 @@ void ASpider::BeginPlay()
 	FSM.CreateState(SpiderState::Die, std::bind(&ASpider::Die, this, std::placeholders::_1),
 		[this]()
 		{
-		
-		}
-	);
-
-	FSM.CreateState(SpiderState::DieStay, std::bind(&ASpider::DieStay, this, std::placeholders::_1),
-		[this]()
-		{
 			MonsterRenderer->ChangeAnimation("Die_Spider");
 		}
 	);
+	RandomDir = { Random.Randomfloat(-1.0f, 1.0f) ,Random.Randomfloat(-1.0f, 1.0f) };
+
+	RandomDir.Normalize();
 
 	FSM.ChangeState(SpiderState::Idle);
+
 }
 
 void ASpider::Tick(float _DeltaTime)
 {
 	Super::Tick(_DeltaTime);
-
-	DelayTime += _DeltaTime;
-
 	FSM.Update(_DeltaTime);
 }
 
@@ -108,7 +102,7 @@ void ASpider::Idle(float _DeltaTime)
 		PlayGameMode->CurRoom->SpiderNumber--;
 		DelayTime = 0.0f;
 		EffectPlayer = UEngineSound::Play("death burst small.wav");
-		FSM.ChangeState(SpiderState::Die);
+		DieStart();
 	}
 
 	if (DelayTime > 1.0f)
@@ -129,7 +123,7 @@ void ASpider::Move(float _DeltaTime)
 		PlayGameMode->CurRoom->SpiderNumber--;
 		DelayTime = 0.0f;
 		EffectPlayer = UEngineSound::Play("death burst small.wav");
-		FSM.ChangeState(SpiderState::Die);
+		DieStart();
 	}
 
 	FVector2D NewLocation = GetActorLocation() += RandomDir * _DeltaTime * Speed;
@@ -161,13 +155,13 @@ void ASpider::Move(float _DeltaTime)
 
 }
 
-void ASpider::Die(float _DeltaTime)
+void ASpider::DieStart()
 {
-	DeathValue = true;
-	FSM.ChangeState(SpiderState::DieStay);
+	CollisionComponent->SetActive(false);
+	FSM.ChangeState(SpiderState::Die);
 }
 
-void ASpider::DieStay(float _DeltaTime)
+void ASpider::Die(float _DeltaTime)
 {
 
 	DelayTime += _DeltaTime;

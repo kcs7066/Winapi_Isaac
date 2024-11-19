@@ -14,8 +14,7 @@ enum class LarryjrState
 	DownMove,
     LeftMove,
 	Poop,
-	Die,
-	DieStay
+	Die
 };
 
 enum class LarryjrDir
@@ -64,7 +63,7 @@ public:
 	void Poop(float _DeltaTime);
 
 	void Die(float _DeltaTime);
-	void DieStay(float _DeltaTime);
+	void DieStart();
 
 
 	int Poopkey(FVector2D _Pos)

@@ -10,8 +10,8 @@ enum class SpiderState
 	Idle,
 	MoveRight,
 	MoveLeft,
-	Die,
-	DieStay
+	Die
+
 };
 
 class ASpider : public AMonster
@@ -33,7 +33,7 @@ public:
 	void Idle(float _DeltaTime);
 	void Move(float _DeltaTime);
 	void Die(float _DeltaTime);
-	void DieStay(float _DeltaTime);
+	void DieStart();
 
 protected:
 

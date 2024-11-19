@@ -54,12 +54,6 @@ void AFly::BeginPlay()
 	FSM.CreateState(FlyState::Die, std::bind(&AFly::Die, this, std::placeholders::_1),
 		[this]()
 		{
-		}
-	);
-
-	FSM.CreateState(FlyState::DieStay, std::bind(&AFly::DieStay, this, std::placeholders::_1),
-		[this]()
-		{
 			MonsterRenderer->ChangeAnimation("Die_Fly");
 		}
 	);
@@ -84,7 +78,7 @@ void AFly::Move(float _DeltaTime)
 		PlayGameMode->CurRoom->MonsterNumber--;
 		DelayTime = 0.0f;
 		EffectPlayer = UEngineSound::Play("death burst small.wav");
-		FSM.ChangeState(FlyState::Die);
+		DieStart();
 	}
 
 	RandomDir = { Random.Randomfloat(-1.0f, 1.0f) ,Random.Randomfloat(-1.0f, 1.0f) };
@@ -115,13 +109,13 @@ void AFly::Move(float _DeltaTime)
 }
 
 
-void AFly::Die(float _DeltaTime)
+void AFly::DieStart()
 {
-	DeathValue = true;
-	FSM.ChangeState(FlyState::DieStay);
+	CollisionComponent->SetActive(false);
+	FSM.ChangeState(FlyState::Die);
 }
 
-void AFly::DieStay(float _DeltaTime)
+void AFly::Die(float _DeltaTime)
 {
 
 	DelayTime += _DeltaTime;

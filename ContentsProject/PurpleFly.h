@@ -7,8 +7,8 @@
 enum class PurpleFlyState
 {
 	Move,
-	Die,
-	DieStay
+	Die
+
 };
 
 class APurpleFly : public AMonster
@@ -29,7 +29,7 @@ public:
 
 	void Move(float _DeltaTime);
 	void Die(float _DeltaTime);
-	void DieStay(float _DeltaTime);
+	void DieStart();
 
 
 protected:
