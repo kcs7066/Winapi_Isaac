@@ -72,9 +72,6 @@
     <ClCompile Include="Tear.cpp">
       <Filter>ContentsObject\Play</Filter>
     </ClCompile>
-    <ClCompile Include="Isaac.cpp">
-      <Filter>ContentsObject\Play</Filter>
-    </ClCompile>
     <ClCompile Include="PurpleFly.cpp">
       <Filter>ContentsObject\Monster</Filter>
     </ClCompile>
@@ -156,6 +153,9 @@
     <ClCompile Include="Item.cpp">
       <Filter>ContentsObject\Global</Filter>
     </ClCompile>
+    <ClCompile Include="Isaac.cpp">
+      <Filter>ContentsObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PreCompile.h">
@@ -186,9 +186,6 @@
       <Filter>ContentsObject\Play</Filter>
     </ClInclude>
     <ClInclude Include="Tear.h">
-      <Filter>ContentsObject\Play</Filter>
-    </ClInclude>
-    <ClInclude Include="Isaac.h">
       <Filter>ContentsObject\Play</Filter>
     </ClInclude>
     <ClInclude Include="PurpleFly.h">
@@ -271,6 +268,9 @@
     </ClInclude>
     <ClInclude Include="Item.h">
       <Filter>ContentsObject\Global</Filter>
+    </ClInclude>
+    <ClInclude Include="Isaac.h">
+      <Filter>ContentsObject</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

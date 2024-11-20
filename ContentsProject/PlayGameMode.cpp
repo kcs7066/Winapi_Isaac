@@ -320,6 +320,7 @@ void APlayGameMode::Tick(float _DeltaTime)
 		{
 			RoomMoveCameraTime = 0.0f;
 			PrevRoom->MiniMapRenderer->ChangeAnimation("Clear");
+
 			PrevRoom = CurRoom;
 
 			GetWorld()->SetCameraPos({ CurRoom->RoomPos.X - 480.0f ,CurRoom->RoomPos.Y - 270.0f });

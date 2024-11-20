@@ -5,12 +5,15 @@
 #include <EngineCore/2DCollision.h>
 #include <EngineBase/EngineMath.h>
 #include <EnginePlatform/EngineSound.h>
+#include "Item.h"
 
-enum class NewPlayerState
+enum class IsaacState
 {
 	Idle,
 	Move,
+	Attack,
 	Hit,
+	Item,
 	Die
 	
 	
@@ -42,12 +45,12 @@ public:
 	void Move(float _DeltaTime);
 	void HitStart();
 	void Hit(float _DeltaTime);
+	void ItemStart(AItem* _Item);
+	void Item(float _DeltaTime);
 	void DieStart();
 	void Die(float _DeltaTime);
 
-
-
-    void Attack(FVector2D _Dir);
+    void Attack(float _DeltaTime);
 
 	class USpriteRenderer* HeadRenderer = nullptr;
 	void CollisionEnter(AActor* _ColActor);
@@ -87,6 +90,7 @@ private:
 	class USpriteRenderer* HitRenderer = nullptr;
 	class USpriteRenderer* DeathRenderer = nullptr;
 	class USpriteRenderer* GhostRenderer = nullptr;
+	class USpriteRenderer* ItemRenderer = nullptr;
 
 	UFSMStateManager FSM = UFSMStateManager();
 	int Test = 0;
@@ -94,6 +98,8 @@ private:
 
 	float BombCoolTime = 0.0f; 
 	float GhostPos = -15.0f;
+
+	bool TheInnerEyeValue = false;
 
 	USoundPlayer BGMPlayer;
 };
