@@ -608,7 +608,7 @@ void APlayGameMode::CreateMap()
 	
 	if (Rooms[4] == CurRoom)
 	{
-		int RandomValue = Random.RandomInt(1, 2);
+		int RandomValue = Random.RandomInt(2, 2);
 
 		switch (RandomValue)
 		{

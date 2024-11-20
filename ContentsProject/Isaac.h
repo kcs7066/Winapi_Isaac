@@ -61,7 +61,7 @@ public:
 
 	bool CanMove = true;
 
-	float Damage = 3.5f;
+	float Damage = 100.0f;
 	FVector2D PrevPos;
 
 	int Hp = 6;

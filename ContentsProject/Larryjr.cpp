@@ -5,12 +5,14 @@
 #include "PlayGameMode.h"
 #include "TrapDoor.h"
 #include "Poop.h"
+#include "ContentsEnum.h"
 
 #include <EngineCore/SpriteRenderer.h>
 #include <EngineBase/FSMStateManager.h>
 #include <EngineCore/2DCollision.h>
 #include <EngineBase/EngineRandom.h>
 
+#include <EngineCore/EngineCoreDebug.h>
 
 ALarryjr::ALarryjr()
 	: AMonster()
@@ -32,7 +34,7 @@ ALarryjr::ALarryjr()
 	
 	ShadowRenderer->SetSpriteScale(0.4f);
 
-	CollisionComponent->SetComponentScale({ 50, 50 });
+	CollisionComponent->SetComponentScale({ 45, 45 });
 	CollisionComponent->SetComponentLocation({ 0, 0 });
 
 	DebugOn();
@@ -144,166 +146,9 @@ void ALarryjr::BeginPlay()
 void ALarryjr::Tick(float _DeltaTime)
 {
 	Super::Tick(_DeltaTime);
-
 	FSM.Update(_DeltaTime);
-
 }
 
-
-
-//void ALarryjr::Move(float _DeltaTime)
-//{
-//	
-//	DelayTime += _DeltaTime;
-//
-//	if (this->Hp <= 0.0f)
-//	{
-//		APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
-//		PlayGameMode->CurRoom->MonsterNumber--;	
-//		EffectPlayer = UEngineSound::Play("death burst large.wav");
-//		FSM.ChangeState(LarryjrState::Die);
-//	}
-//	if (LarryjrPart::HEAD == Part)
-//	{
-//		FVector2D ExpectPos = { HeadFuturePos.iX(), HeadFuturePos.iY() };
-//		FVector2D NewPos = GetActorLocation();
-//		FVector2D NewNewPos = { NewPos.iX(), NewPos.iY() };
-//		if (ExpectPos == NewNewPos)
-//		{
-//			int RandomValue = Random.RandomInt(1, 4);
-//
-//			switch (RandomValue)
-//			{
-//			case 1:
-//				Dir = { 0,-1 };
-//				switch (Part)
-//				{
-//				case LarryjrPart::HEAD:
-//					MonsterRenderer->ChangeAnimation("Head_Larryjr_Up");
-//					break;
-//				case LarryjrPart::BODY:
-//					MonsterRenderer->ChangeAnimation("Body_Larryjr_Up");
-//					break;
-//				case LarryjrPart::TAIL:
-//					MonsterRenderer->ChangeAnimation("Tail_Larryjr_Up");
-//					break;
-//				default:
-//					break;
-//				}
-//				break;
-//			case 2:
-//				Dir = { 1,0 };
-//				switch (Part)
-//				{
-//				case LarryjrPart::HEAD:
-//					MonsterRenderer->ChangeAnimation("Head_Larryjr_Right");
-//					break;
-//				case LarryjrPart::BODY:
-//					MonsterRenderer->ChangeAnimation("Body_Larryjr_Left");
-//					break;
-//				case LarryjrPart::TAIL:
-//					MonsterRenderer->ChangeAnimation("Body_Larryjr_Left");
-//					break;
-//				default:
-//					break;
-//				}
-//
-//				break;
-//			case 3:
-//				Dir = { 0,1 };
-//				switch (Part)
-//				{
-//				case LarryjrPart::HEAD:
-//					MonsterRenderer->ChangeAnimation("Head_Larryjr_Down");
-//					break;
-//				case LarryjrPart::BODY:
-//					MonsterRenderer->ChangeAnimation("Body_Larryjr_Down");
-//					break;
-//				case LarryjrPart::TAIL:
-//					MonsterRenderer->ChangeAnimation("Body_Larryjr_Down");
-//					break;
-//				default:
-//					break;
-//				}
-//
-//				break;
-//			default:
-//				Dir = { -1,0 };
-//				switch (Part)
-//				{
-//				case LarryjrPart::HEAD:
-//					MonsterRenderer->ChangeAnimation("Head_Larryjr_Left");
-//					break;
-//				case LarryjrPart::BODY:
-//					MonsterRenderer->ChangeAnimation("Body_Larryjr_Left");
-//					break;
-//				case LarryjrPart::TAIL:
-//					MonsterRenderer->ChangeAnimation("Body_Larryjr_Left");
-//					break;
-//				default:
-//					break;
-//				}
-//
-//				break;
-//			}
-//			APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
-//			FVector2D NextFuturePos = HeadFuturePos + (Dir * 52.0f);
-//			if (NextFuturePos.X > PlayGameMode->CurRoom->RoomPos.X + (52.0f * 6.5f))
-//			{
-//				HeadFuturePos = HeadFuturePos - (Dir * 52.0f);
-//				Dir = Dir * (-1.0f); 
-//			}
-//			else if(NextFuturePos.X < PlayGameMode->CurRoom->RoomPos.X + (52.0f * (- 6.5f)))
-//			{
-//				HeadFuturePos -= Dir * 52.0f;
-//				Dir = Dir * (-1.0f);
-//			}
-//			else if (NextFuturePos.Y > PlayGameMode->CurRoom->RoomPos.Y + (52.0f * 3.5f))
-//			{
-//				HeadFuturePos -= Dir * 52.0f;
-//				Dir = Dir * (-1.0f);
-//			}
-//			else if (NextFuturePos.Y < PlayGameMode->CurRoom->RoomPos.Y + (52.0f * (-3.5f)))
-//			{
-//				HeadFuturePos -= Dir * 52.0f;
-//				Dir = Dir * (-1.0f);
-//			}
-//			else
-//			{
-//				HeadFuturePos += (Dir * (52.0f));
-//			}
-//		}
-//
-//		int Key = Poopkey(HeadFuturePos);
-//		if (nullptr == PoopPos[Key])
-//		{
-//			FVector2D NewLocation = GetActorLocation() + Dir * _DeltaTime * Speed;
-//			APlayGameMode* ABPlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
-//
-//				AddActorLocation(Dir * _DeltaTime * Speed);
-//
-//		}
-//		
-//
-//		
-//	}
-//
-//	else
-//	{
-//		//FVector2D FollowDir = LinkedParts[Dir::Front]->GetActorLocation() - GetActorLocation();
-//		//FollowDir.Normalize();
-//		if (DelayTime > 0.3f)
-//		{
-//			BodyFuturePos = LinkedParts[Dir::Front]->GetActorLocation();
-//			DelayTime = 0;
-//		}
-//		Dir = BodyFuturePos - GetActorLocation();
-//		Dir.Normalize();
-//		AddActorLocation(Dir * _DeltaTime* Speed);
-//	}
-//
-//	// ¶ËÃ¼·Â°¨¼Ò
-//}
 void ALarryjr::DirChange(float _DeltaTime)
 {
 	if (this->Hp <= 0.0f || true == LinkedParts.empty())
@@ -314,9 +159,9 @@ void ALarryjr::DirChange(float _DeltaTime)
 	if 
 		(LarryjrPart::HEAD == Part)
 	{
-		FVector2D ExpectPos = { FuturePos.iX(), FuturePos.iY() };
+		FVector2D ExpectPos = {std::floorf(FuturePos.X), std::floorf(FuturePos.Y) };
 		FVector2D NewPos = GetActorLocation();
-		FVector2D NewNewPos = { NewPos.iX(), NewPos.iY() };
+		FVector2D NewNewPos = { std::floorf(NewPos.X), std::floorf(NewPos.Y) };
 		APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
 		FVector2D NextFuturePos = { 0,0 };
 
@@ -340,63 +185,64 @@ void ALarryjr::DirChange(float _DeltaTime)
 			}
 			if (FVector2D::UP == Dir)
 			{
-				NextFuturePos = FuturePos + (Dir * 52.0f);
-				if (NextFuturePos.Y < PlayGameMode->CurRoom->RoomPos.Y + (52.0f * (-3.5f)))
+				NextFuturePos = FuturePos + (Dir * 52);
+				if (NextFuturePos.Y < PlayGameMode->CurRoom->RoomPos.Y + 52 * (-3.5f))
 				{
-					FuturePos -= Dir * 52.0f;
+					FuturePos -= Dir * 52;
 					FSM.ChangeState(LarryjrState::DownMove);
 				}
 				else
 				{
-					FuturePos += (Dir * (52.0f));
+					FuturePos += (Dir * 52);
 					FSM.ChangeState(LarryjrState::UpMove);
 				}
 			}
 			else if (FVector2D::RIGHT == Dir)
 			{
-				NextFuturePos = FuturePos + (Dir * 52.0f);
-				if (NextFuturePos.X > PlayGameMode->CurRoom->RoomPos.X + (52.0f * (6.5f)))
+				NextFuturePos = FuturePos + (Dir * 52);
+				if (NextFuturePos.X > PlayGameMode->CurRoom->RoomPos.X + 52 * (6.5f))
 				{
-					FuturePos -= (Dir * 52.0f);
+					FuturePos -= (Dir * 52);
 					FSM.ChangeState(LarryjrState::LeftMove);
 				}
 				else
 				{
-					FuturePos += (Dir * (52.0f));
+					FuturePos += (Dir * 52);
 					FSM.ChangeState(LarryjrState::RightMove);
 				}
 			}
 			else if (FVector2D::DOWN == Dir)
 			{
-				NextFuturePos = FuturePos + (Dir * 52.0f);
-				if (NextFuturePos.Y > PlayGameMode->CurRoom->RoomPos.Y + (52.0f * (3.5f)))
+				NextFuturePos = FuturePos + (Dir * 52);
+				if (NextFuturePos.Y > PlayGameMode->CurRoom->RoomPos.Y + 52 * (3.5f))
 				{
-					FuturePos -= Dir * 52.0f;
+					FuturePos -= Dir * 52;
 					FSM.ChangeState(LarryjrState::UpMove);
 				}
 				else
 				{
-					FuturePos += (Dir * (52.0f));
+					FuturePos += (Dir * 52);
 					FSM.ChangeState(LarryjrState::DownMove);
 				}
 			}
 			else if (FVector2D::LEFT == Dir)
 			{
-				NextFuturePos = FuturePos + (Dir * 52.0f);
-				if (NextFuturePos.X < PlayGameMode->CurRoom->RoomPos.X + (52.0f * (-6.5f)))
+				NextFuturePos = FuturePos + (Dir * 52);
+				if (NextFuturePos.X < PlayGameMode->CurRoom->RoomPos.X + 52 * (-6.5f))
 				{
-					FuturePos -= Dir * 52.0f;
+					FuturePos -= Dir * 52;
 					FSM.ChangeState(LarryjrState::RightMove);
 				}
 				else
 				{
-					FuturePos += (Dir * (52.0f));
+					FuturePos += (Dir * 52);
 					FSM.ChangeState(LarryjrState::LeftMove);
 				}
 			}
 
-			
+			SavePos = NewNewPos;
 		}
+
 
 		//int Key = Poopkey(FuturePos);
 		//if (nullptr == PoopPos[Key])
@@ -412,26 +258,38 @@ void ALarryjr::DirChange(float _DeltaTime)
 
 	else
 	{
-		FuturePos = LinkedParts[LinkDir::Front]->GetActorLocation();
+		FuturePos = LinkedParts[LinkDir::Front]->SavePos;
 		FVector2D NewDir = FuturePos - GetActorLocation();
 
 		int a = 0;
 
-		if (NewDir.Y < -40.0f)
+		if (NewDir.Y < -40)
 		{
 			FSM.ChangeState(LarryjrState::UpMove);
 		}
-		else if (NewDir.X > 40.0f)
+		else if (NewDir.X > 40)
 		{
 			FSM.ChangeState(LarryjrState::RightMove);
 		}
-		else if (NewDir.Y > 40.0f)
+		else if (NewDir.Y > 40)
 		{
 			FSM.ChangeState(LarryjrState::DownMove);
 		}
-		else if (NewDir.X < -40.0f)
+		else if (NewDir.X < -40)
 		{
 			FSM.ChangeState(LarryjrState::LeftMove);
+		}
+
+		SavePos = { GetActorLocation().iX(),GetActorLocation().iY()};
+
+		if (Part == LarryjrPart::TAIL)
+		{
+			if (5.0f <= DelayTime)
+			{
+				APoop* NewPoop = GetWorld()->SpawnActor<APoop>();
+				NewPoop->SetActorLocation(SavePos);
+				DelayTime = 0.0f;
+			}
 		}
 
     }
@@ -440,15 +298,28 @@ void ALarryjr::DirChange(float _DeltaTime)
 
 void ALarryjr::UpMove(float _DeltaTime)
 {
-
+	DelayTime += _DeltaTime;
 	if (this->Hp <= 0.0f || true == LinkedParts.empty())
 	{
 		DieStart();
 	}
 
-	    float ExpectPos = FuturePos.iY(); 
+	if (LarryjrPart::HEAD == Part)
+	{
+		AActor* Result = CollisionComponent->CollisionOnce(ECollisionGroup::Structure);
+		if (nullptr != Result)
+		{
+			AStructure* ResultStructure = dynamic_cast<AStructure*>(Result);
+			APoop* ResultPoop = dynamic_cast<APoop*>(ResultStructure);
+			ResultPoop->Hp = 0;
+			ResultPoop->StructureRenderer->ChangeAnimation("Poop0");
+			ResultPoop->CollisionComponent->SetActive(false);
+		}
+	}
+
+	    float ExpectPos = std::floorf(FuturePos.Y);
 		FVector2D NewPos = GetActorLocation();
-		float NewNewPos = NewPos.iY();
+		float NewNewPos = std::floorf(NewPos.Y);
 		if (ExpectPos == NewNewPos) 
 		{
 			FSM.ChangeState(LarryjrState::DirChange);
@@ -463,14 +334,28 @@ void ALarryjr::UpMove(float _DeltaTime)
 }
 void ALarryjr::RightMove(float _DeltaTime)
 {
+	DelayTime += _DeltaTime;
 	if (this->Hp <= 0.0f || true == LinkedParts.empty())
 	{
 		DieStart();
 	}
 
-	float ExpectPos = FuturePos.iX();
+	if (LarryjrPart::HEAD == Part)
+	{
+		AActor* Result = CollisionComponent->CollisionOnce(ECollisionGroup::Structure);
+		if (nullptr != Result)
+		{
+			AStructure* ResultStructure = dynamic_cast<AStructure*>(Result);
+			APoop* ResultPoop = dynamic_cast<APoop*>(ResultStructure);
+			ResultPoop->Hp = 0;
+			ResultPoop->StructureRenderer->ChangeAnimation("Poop0");
+			ResultPoop->CollisionComponent->SetActive(false);
+		}
+	}
+
+	float ExpectPos = std::floorf(FuturePos.X);
 	FVector2D NewPos = GetActorLocation();
-	float NewNewPos = NewPos.iX();
+	float NewNewPos = std::floorf(NewPos.X);
 	if (ExpectPos == NewNewPos)
 	{
 		FSM.ChangeState(LarryjrState::DirChange);
@@ -484,14 +369,28 @@ void ALarryjr::RightMove(float _DeltaTime)
 }
 void ALarryjr::DownMove(float _DeltaTime)
 {
+	DelayTime += _DeltaTime;
 	if (this->Hp <= 0.0f || true == LinkedParts.empty())
 	{
 		DieStart();
 	}
 
-	float ExpectPos = FuturePos.iY();
+	if (LarryjrPart::HEAD == Part)
+	{
+		AActor* Result = CollisionComponent->CollisionOnce(ECollisionGroup::Structure);
+		if (nullptr != Result)
+		{
+			AStructure* ResultStructure = dynamic_cast<AStructure*>(Result);
+			APoop* ResultPoop = dynamic_cast<APoop*>(ResultStructure);
+			ResultPoop->Hp = 0;
+			ResultPoop->StructureRenderer->ChangeAnimation("Poop0");
+			ResultPoop->CollisionComponent->SetActive(false);
+		}
+	}
+
+	float ExpectPos = std::floorf(FuturePos.Y);
 	FVector2D NewPos = GetActorLocation();
-	float NewNewPos = NewPos.iY();
+	float NewNewPos = std::floorf(NewPos.Y);
 	if (ExpectPos == NewNewPos)
 	{
 		FSM.ChangeState(LarryjrState::DirChange);
@@ -505,14 +404,28 @@ void ALarryjr::DownMove(float _DeltaTime)
 }
 void ALarryjr::LeftMove(float _DeltaTime)
 {
+	DelayTime += _DeltaTime;
 	if (this->Hp <= 0.0f || true == LinkedParts.empty())
 	{
 		DieStart();
 	}
 
-	float ExpectPos = FuturePos.iX();
+	if (LarryjrPart::HEAD == Part)
+	{
+		AActor* Result = CollisionComponent->CollisionOnce(ECollisionGroup::Structure);
+		if (nullptr != Result)
+		{
+			AStructure* ResultStructure = dynamic_cast<AStructure*>(Result);
+			APoop* ResultPoop = dynamic_cast<APoop*>(ResultStructure);
+			ResultPoop->Hp = 0;
+			ResultPoop->StructureRenderer->ChangeAnimation("Poop0");
+			ResultPoop->CollisionComponent->SetActive(false);
+		}
+	}
+
+	float ExpectPos = std::floorf(FuturePos.X);
 	FVector2D NewPos = GetActorLocation();
-	float NewNewPos = NewPos.iX();
+	float NewNewPos = std::floorf(NewPos.X);
 	if (ExpectPos == NewNewPos)
 	{
 		FSM.ChangeState(LarryjrState::DirChange);
@@ -539,8 +452,6 @@ void ALarryjr::Poop(float _DeltaTime)
 		APoop* NewPoop = GetWorld()->SpawnActor<APoop>();
 		NewPoop->SetActorLocation(GetActorLocation());
 	}
-
-		//FSM.ChangeState(LarryjrState::Move);
 
 }
 

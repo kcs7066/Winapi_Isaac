@@ -86,6 +86,7 @@ public:
 	std::map<int, FVector2D> PoopBind;
 	std::map<int, APoop*> PoopPos;
 	FVector2D FuturePos = { 0.0f,0.0f };
+	FVector2D SavePos = { 0.0f , 0.0f };
 	//FVector2D BodyFuturePos = { 0.0f,0.0f };
 	float Speed = 208.0f;
 	FVector2D Dir = { 1,0 };
