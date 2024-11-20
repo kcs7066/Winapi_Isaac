@@ -61,7 +61,7 @@ public:
 
 	bool CanMove = true;
 
-	float Damage = 100.0f;
+	float Damage = 3.5f;
 	FVector2D PrevPos;
 
 	int Hp = 6;
@@ -69,7 +69,9 @@ public:
 	int BombNumber = 1;
 	int KeyNumber = 0;
 	float HitCoolTime = 0.0f;
-
+	float Speed = 0.0f;
+	FVector2D Vector = FVector2D::ZERO;
+	bool TheInnerEyeValue = false;
 
 protected:
 
@@ -78,7 +80,7 @@ private:
 	void HpCheck();
 
 	U2DCollision* CollisionComponent;
-	float Speed = 500.0f;
+
 	class UEngineWinImage* ColImage = nullptr;
 	
 	float RoomMoveCameraTime = 0.0f;
@@ -94,12 +96,10 @@ private:
 
 	UFSMStateManager FSM = UFSMStateManager();
 	int Test = 0;
-	float BulletCoolTime = 0.5f;
+	float TearCoolTime = 0.366666f;
 
 	float BombCoolTime = 0.0f; 
 	float GhostPos = -15.0f;
-
-	bool TheInnerEyeValue = false;
 
 	USoundPlayer BGMPlayer;
 };

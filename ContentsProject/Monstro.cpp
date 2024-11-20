@@ -91,7 +91,7 @@ void AMonstro::Tick(float _DeltaTime)
 {
 	Super::Tick(_DeltaTime);
 	FSM.Update(_DeltaTime);
-	BulletCoolTime -= _DeltaTime;
+	TearCoolTime -= _DeltaTime;
 }
 
 
@@ -205,13 +205,13 @@ void AMonstro::Attack(float _DeltaTime)
 
 	if (DelayTime > 0.5f)
 	{
-		if (BulletCoolTime < 0.0f)
+		if (TearCoolTime < 0.0f)
 		{
 			AMonsterTear* NewTear = GetWorld()->SpawnActor<AMonsterTear>();
 			NewTear->TearSpeed = 1.0f;
 			NewTear->SetActorLocation(GetActorLocation());
 			NewTear->Dir = GetWorld()->GetPawn()->GetActorLocation() - GetActorLocation();
-			BulletCoolTime = 1.5f;
+			TearCoolTime = 1.5f;
 		}
 
 		if (DelayTime > 1.0f)

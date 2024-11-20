@@ -42,7 +42,7 @@ private:
 	class USpriteRenderer* ShadowRenderer;
 	U2DCollision* CollisionComponent;
 
-	float TearSpeed = 500.0f;
+	float TearSpeed = 450.0f;
 	UFSMStateManager FSM = UFSMStateManager();
 	USoundPlayer BGMPlayer;
 	UEngineRandom Random;

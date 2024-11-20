@@ -88,7 +88,7 @@ void ARoundWorm::Tick(float _DeltaTime)
 {
 	Super::Tick(_DeltaTime);
 	FSM.Update(_DeltaTime);
-	BulletCoolTime -= _DeltaTime;
+	TearCoolTime -= _DeltaTime;
 }
 
 
@@ -126,14 +126,14 @@ void ARoundWorm::Attack(float _DeltaTime)
 		DieStart();
 	}
 
-	if (BulletCoolTime < 0.0f)
+	if (TearCoolTime < 0.0f)
 	{
 		AMonsterTear* NewTear = GetWorld()->SpawnActor<AMonsterTear>();
 		NewTear->SetActorLocation(GetActorLocation());
 		NewTear->Dir = GetWorld()->GetPawn()->GetActorLocation() - GetActorLocation();
 		NewTear->Dir.Normalize();
 		
-		BulletCoolTime = 0.5f;
+		TearCoolTime = 0.5f;
 	}
 
 	if (DelayTime > 0.2f)

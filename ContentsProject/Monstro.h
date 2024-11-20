@@ -39,7 +39,7 @@ public:
 protected:
 
 private:
-	float BulletCoolTime = 1.5f;
+	float TearCoolTime = 1.5f;
 	float Speed = 300.0f;
 	FVector2D Dir;
 

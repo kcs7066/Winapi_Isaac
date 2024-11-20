@@ -43,10 +43,10 @@ AIsaac::AIsaac()
 
 
 		HeadRenderer->CreateAnimation("Idle_Head", "Head.png", 7, 7, 0.1f);
-		HeadRenderer->CreateAnimation("Attack_UpHead", "Head.png", {  4, 5 }, { 0.1f,0.4f });
-		HeadRenderer->CreateAnimation("Attack_RightHead", "Head.png", { 2, 3 }, { 0.1f,0.4f });
-		HeadRenderer->CreateAnimation("Attack_DownHead", "Head.png", { 6, 7 }, { 0.1f,0.4f});
-		HeadRenderer->CreateAnimation("Attack_LeftHead", "Head.png", { 0, 1 }, { 0.1f,0.4f });
+		HeadRenderer->CreateAnimation("Attack_UpHead", "Head.png", {  4, 5 }, { 0.1f,0.266666f });
+		HeadRenderer->CreateAnimation("Attack_RightHead", "Head.png", { 2, 3 }, { 0.1f,0.266666f });
+		HeadRenderer->CreateAnimation("Attack_DownHead", "Head.png", { 6, 7 }, { 0.1f,0.266666f });
+		HeadRenderer->CreateAnimation("Attack_LeftHead", "Head.png", { 0, 1 }, { 0.1f,0.266666f });
 		HeadRenderer->CreateAnimation("Run_UpHead", "Head.png", 5, 5, 0.1f);
 		HeadRenderer->CreateAnimation("Run_RightHead", "Head.png", 3, 3, 0.1f);
 		HeadRenderer->CreateAnimation("Run_LeftHead", "Head.png", 1, 1, 0.1f);
@@ -162,9 +162,9 @@ void AIsaac::BeginPlay()
 		[this]()
 		{
 			CollisionComponent->SetActive(false);
-			HeadRenderer->Destroy();
-			BodyRenderer->Destroy();
-			ShadowRenderer->Destroy();
+			HeadRenderer->SetComponentScale({ 0, 0 });
+			BodyRenderer->SetComponentScale({ 0, 0 });
+			ShadowRenderer->SetComponentScale({ 0, 0 });
 			DeathRenderer->ChangeAnimation("Death_Isaac");
 		}
 	);
@@ -179,6 +179,7 @@ void AIsaac::Tick(float _DeltaTime)
 	
 		UEngineDebug::CoreOutPutString("FPS : " + std::to_string(1.0f / _DeltaTime));
 		UEngineDebug::CoreOutPutString("PlayerPos : " + GetActorLocation().ToString());
+		UEngineDebug::CoreOutPutString("Speed : " + std::to_string(Speed));
 
 		APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
 
@@ -205,11 +206,37 @@ void AIsaac::Tick(float _DeltaTime)
 			}
 		}
 
-		BulletCoolTime -= _DeltaTime;
+		TearCoolTime -= _DeltaTime;
 		BombCoolTime -= _DeltaTime;
 		HitCoolTime -= _DeltaTime;
+		PrevPos = GetActorLocation();
+
+		FVector2D Location = GetActorLocation() + (Vector * _DeltaTime * Speed);
+		if
+			(
+				PlayGameMode->CurRoom->RoomPos.X - Location.X > 338.0f ||
+				PlayGameMode->CurRoom->RoomPos.X - Location.X < -338.0f ||
+				PlayGameMode->CurRoom->RoomPos.Y - Location.Y > 182.0f ||
+				PlayGameMode->CurRoom->RoomPos.Y - Location.Y < -182.0f
+			)
+		{
+
+		}
+		else
+		{
+			AddActorLocation(Vector * _DeltaTime * Speed);
+		}
+
+		AActor* StructureResult = CollisionComponent->CollisionOnce(ECollisionGroup::Structure);
+
+
+		if (nullptr != StructureResult)
+		{
+			SetActorLocation(PrevPos);
+		}
+
 		FSM.Update(_DeltaTime);
-		
+	
 }
 
 
@@ -245,6 +272,8 @@ void AIsaac::Idle(float _DeltaTime)
 	{
 		FSM.ChangeState(IsaacState::Attack);
 	}
+
+	Speed = UEngineMath::Clamp(Speed - (_DeltaTime * 1000.0f), 0.0f, 330.0f);
 
 	AActor* MonsterResult = CollisionComponent->CollisionOnce(ECollisionGroup::Monster);
 	if (nullptr != MonsterResult)
@@ -287,33 +316,63 @@ void AIsaac::Move(float _DeltaTime)
 		FSM.ChangeState(IsaacState::Attack);
 	}
 
-	FVector2D Vector = FVector2D::ZERO;
-
-	if (true == UEngineInput::GetInst().IsPress('D'))
-	{
-		HeadRenderer->ChangeAnimation("Run_RightHead");
-		BodyRenderer->ChangeAnimation("Run_RightBody");
-		Vector += FVector2D::RIGHT;
-	}
-
-	if (true == UEngineInput::GetInst().IsPress('A'))
-	{
-		HeadRenderer->ChangeAnimation("Run_LeftHead");
-		BodyRenderer->ChangeAnimation("Run_LeftBody");
-		Vector += FVector2D::LEFT;
-	}
-	if (true == UEngineInput::GetInst().IsPress('S'))
-	{
-		HeadRenderer->ChangeAnimation("Idle_Head");
-		BodyRenderer->ChangeAnimation("Run_DownBody");
-		Vector += FVector2D::DOWN;
-	}
-	if (true == UEngineInput::GetInst().IsPress('W'))
+	if (true == UEngineInput::GetInst().IsPress('W') && true == UEngineInput::GetInst().IsPress('D'))
 	{
 		HeadRenderer->ChangeAnimation("Run_UpHead");
 		BodyRenderer->ChangeAnimation("Run_DownBody");
-		Vector += FVector2D::UP;
+		Vector = FVector2D::UP + FVector2D::RIGHT;
 	}
+	else if (true == UEngineInput::GetInst().IsPress('W') && true == UEngineInput::GetInst().IsPress('A'))
+	{
+		HeadRenderer->ChangeAnimation("Run_UpHead");
+		BodyRenderer->ChangeAnimation("Run_DownBody");
+		Vector = FVector2D::UP + FVector2D::LEFT;
+	}
+	else if (true == UEngineInput::GetInst().IsPress('S') && true == UEngineInput::GetInst().IsPress('D'))
+	{
+		HeadRenderer->ChangeAnimation("Idle_Head");
+		BodyRenderer->ChangeAnimation("Run_DownBody");
+		Vector = FVector2D::DOWN + FVector2D::RIGHT;
+	}
+	else if (true == UEngineInput::GetInst().IsPress('S') && true == UEngineInput::GetInst().IsPress('A'))
+	{
+		HeadRenderer->ChangeAnimation("Idle_Head");
+		BodyRenderer->ChangeAnimation("Run_DownBody");
+		Vector = FVector2D::DOWN + FVector2D::LEFT;
+	}
+	else if (true == UEngineInput::GetInst().IsPress('S'))
+	{
+		HeadRenderer->ChangeAnimation("Idle_Head");
+		BodyRenderer->ChangeAnimation("Run_DownBody");
+		Vector = FVector2D::DOWN;
+	}
+	else if (true == UEngineInput::GetInst().IsPress('W'))
+	{
+		HeadRenderer->ChangeAnimation("Run_UpHead");
+		BodyRenderer->ChangeAnimation("Run_DownBody");
+		Vector = FVector2D::UP;
+	}
+	else if (true == UEngineInput::GetInst().IsPress('D'))
+	{
+		HeadRenderer->ChangeAnimation("Run_RightHead");
+		BodyRenderer->ChangeAnimation("Run_RightBody");
+		Vector = FVector2D::RIGHT;
+	}
+	else if (true == UEngineInput::GetInst().IsPress('S'))
+	{
+		HeadRenderer->ChangeAnimation("Idle_Head");
+		BodyRenderer->ChangeAnimation("Run_DownBody");
+		Vector = FVector2D::DOWN;
+	}
+	else if (true == UEngineInput::GetInst().IsPress('A'))
+	{
+		HeadRenderer->ChangeAnimation("Run_LeftHead");
+		BodyRenderer->ChangeAnimation("Run_LeftBody");
+		Vector = FVector2D::LEFT;
+	}
+
+
+
 
 	Vector.Normalize();
 
@@ -336,13 +395,13 @@ void AIsaac::Move(float _DeltaTime)
 				switch (NewResult->Dir)
 				{
 				case DoorDir::UP:
-					this->SetActorLocation({ PlayGameMode->CurRoom->RoomPos.X,PlayGameMode->CurRoom->RoomPos.Y + 104.0f });
+					this->SetActorLocation({ PlayGameMode->CurRoom->RoomPos.X,PlayGameMode->CurRoom->RoomPos.Y + 156.0f });
 					break;
 				case DoorDir::RIGHT:
 					this->SetActorLocation({ PlayGameMode->CurRoom->RoomPos.X - 312.f,PlayGameMode->CurRoom->RoomPos.Y });
 					break;
 				case DoorDir::DOWN:
-					this->SetActorLocation({ PlayGameMode->CurRoom->RoomPos.X,PlayGameMode->CurRoom->RoomPos.Y - 104.0f });
+					this->SetActorLocation({ PlayGameMode->CurRoom->RoomPos.X,PlayGameMode->CurRoom->RoomPos.Y - 156.0f });
 					break;
 				case DoorDir::LEFT:
 					this->SetActorLocation({ PlayGameMode->CurRoom->RoomPos.X + 312.f,PlayGameMode->CurRoom->RoomPos.Y });
@@ -365,7 +424,7 @@ void AIsaac::Move(float _DeltaTime)
 	}
 	
 
-	FVector2D Location = GetActorLocation() += Vector * _DeltaTime * Speed;
+	FVector2D Location = GetActorLocation() + (Vector * _DeltaTime * Speed);
 
 	if 
 		(
@@ -373,25 +432,20 @@ void AIsaac::Move(float _DeltaTime)
 		PlayGameMode->CurRoom->RoomPos.X - Location.X < -338.0f ||
 		PlayGameMode->CurRoom->RoomPos.Y - Location.Y > 182.0f ||
 		PlayGameMode->CurRoom->RoomPos.Y - Location.Y < -182.0f
-			)
+		)
+
 	{
 	}
 	
 	else
 	{
 
-		PrevPos = GetActorLocation();
-		if (true == CanMove) {
-			AddActorLocation(Vector * _DeltaTime * Speed);
-		}
-		AActor* StructureResult = CollisionComponent->CollisionOnce(ECollisionGroup::Structure);
-
-
-		if (nullptr != StructureResult)
+		if (true == CanMove) 
 		{
-			SetActorLocation(PrevPos);
-		}
+			//AddActorLocation(Vector * _DeltaTime * Speed);
+			Speed = UEngineMath::Clamp(Speed + (_DeltaTime * 1000.0f), 0.0f, 330.0f);
 
+		}
 	}
 
 
@@ -401,7 +455,6 @@ void AIsaac::Move(float _DeltaTime)
 		false == UEngineInput::GetInst().IsPress('S'))
 	{
 		FSM.ChangeState(IsaacState::Idle);
-
 	}
 
 	AActor* MonsterResult = CollisionComponent->CollisionOnce(ECollisionGroup::Monster);
@@ -419,7 +472,7 @@ void AIsaac::Move(float _DeltaTime)
 void AIsaac::Attack(float _DeltaTime)
 {
 
-	if (BulletCoolTime < 0.0f)
+	if (TearCoolTime < 0.0f)
 	{
 		if (true == UEngineInput::GetInst().IsPress(VK_UP))
 		{
@@ -436,13 +489,31 @@ void AIsaac::Attack(float _DeltaTime)
 				FVector2D ThirdDir = { -1,-7 };
 				SecondDir.Normalize();
 				ThirdDir.Normalize();
-				NewSecondTear->Dir = SecondDir;
-				NewThirdTear->Dir = ThirdDir;
+				if (Vector.Y == 1)
+				{
+					NewSecondTear->Dir = SecondDir;
+				}
+				else {
+					NewSecondTear->Dir = SecondDir + Vector * _DeltaTime * Speed;
+				}			
+				if (Vector.Y == 1)
+				{
+					NewThirdTear->Dir = ThirdDir;
+				}
+				else {
+					NewThirdTear->Dir = ThirdDir + Vector * _DeltaTime * Speed;
+				}
 			}
 			else
 			{
 			}
-			NewTear->Dir = FVector2D::UP;
+			if (Vector.Y == 1)
+			{
+				NewTear->Dir = FVector2D::UP;
+			}
+			else {
+			   	NewTear->Dir = FVector2D::UP + Vector * _DeltaTime * Speed;
+			     }
 			HeadRenderer->ChangeAnimation("Attack_UpHead");
 		}
 
@@ -461,13 +532,32 @@ void AIsaac::Attack(float _DeltaTime)
 				FVector2D ThirdDir = { 7,-1 };
 				SecondDir.Normalize();
 				ThirdDir.Normalize();
-				NewSecondTear->Dir = SecondDir;
-				NewThirdTear->Dir = ThirdDir;
+				if (Vector.X == -1)
+				{
+					NewSecondTear->Dir = SecondDir;
+				}
+				else {
+					NewSecondTear->Dir = SecondDir + Vector * _DeltaTime * Speed;
+				}
+				if (Vector.X == -1)
+				{
+					NewThirdTear->Dir = ThirdDir;
+				}
+				else {
+					NewThirdTear->Dir = ThirdDir + Vector * _DeltaTime * Speed;
+				}
 			}
 			else
 			{
 			}
-			NewTear->Dir = FVector2D::RIGHT;
+
+			if (Vector.X == -1)
+			{
+				NewTear->Dir = FVector2D::RIGHT;
+			}
+			else {
+				NewTear->Dir = FVector2D::RIGHT + Vector * _DeltaTime * Speed;
+			}
 			HeadRenderer->ChangeAnimation("Attack_RightHead");
 		}
 
@@ -485,14 +575,32 @@ void AIsaac::Attack(float _DeltaTime)
 				FVector2D ThirdDir = { -1,7 };
 				SecondDir.Normalize();
 				ThirdDir.Normalize();
-				NewSecondTear->Dir = SecondDir;
-				NewThirdTear->Dir = ThirdDir;
+				if (Vector.Y == -1)
+				{
+					NewSecondTear->Dir = SecondDir;
+				}
+				else {
+					NewSecondTear->Dir = SecondDir + Vector * _DeltaTime * Speed;
+				}
+				if (Vector.Y == -1)
+				{
+					NewThirdTear->Dir = ThirdDir;
+				}
+				else {
+					NewThirdTear->Dir = ThirdDir + Vector * _DeltaTime * Speed;
+				}
 			}
 			else
 			{
 			}
-			NewTear->Dir = FVector2D::DOWN;
-			HeadRenderer->ChangeAnimation("Attack_DownHead");
+			if (Vector.Y == -1)
+			{
+				NewTear->Dir = FVector2D::DOWN;
+			}
+			else {
+				NewTear->Dir = FVector2D::DOWN + Vector * _DeltaTime * Speed;
+			}
+		HeadRenderer->ChangeAnimation("Attack_DownHead");
 		}
 
 		if (true == UEngineInput::GetInst().IsPress(VK_LEFT))
@@ -509,74 +617,92 @@ void AIsaac::Attack(float _DeltaTime)
 				FVector2D ThirdDir = { -7,-1 };
 				SecondDir.Normalize();
 				ThirdDir.Normalize();
-				NewSecondTear->Dir = SecondDir;
-				NewThirdTear->Dir = ThirdDir;
+				if (Vector.X == 1)
+				{
+					NewSecondTear->Dir = SecondDir;
+				}
+				else {
+					NewSecondTear->Dir = SecondDir + Vector * _DeltaTime * Speed;
+				}
+				if (Vector.X == 1)
+				{
+					NewThirdTear->Dir = ThirdDir;
+				}
+				else {
+					NewThirdTear->Dir = ThirdDir + Vector * _DeltaTime * Speed;
+				}
 			}
 			else
 			{
 			}
-			NewTear->Dir = FVector2D::LEFT;
+
+			if (Vector.X == 1)
+			{
+				NewTear->Dir = FVector2D::LEFT;
+			}
+			else {
+				NewTear->Dir = FVector2D::LEFT + Vector * _DeltaTime * Speed;
+			}
 			HeadRenderer->ChangeAnimation("Attack_LeftHead");
 		}
-
-		//switch (_Value)
-		//{
-		//case VK_UP:
-
-		//	
-		//	break;
-		//case VK_RIGHT:
-
-		//	break;
-
-		//case VK_DOWN:
-		//	
-		//	break;
-
-		//case VK_LEFT:
-		//	
-		//	break;
-
-		//default:
-		//	break;
-		//}
-		BulletCoolTime = 0.5f;
+		if(true == TheInnerEyeValue)
+		{
+			TearCoolTime = 0.733333f;
+		}
+		else
+		{
+			TearCoolTime = 0.366666f;
+		}
 	}
 
-	FVector2D Vector = FVector2D::ZERO;
-
-	if (true == UEngineInput::GetInst().IsPress('D'))
-	{
-		Vector += FVector2D::RIGHT;
-		BodyRenderer->ChangeAnimation("Run_RightBody");
-	}
-
-	if (true == UEngineInput::GetInst().IsPress('A'))
-	{
-		Vector += FVector2D::LEFT;
-		BodyRenderer->ChangeAnimation("Run_LeftBody");
-	}
-	if (true == UEngineInput::GetInst().IsPress('S'))
-	{
-		Vector += FVector2D::DOWN;
-		BodyRenderer->ChangeAnimation("Run_DownBody");
-	}
-	if (true == UEngineInput::GetInst().IsPress('W'))
-	{
-		Vector += FVector2D::UP;
-		BodyRenderer->ChangeAnimation("Run_DownBody");
-	}
-
-	if (false == UEngineInput::GetInst().IsPress('W') &&
-		false == UEngineInput::GetInst().IsPress('A') &&
-		false == UEngineInput::GetInst().IsPress('S') &&
-		false == UEngineInput::GetInst().IsPress('D'))
-	{
-		BodyRenderer->ChangeAnimation("Idle_Body");
-	}
-
-	Vector.Normalize();
 	APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
+
+	if (true == UEngineInput::GetInst().IsPress('W') && true == UEngineInput::GetInst().IsPress('D'))
+	{
+		BodyRenderer->ChangeAnimation("Run_DownBody");
+		Vector = FVector2D::UP + FVector2D::RIGHT;
+	}
+	else if (true == UEngineInput::GetInst().IsPress('W') && true == UEngineInput::GetInst().IsPress('A'))
+	{
+		BodyRenderer->ChangeAnimation("Run_DownBody");
+		Vector = FVector2D::UP + FVector2D::LEFT;
+	}
+	else if (true == UEngineInput::GetInst().IsPress('S') && true == UEngineInput::GetInst().IsPress('D'))
+	{
+		BodyRenderer->ChangeAnimation("Run_DownBody");
+		Vector = FVector2D::DOWN + FVector2D::RIGHT;
+	}
+	else if (true == UEngineInput::GetInst().IsPress('S') && true == UEngineInput::GetInst().IsPress('A'))
+	{
+		BodyRenderer->ChangeAnimation("Run_DownBody");
+		Vector = FVector2D::DOWN + FVector2D::LEFT;
+	}
+	else if (true == UEngineInput::GetInst().IsPress('S'))
+	{
+		BodyRenderer->ChangeAnimation("Run_DownBody");
+		Vector = FVector2D::DOWN;
+	}
+	else if (true == UEngineInput::GetInst().IsPress('W'))
+	{
+		BodyRenderer->ChangeAnimation("Run_DownBody");
+		Vector = FVector2D::UP;
+	}
+	else if (true == UEngineInput::GetInst().IsPress('D'))
+	{
+		BodyRenderer->ChangeAnimation("Run_RightBody");
+		Vector = FVector2D::RIGHT;
+	}
+	else if (true == UEngineInput::GetInst().IsPress('S'))
+	{
+		BodyRenderer->ChangeAnimation("Run_DownBody");
+		Vector = FVector2D::DOWN;
+	}
+	else if (true == UEngineInput::GetInst().IsPress('A'))
+	{
+		BodyRenderer->ChangeAnimation("Run_LeftBody");
+		Vector = FVector2D::LEFT;
+	}
+	Vector.Normalize();
 	if (true == PlayGameMode->CurRoom->RoomClear)
 	{
 
@@ -596,13 +722,13 @@ void AIsaac::Attack(float _DeltaTime)
 				switch (NewResult->Dir)
 				{
 				case DoorDir::UP:
-					this->SetActorLocation({ PlayGameMode->CurRoom->RoomPos.X,PlayGameMode->CurRoom->RoomPos.Y + 104.0f });
+					this->SetActorLocation({ PlayGameMode->CurRoom->RoomPos.X,PlayGameMode->CurRoom->RoomPos.Y + 156.0f });
 					break;
 				case DoorDir::RIGHT:
 					this->SetActorLocation({ PlayGameMode->CurRoom->RoomPos.X - 312.f,PlayGameMode->CurRoom->RoomPos.Y });
 					break;
 				case DoorDir::DOWN:
-					this->SetActorLocation({ PlayGameMode->CurRoom->RoomPos.X,PlayGameMode->CurRoom->RoomPos.Y - 104.0f });
+					this->SetActorLocation({ PlayGameMode->CurRoom->RoomPos.X,PlayGameMode->CurRoom->RoomPos.Y - 156.0f });
 					break;
 				case DoorDir::LEFT:
 					this->SetActorLocation({ PlayGameMode->CurRoom->RoomPos.X + 312.f,PlayGameMode->CurRoom->RoomPos.Y });
@@ -612,13 +738,12 @@ void AIsaac::Attack(float _DeltaTime)
 					break;
 				}
 
+				FSM.ChangeState(IsaacState::Idle);
 			}
 		}
 	}
 
-
-
-	FVector2D Location = GetActorLocation() += Vector * _DeltaTime * Speed;
+	FVector2D Location = GetActorLocation() + (Vector * _DeltaTime * Speed);
 
 	if
 		(
@@ -627,24 +752,28 @@ void AIsaac::Attack(float _DeltaTime)
 			PlayGameMode->CurRoom->RoomPos.Y - Location.Y > 182.0f ||
 			PlayGameMode->CurRoom->RoomPos.Y - Location.Y < -182.0f
 			)
+
 	{
 	}
 
 	else
 	{
 
-		PrevPos = GetActorLocation();
-		if (true == CanMove) {
-			AddActorLocation(Vector * _DeltaTime * Speed);
-		}
-		AActor* StructureResult = CollisionComponent->CollisionOnce(ECollisionGroup::Structure);
-
-
-		if (nullptr != StructureResult)
+		if (true == CanMove)
 		{
-			SetActorLocation(PrevPos);
-		}
+			//AddActorLocation(Vector * _DeltaTime * Speed);
+			Speed = UEngineMath::Clamp(Speed + (_DeltaTime * 1000.0f), 0.0f, 330.0f);
 
+		}
+	}
+
+	if (false == UEngineInput::GetInst().IsPress('A') &&
+		false == UEngineInput::GetInst().IsPress('D') &&
+		false == UEngineInput::GetInst().IsPress('W') &&
+		false == UEngineInput::GetInst().IsPress('S'))
+	{
+		Speed = UEngineMath::Clamp(Speed - (_DeltaTime * 2000.0f), 0.0f, 330.0f);
+		BodyRenderer->ChangeAnimation("Idle_Body");
 	}
 
 	if (false == UEngineInput::GetInst().IsPress(VK_UP) &&
@@ -653,7 +782,6 @@ void AIsaac::Attack(float _DeltaTime)
 		false == UEngineInput::GetInst().IsPress(VK_LEFT))
 	{
 		FSM.ChangeState(IsaacState::Idle);
-
 	}
 }
 
@@ -668,28 +796,45 @@ void AIsaac::Hit(float _DeltaTime)
 {
 	DelayTime += _DeltaTime;
 
-	FVector2D Vector = FVector2D::ZERO;
-
-	if (true == UEngineInput::GetInst().IsPress('D'))
-	{
-		Vector += FVector2D::RIGHT;
-	}
-
-	if (true == UEngineInput::GetInst().IsPress('A'))
-	{
-		Vector += FVector2D::LEFT;
-	}
-	if (true == UEngineInput::GetInst().IsPress('S'))
-	{
-		Vector += FVector2D::DOWN;
-	}
-	if (true == UEngineInput::GetInst().IsPress('W'))
-	{
-		Vector += FVector2D::UP;
-	}
-
-	Vector.Normalize();
 	APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
+
+	if (true == UEngineInput::GetInst().IsPress('W') && true == UEngineInput::GetInst().IsPress('D'))
+	{
+		Vector = FVector2D::UP + FVector2D::RIGHT;
+	}
+	else if (true == UEngineInput::GetInst().IsPress('W') && true == UEngineInput::GetInst().IsPress('A'))
+	{
+		Vector = FVector2D::UP + FVector2D::LEFT;
+	}
+	else if (true == UEngineInput::GetInst().IsPress('S') && true == UEngineInput::GetInst().IsPress('D'))
+	{
+		Vector = FVector2D::DOWN + FVector2D::RIGHT;
+	}
+	else if (true == UEngineInput::GetInst().IsPress('S') && true == UEngineInput::GetInst().IsPress('A'))
+	{
+		Vector = FVector2D::DOWN + FVector2D::LEFT;
+	}
+	else if (true == UEngineInput::GetInst().IsPress('S'))
+	{
+		Vector = FVector2D::DOWN;
+	}
+	else if (true == UEngineInput::GetInst().IsPress('W'))
+	{
+		Vector = FVector2D::UP;
+	}
+	else if (true == UEngineInput::GetInst().IsPress('D'))
+	{
+		Vector = FVector2D::RIGHT;
+	}
+	else if (true == UEngineInput::GetInst().IsPress('S'))
+	{
+		Vector = FVector2D::DOWN;
+	}
+	else if (true == UEngineInput::GetInst().IsPress('A'))
+	{
+		Vector = FVector2D::LEFT;
+	}
+	Vector.Normalize();
 	if (true == PlayGameMode->CurRoom->RoomClear)
 	{
 
@@ -709,13 +854,13 @@ void AIsaac::Hit(float _DeltaTime)
 				switch (NewResult->Dir)
 				{
 				case DoorDir::UP:
-					this->SetActorLocation({ PlayGameMode->CurRoom->RoomPos.X,PlayGameMode->CurRoom->RoomPos.Y + 104.0f });
+					this->SetActorLocation({ PlayGameMode->CurRoom->RoomPos.X,PlayGameMode->CurRoom->RoomPos.Y + 156.0f });
 					break;
 				case DoorDir::RIGHT:
 					this->SetActorLocation({ PlayGameMode->CurRoom->RoomPos.X - 312.f,PlayGameMode->CurRoom->RoomPos.Y });
 					break;
 				case DoorDir::DOWN:
-					this->SetActorLocation({ PlayGameMode->CurRoom->RoomPos.X,PlayGameMode->CurRoom->RoomPos.Y - 104.0f });
+					this->SetActorLocation({ PlayGameMode->CurRoom->RoomPos.X,PlayGameMode->CurRoom->RoomPos.Y - 156.0f });
 					break;
 				case DoorDir::LEFT:
 					this->SetActorLocation({ PlayGameMode->CurRoom->RoomPos.X + 312.f,PlayGameMode->CurRoom->RoomPos.Y });
@@ -725,13 +870,12 @@ void AIsaac::Hit(float _DeltaTime)
 					break;
 				}
 
+				FSM.ChangeState(IsaacState::Idle);
 			}
 		}
 	}
 
-
-
-	FVector2D Location = GetActorLocation() += Vector * _DeltaTime * Speed;
+	FVector2D Location = GetActorLocation() + (Vector * _DeltaTime * Speed);
 
 	if
 		(
@@ -740,24 +884,27 @@ void AIsaac::Hit(float _DeltaTime)
 			PlayGameMode->CurRoom->RoomPos.Y - Location.Y > 182.0f ||
 			PlayGameMode->CurRoom->RoomPos.Y - Location.Y < -182.0f
 			)
+
 	{
 	}
 
 	else
 	{
 
-		PrevPos = GetActorLocation();
-		if (true == CanMove) {
-			AddActorLocation(Vector * _DeltaTime * Speed);
-		}
-		AActor* StructureResult = CollisionComponent->CollisionOnce(ECollisionGroup::Structure);
-
-
-		if (nullptr != StructureResult)
+		if (true == CanMove)
 		{
-			SetActorLocation(PrevPos);
-		}
+			//AddActorLocation(Vector * _DeltaTime * Speed);
+			Speed = UEngineMath::Clamp(Speed + (_DeltaTime * 1000.0f), 0.0f, 330.0f);
 
+		}
+	}
+
+	if (false == UEngineInput::GetInst().IsPress('A') &&
+		false == UEngineInput::GetInst().IsPress('D') &&
+		false == UEngineInput::GetInst().IsPress('W') &&
+		false == UEngineInput::GetInst().IsPress('S'))
+	{
+		Speed = UEngineMath::Clamp(Speed - (_DeltaTime * 2000.0f), 0.0f, 330.0f);
 	}
 	if (0.3f <= DelayTime)
 	{
@@ -789,30 +936,49 @@ void AIsaac::Item(float _DeltaTime)
 		ItemRenderer->SetComponentLocation({ 0,-90 });
 	}
 
-	FVector2D Vector = FVector2D::ZERO;
+	APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
 
-	if (true == UEngineInput::GetInst().IsPress('D'))
+	if (true == UEngineInput::GetInst().IsPress('W') && true == UEngineInput::GetInst().IsPress('D'))
 	{
-		Vector += FVector2D::RIGHT;
+		Vector = FVector2D::UP + FVector2D::RIGHT;
 	}
-
-	if (true == UEngineInput::GetInst().IsPress('A'))
+	else if (true == UEngineInput::GetInst().IsPress('W') && true == UEngineInput::GetInst().IsPress('A'))
 	{
-		Vector += FVector2D::LEFT;
+		Vector = FVector2D::UP + FVector2D::LEFT;
 	}
-	if (true == UEngineInput::GetInst().IsPress('S'))
+	else if (true == UEngineInput::GetInst().IsPress('S') && true == UEngineInput::GetInst().IsPress('D'))
 	{
-		Vector += FVector2D::DOWN;
+		Vector = FVector2D::DOWN + FVector2D::RIGHT;
 	}
-	if (true == UEngineInput::GetInst().IsPress('W'))
+	else if (true == UEngineInput::GetInst().IsPress('S') && true == UEngineInput::GetInst().IsPress('A'))
 	{
-		Vector += FVector2D::UP;
+		Vector = FVector2D::DOWN + FVector2D::LEFT;
 	}
-
+	else if (true == UEngineInput::GetInst().IsPress('S'))
+	{
+		Vector = FVector2D::DOWN;
+	}
+	else if (true == UEngineInput::GetInst().IsPress('W'))
+	{
+		Vector = FVector2D::UP;
+	}
+	else if (true == UEngineInput::GetInst().IsPress('D'))
+	{
+		Vector = FVector2D::RIGHT;
+	}
+	else if (true == UEngineInput::GetInst().IsPress('S'))
+	{
+		Vector = FVector2D::DOWN;
+	}
+	else if (true == UEngineInput::GetInst().IsPress('A'))
+	{
+		Vector = FVector2D::LEFT;
+	}
 	Vector.Normalize();
 
-	APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
-	FVector2D Location = GetActorLocation() += Vector * _DeltaTime * Speed;
+	
+
+	FVector2D Location = GetActorLocation() + (Vector * _DeltaTime * Speed);
 
 	if
 		(
@@ -821,11 +987,36 @@ void AIsaac::Item(float _DeltaTime)
 			PlayGameMode->CurRoom->RoomPos.Y - Location.Y > 182.0f ||
 			PlayGameMode->CurRoom->RoomPos.Y - Location.Y < -182.0f
 			)
-	{ }
+
+	{
+	}
+
 	else
 	{
 
-		AddActorLocation(Vector * _DeltaTime * Speed);
+		PrevPos = GetActorLocation();
+		if (true == CanMove)
+		{
+			//AddActorLocation(Vector * _DeltaTime * Speed);
+			Speed = UEngineMath::Clamp(Speed + (_DeltaTime * 1000.0f), 0.0f, 330.0f);
+
+		}
+		AActor* StructureResult = CollisionComponent->CollisionOnce(ECollisionGroup::Structure);
+
+
+		if (nullptr != StructureResult)
+		{
+			SetActorLocation(PrevPos);
+		}
+
+	}
+
+	if (false == UEngineInput::GetInst().IsPress('A') &&
+		false == UEngineInput::GetInst().IsPress('D') &&
+		false == UEngineInput::GetInst().IsPress('W') &&
+		false == UEngineInput::GetInst().IsPress('S'))
+	{
+		Speed = UEngineMath::Clamp(Speed - (_DeltaTime * 1000.0f), 0.0f, 330.0f);
 	}
 
 	if (1.0 <= DelayTime)

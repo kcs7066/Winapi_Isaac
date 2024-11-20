@@ -81,7 +81,10 @@ void ATear::Tick(float _DeltaTime)
 
 void ATear::Fly(float _DeltaTime)
 {
-	DelayTime += _DeltaTime;
+	AIsaac* Ptr = GetWorld()->GetPawn<AIsaac>();
+
+		DelayTime += _DeltaTime;
+
 	DropPos += _DeltaTime;
 	float Value = -40.0f + DropPos * DropPos * 60.0f;
 
@@ -124,10 +127,9 @@ void ATear::Fly(float _DeltaTime)
 	
 		AActor* Result = CollisionComponent->CollisionOnce(ECollisionGroup::Monster);
 		AMonster* NewResult = dynamic_cast<AMonster*>(Result);
+	
 		if (nullptr != Result)
 		{
-
-				AIsaac* Ptr = GetWorld()->GetPawn<AIsaac>();
 				NewResult->Hp -= Ptr->Damage;
 				DelayTime = 0.0f;
 				FSM.ChangeState(TearState::Poof);

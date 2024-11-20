@@ -41,7 +41,7 @@ public:
 protected:
 
 private:
-	float BulletCoolTime = 0.5f;
+	float TearCoolTime = 0.5f;
 
 	float Speed = 500.0f;
 
