@@ -29,6 +29,10 @@
 #include "PickUpKey.h"
 #include "PickUpHeart.h"
 #include "TheInnerEye.h"
+#include "Gaper.h"
+#include "Pacer.h"
+#include "Fatty.h"
+#include "Pooter.h"
 
 
 APlayGameMode::APlayGameMode()
@@ -227,17 +231,17 @@ void APlayGameMode::Tick(float _DeltaTime)
 
 	if (true == UEngineInput::GetInst().IsDown('1'))
 	{
-		ALevelTwoSpiderSmall* Monster = GetWorld()->SpawnActor<ALevelTwoSpiderSmall>();
+		APacer* Monster = GetWorld()->SpawnActor<APacer>();
 	}
 
 	if (true == UEngineInput::GetInst().IsDown('2'))
 	{
-		ABabyLongLegs* Monster = GetWorld()->SpawnActor<ABabyLongLegs>();
+		AFatty* Monster = GetWorld()->SpawnActor<AFatty>();
 	}
 
 	if (true == UEngineInput::GetInst().IsDown('3'))
 	{
-		ADip* Monster = GetWorld()->SpawnActor<ADip>();
+		APooter* Monster = GetWorld()->SpawnActor<APooter>();
 	}
 
 	if (true == UEngineInput::GetInst().IsDown('4'))
@@ -268,6 +272,11 @@ void APlayGameMode::Tick(float _DeltaTime)
 	if (true == UEngineInput::GetInst().IsDown('9'))
 	{
 		ALarryjr* Monster = GetWorld()->SpawnActor<ALarryjr>();
+	}
+
+	if (true == UEngineInput::GetInst().IsDown('0'))
+	{
+		AGaper* Monster = GetWorld()->SpawnActor<AGaper>();
 	}
 
 	if (true == UEngineInput::GetInst().IsDown(VK_NUMPAD1))
@@ -618,27 +627,42 @@ void APlayGameMode::CreateMap()
 			SetMonster<ARedFly>({ CurRoom->RoomPos.X + 52.0f * (-2.0f), CurRoom->RoomPos.Y - 52.0f * (0.0f) });
 			break;
 		case 2:
-			Monster7 = SetMonster<ALarryjr>({ CurRoom->RoomPos.X + 52.0f * (2.0f), CurRoom->RoomPos.Y - 52.0f * (0.0f) });
-			Monster7->MonsterRenderer->SetComponentLocation({ 0,-25 });
-			Monster7 -> ShadowRenderer->SetSpriteScale(0.5f);
-			Monster7->Part = LarryjrPart::HEAD;
-			Monster8 = SetMonster<ALarryjr>({ CurRoom->RoomPos.X + 52.0f * (1.0f), CurRoom->RoomPos.Y - 52.0f * (0.0f) });
-			Monster8->Part = LarryjrPart::BODY;
-			Monster9 = SetMonster<ALarryjr>({ CurRoom->RoomPos.X + 52.0f * (0.0f), CurRoom->RoomPos.Y - 52.0f * (0.0f) });
-			Monster9->Part = LarryjrPart::BODY;
-			Monster10 = SetMonster<ALarryjr>({ CurRoom->RoomPos.X + 52.0f * (-1.0f), CurRoom->RoomPos.Y - 52.0f * (0.0f) });
-			Monster10->Part = LarryjrPart::BODY;
-			Monster11 = SetMonster<ALarryjr>({ CurRoom->RoomPos.X + 52.0f * (-2.0f), CurRoom->RoomPos.Y - 52.0f * (0.0f) });
-			Monster11->Part = LarryjrPart::TAIL;
+			Monster0 = SetMonster<ALarryjr>({ CurRoom->RoomPos.X + 52.0f * (3.0f), CurRoom->RoomPos.Y - 52.0f * (1.0f) });
+			Monster0->MonsterRenderer->SetComponentLocation({ 0,-25 });
+			Monster0 -> ShadowRenderer->SetSpriteScale(0.5f);
+			Monster0->Part = LarryjrPart::HEAD;
+			Monster1 = SetMonster<ALarryjr>({ CurRoom->RoomPos.X + 52.0f * (2.0f), CurRoom->RoomPos.Y - 52.0f * (1.0f) });
+			Monster1->Part = LarryjrPart::BODY;
+			Monster2 = SetMonster<ALarryjr>({ CurRoom->RoomPos.X + 52.0f * (1.0f), CurRoom->RoomPos.Y - 52.0f * (1.0f) });
+			Monster2->Part = LarryjrPart::BODY;
+			Monster3 = SetMonster<ALarryjr>({ CurRoom->RoomPos.X + 52.0f * (0.0f), CurRoom->RoomPos.Y - 52.0f * (1.0f) });
+			Monster3->Part = LarryjrPart::TAIL;
 
-			Monster7->LinkedParts[LinkDir::Back] = Monster8;
-			Monster8->LinkedParts[LinkDir::Front] = Monster7;
-			Monster8->LinkedParts[LinkDir::Back] = Monster9;
-			Monster9->LinkedParts[LinkDir::Front] = Monster8;
-			Monster9->LinkedParts[LinkDir::Back] = Monster10;
-			Monster10->LinkedParts[LinkDir::Front] = Monster9;
-			Monster10->LinkedParts[LinkDir::Back] = Monster11;
-			Monster11->LinkedParts[LinkDir::Front] = Monster10;
+			Monster0->LinkedParts[LinkDir::Back] = Monster1;
+			Monster1->LinkedParts[LinkDir::Front] = Monster0;
+			Monster1->LinkedParts[LinkDir::Back] = Monster2;
+			Monster2->LinkedParts[LinkDir::Front] = Monster1;
+			Monster2->LinkedParts[LinkDir::Back] = Monster3;
+			Monster3->LinkedParts[LinkDir::Front] = Monster2;
+
+			Monster4 = SetMonster<ALarryjr>({ CurRoom->RoomPos.X + 52.0f * (0.0f), CurRoom->RoomPos.Y - 52.0f * (-1.0f) });
+			Monster4->MonsterRenderer->SetComponentLocation({ 0,-25 });
+			Monster4->ShadowRenderer->SetSpriteScale(0.5f);
+			Monster4->Part = LarryjrPart::HEAD;
+			Monster5 = SetMonster<ALarryjr>({ CurRoom->RoomPos.X + 52.0f * (-1.0f), CurRoom->RoomPos.Y - 52.0f * (-1.0f) });
+			Monster5->Part = LarryjrPart::BODY;
+			Monster6 = SetMonster<ALarryjr>({ CurRoom->RoomPos.X + 52.0f * (-2.0f), CurRoom->RoomPos.Y - 52.0f * (-1.0f) });
+			Monster6->Part = LarryjrPart::BODY;
+			Monster7 = SetMonster<ALarryjr>({ CurRoom->RoomPos.X + 52.0f * (-3.0f), CurRoom->RoomPos.Y - 52.0f * (-1.0f) });
+			Monster7->Part = LarryjrPart::TAIL;
+
+			Monster4->LinkedParts[LinkDir::Back] = Monster5;
+			Monster5->LinkedParts[LinkDir::Front] = Monster4;
+			Monster5->LinkedParts[LinkDir::Back] = Monster6;
+			Monster6->LinkedParts[LinkDir::Front] = Monster5;
+			Monster6->LinkedParts[LinkDir::Back] = Monster7;
+			Monster7->LinkedParts[LinkDir::Front] = Monster6;
+
 			break;
 		default:
 			break;
@@ -646,15 +670,13 @@ void APlayGameMode::CreateMap()
 	}
 	else
 	{
-		int RandomValue = Random.RandomInt(1, 5);
+		int RandomValue = Random.RandomInt(7 , 7);
 		switch (RandomValue)
 		{
 		case 1:
 		
-			Monster1 = SetMonster<ARoundWorm>({ CurRoom->RoomPos.X + 52.0f * (-6.0f), CurRoom->RoomPos.Y - 52.0f * (3.0f) });
-			Monster1->Random.SetSeed(time(nullptr) + 1);
-			Monster2 = SetMonster<ARoundWorm>({ CurRoom->RoomPos.X + 52.0f * (6.0f), CurRoom->RoomPos.Y - 52.0f * (-3.0f) });
-			Monster2->Random.SetSeed(time(nullptr) + 2);
+		    SetMonster<ARoundWorm>({ CurRoom->RoomPos.X + 52.0f * (-6.0f), CurRoom->RoomPos.Y - 52.0f * (3.0f) });
+			SetMonster<ARoundWorm>({ CurRoom->RoomPos.X + 52.0f * (6.0f), CurRoom->RoomPos.Y - 52.0f * (-3.0f) });			
 			SetStructure<ARock>({ CurRoom->RoomPos.X + 52.0f * (-6.0f), CurRoom->RoomPos.Y - 52.0f * (-3.0f) });
 			SetStructure<ARock>({ CurRoom->RoomPos.X + 52.0f * (-6.0f), CurRoom->RoomPos.Y - 52.0f * (-2.0f) });
 			SetStructure<ARock>({ CurRoom->RoomPos.X + 52.0f * (-5.0f), CurRoom->RoomPos.Y - 52.0f * (-3.0f) });
@@ -666,26 +688,39 @@ void APlayGameMode::CreateMap()
 			SetStructure<ARock>({ CurRoom->RoomPos.X + 52.0f * (5.0f), CurRoom->RoomPos.Y - 52.0f * (3.0f) });
 			break;
 		case 2:
-			Monster3 = SetMonster<ADip>({ CurRoom->RoomPos.X + 52.0f * (0.0f), CurRoom->RoomPos.Y - 52.0f * (1.0f) });
-			Monster3->Random.SetSeed(time(nullptr) + 3);
-			Monster4 = SetMonster<ADip>({ CurRoom->RoomPos.X + 52.0f * (0.0f), CurRoom->RoomPos.Y - 52.0f * (-1.0f) });
-			Monster4->Random.SetSeed(time(nullptr) + 4);
-			Monster5 = SetMonster<ADip>({ CurRoom->RoomPos.X + 52.0f * (1.0f), CurRoom->RoomPos.Y - 52.0f * (0.0f) });
-			Monster5->Random.SetSeed(time(nullptr) + 5);
-			Monster6 = SetMonster<ADip>({ CurRoom->RoomPos.X + 52.0f * (-1.0f), CurRoom->RoomPos.Y - 52.0f * (0.0f) });
-			Monster6->Random.SetSeed(time(nullptr) + 6);
+			SetMonster<ADip>({ CurRoom->RoomPos.X + 52.0f * (0.0f), CurRoom->RoomPos.Y - 52.0f * (1.0f) });
+			SetMonster<ADip>({ CurRoom->RoomPos.X + 52.0f * (0.0f), CurRoom->RoomPos.Y - 52.0f * (-1.0f) });
+			SetMonster<ADip>({ CurRoom->RoomPos.X + 52.0f * (1.0f), CurRoom->RoomPos.Y - 52.0f * (0.0f) });
+			SetMonster<ADip>({ CurRoom->RoomPos.X + 52.0f * (-1.0f), CurRoom->RoomPos.Y - 52.0f * (0.0f) });
 			SetStructure<APoop>({ CurRoom->RoomPos.X + 52.0f * (0.0f), CurRoom->RoomPos.Y - 52.0f * (0.0f) });
 			SetStructure<APoop>({ CurRoom->RoomPos.X + 52.0f * (1.0f), CurRoom->RoomPos.Y - 52.0f * (1.0f) });
 			SetStructure<APoop>({ CurRoom->RoomPos.X + 52.0f * (1.0f), CurRoom->RoomPos.Y - 52.0f * (-1.0f) });
 			SetStructure<APoop>({ CurRoom->RoomPos.X + 52.0f * (-1.0f), CurRoom->RoomPos.Y - 52.0f * (1.0f) });
 			SetStructure<APoop>({ CurRoom->RoomPos.X + 52.0f * (-1.0f), CurRoom->RoomPos.Y - 52.0f * (-1.0f) });
 		
-
-
 			break;
 
 		case 3:
-			SetMonster<ALevelTwoSpiderSmall>({ CurRoom->RoomPos.X + 52.0f * (0.0f), CurRoom->RoomPos.Y - 52.0f * (0.0f) });
+			SetMonster<AFatty>({ CurRoom->RoomPos.X + 52.0f * (0.0f), CurRoom->RoomPos.Y - 52.0f * (0.0f) });
+			SetMonster<AGaper>({ CurRoom->RoomPos.X + 52.0f * (1.0f), CurRoom->RoomPos.Y - 52.0f * (0.0f) });
+			SetMonster<AGaper>({ CurRoom->RoomPos.X + 52.0f * (-1.0f), CurRoom->RoomPos.Y - 52.0f * (0.0f) });
+			SetMonster<APacer>({ CurRoom->RoomPos.X + 52.0f * (0.0f), CurRoom->RoomPos.Y - 52.0f * (1.0f) });
+			SetMonster<APacer>({ CurRoom->RoomPos.X + 52.0f * (0.0f), CurRoom->RoomPos.Y - 52.0f * (-1.0f)});
+			SetStructure<ARock>({ CurRoom->RoomPos.X + 52.0f * (-1.0f), CurRoom->RoomPos.Y - 52.0f * (2.0f)});
+			SetStructure<ARock>({ CurRoom->RoomPos.X + 52.0f * (0.0f), CurRoom->RoomPos.Y - 52.0f * (2.0f) });
+			SetStructure<ARock>({ CurRoom->RoomPos.X + 52.0f * (1.0f), CurRoom->RoomPos.Y - 52.0f * (2.0f) });
+			SetStructure<ARock>({ CurRoom->RoomPos.X + 52.0f * (2.0f), CurRoom->RoomPos.Y - 52.0f * (2.0f) });
+			SetStructure<ARock>({ CurRoom->RoomPos.X + 52.0f * (3.0f), CurRoom->RoomPos.Y - 52.0f * (2.0f) });
+			SetStructure<ARock>({ CurRoom->RoomPos.X + 52.0f * (3.0f), CurRoom->RoomPos.Y - 52.0f * (1.0f) });
+			SetStructure<ARock>({ CurRoom->RoomPos.X + 52.0f * (3.0f), CurRoom->RoomPos.Y - 52.0f * (0.0f) });
+			SetStructure<ARock>({ CurRoom->RoomPos.X + 52.0f * (-3.0f), CurRoom->RoomPos.Y - 52.0f * (0.0f) });
+			SetStructure<ARock>({ CurRoom->RoomPos.X + 52.0f * (-3.0f), CurRoom->RoomPos.Y - 52.0f * (-1.0f) });
+			SetStructure<ARock>({ CurRoom->RoomPos.X + 52.0f * (-3.0f), CurRoom->RoomPos.Y - 52.0f * (-2.0f) });
+			SetStructure<ARock>({ CurRoom->RoomPos.X + 52.0f * (- 2.0f), CurRoom->RoomPos.Y - 52.0f * (-2.0f)});
+			SetStructure<ARock>({ CurRoom->RoomPos.X + 52.0f * (-1.0f), CurRoom->RoomPos.Y - 52.0f * (-2.0f) });
+			SetStructure<ARock>({ CurRoom->RoomPos.X + 52.0f * (0.0f), CurRoom->RoomPos.Y - 52.0f * (-2.0f) });
+			SetStructure<ARock>({ CurRoom->RoomPos.X + 52.0f * (1.0f), CurRoom->RoomPos.Y - 52.0f * (-2.0f) });
+
 			break;
 
 		case 4:
@@ -694,6 +729,14 @@ void APlayGameMode::CreateMap()
 
 		case 5:
 			SetMonster<ABabyLongLegs>({ CurRoom->RoomPos.X + 52.0f * (0.0f), CurRoom->RoomPos.Y - 52.0f * (0.0f) });
+			break;
+
+		case 6:
+			SetMonster<ALevelTwoSpiderSmall>({ CurRoom->RoomPos.X + 52.0f * (0.0f), CurRoom->RoomPos.Y - 52.0f * (0.0f) });
+			break;
+
+		case 7:
+
 			break;
 
 

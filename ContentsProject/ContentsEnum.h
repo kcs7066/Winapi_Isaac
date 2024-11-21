@@ -11,7 +11,10 @@ enum class ERenderOrder
 	DOOR = -500,
 	STRUCTURE = -300,
 	SHADOW = -200,
+
+	MONSTERBACK = -101,
 	MONSTER = -100,
+	MONSTERFRONT = -99,
 
 	PICKUP = -75,
 
@@ -36,7 +39,7 @@ enum class ECollisionGroup
 	PickUp,
 	Item,
 
-	
+	Radius,
 	MonsterTear,
 	Door
 };

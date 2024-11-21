@@ -224,7 +224,10 @@ void AIsaac::Tick(float _DeltaTime)
 		}
 		else
 		{
-			AddActorLocation(Vector * _DeltaTime * Speed);
+			if (true == CanMove)
+			{
+				AddActorLocation(Vector * _DeltaTime * Speed);
+			}
 		}
 
 		AActor* StructureResult = CollisionComponent->CollisionOnce(ECollisionGroup::Structure);

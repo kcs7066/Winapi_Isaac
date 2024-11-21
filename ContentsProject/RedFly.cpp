@@ -34,13 +34,6 @@ void ARedFly::BeginPlay()
 	Super::BeginPlay();
 
 
-
-	FSM.CreateState(RedFlyState::Idle, std::bind(&ARedFly::Idle, this, std::placeholders::_1),
-		[this]()
-		{
-		}
-	);
-
 	FSM.CreateState(RedFlyState::Move, std::bind(&ARedFly::Move, this, std::placeholders::_1),
 		[this]()
 		{
@@ -62,19 +55,6 @@ void ARedFly::Tick(float _DeltaTime)
 	Super::Tick(_DeltaTime);
 	FSM.Update(_DeltaTime);
 }
-
-
-
-void ARedFly::Idle(float _DeltaTime)
-{
-	//if ()
-	{
-		//FSM.ChangeState(NewPlayerState::Move);
-		return;
-	}
-}
-
-
 
 
 void ARedFly::Move(float _DeltaTime)

@@ -12,7 +12,7 @@ ATrapDoor::ATrapDoor()
 
 	{
 		TrapDoorRenderer = CreateDefaultSubObject<USpriteRenderer>();
-		TrapDoorRenderer->SetComponentScale({ 100, 100 });
+		TrapDoorRenderer->SetComponentScale({ 130, 130 });
 		TrapDoorRenderer->CreateAnimation("Idle_TrapDoor", "TrapDoor.png", 1, 1, 0.1f);
 		TrapDoorRenderer->ChangeAnimation("Idle_TrapDoor");
 	}

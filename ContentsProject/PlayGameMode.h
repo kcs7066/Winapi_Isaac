@@ -159,6 +159,7 @@ private:
 		ActorType* NewActor = GetWorld()->SpawnActor<ActorType>();
 		
 		NewActor->SetActorLocation(_Pos);	
+		NewActor->Random.SetSeed(time(nullptr) + SeedValue);
 
 		SeedValue++;
 
@@ -183,19 +184,14 @@ private:
 
 	int RoomNumber = 0;
 
-	
-
-	ARoundWorm* Monster1 = nullptr;
-	ARoundWorm* Monster2 = nullptr;
-	ADip* Monster3 = nullptr;
-	ADip* Monster4 = nullptr;
-	ADip* Monster5 = nullptr;
-	ADip* Monster6 = nullptr;
+	ALarryjr* Monster0 = nullptr;
+	ALarryjr* Monster1 = nullptr;
+	ALarryjr* Monster2 = nullptr;
+	ALarryjr* Monster3 = nullptr;
+	ALarryjr* Monster4 = nullptr;
+	ALarryjr* Monster5 = nullptr;
+	ALarryjr* Monster6 = nullptr;
 	ALarryjr* Monster7 = nullptr;
-	ALarryjr* Monster8 = nullptr;
-	ALarryjr* Monster9 = nullptr;
-	ALarryjr* Monster10 = nullptr;
-	ALarryjr* Monster11 = nullptr;
 	long long SeedValue = 0;
 
 };

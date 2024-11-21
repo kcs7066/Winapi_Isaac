@@ -156,6 +156,18 @@
     <ClCompile Include="Isaac.cpp">
       <Filter>ContentsObject</Filter>
     </ClCompile>
+    <ClCompile Include="Gaper.cpp">
+      <Filter>ContentsObject\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="Pacer.cpp">
+      <Filter>ContentsObject\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="Fatty.cpp">
+      <Filter>ContentsObject\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="Pooter.cpp">
+      <Filter>ContentsObject\Monster</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PreCompile.h">
@@ -271,6 +283,18 @@
     </ClInclude>
     <ClInclude Include="Isaac.h">
       <Filter>ContentsObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Gaper.h">
+      <Filter>ContentsObject\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="Pacer.h">
+      <Filter>ContentsObject\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="Fatty.h">
+      <Filter>ContentsObject\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="Pooter.h">
+      <Filter>ContentsObject\Monster</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

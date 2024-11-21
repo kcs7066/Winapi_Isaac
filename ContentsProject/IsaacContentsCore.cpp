@@ -97,8 +97,13 @@ void IsaacContentsCore::BeginPlay()
 	UImageManager::GetInst().CuttingSprite("Minimap2.png", { 16, 16 });
 	UImageManager::GetInst().CuttingSprite("Minimap_Icons.png", { 16, 16 });
 	UImageManager::GetInst().CuttingSprite("Character_IsaacItem.png", { 32, 32 });
-
-
+	UImageManager::GetInst().CuttingSprite("Monster_Gaper.png", { 32, 32 });
+	UImageManager::GetInst().CuttingSprite("Monster_Pacer.png", { 64, 64 });
+	UImageManager::GetInst().CuttingSprite("Monster_Pacer_Left.png", { 64, 64 });
+	UImageManager::GetInst().CuttingSprite("Monster_Fatty.png", { 64, 64 });
+	UImageManager::GetInst().CuttingSprite("Monster_Fatty_Left.png", { 64, 64 });
+	UImageManager::GetInst().CuttingSprite("Effect_Poof.png", { 64, 64 });
+	UImageManager::GetInst().CuttingSprite("Monster_Pooter.png", { 32, 32 });
 
 
 	{

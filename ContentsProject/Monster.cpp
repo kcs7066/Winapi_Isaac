@@ -23,9 +23,17 @@ AMonster::AMonster()
 	ShadowRenderer->SetOrder(ERenderOrder::SHADOW);
 	ShadowRenderer->SetSprite("Shadow.png");
 
+
+	PoofRenderer = CreateDefaultSubObject<USpriteRenderer>();
+	PoofRenderer->SetOrder(ERenderOrder::MONSTERFRONT);
+	PoofRenderer->SetComponentScale({ 100,100 });
+	PoofRenderer->SetComponentLocation({ 0,-50 });
+	PoofRenderer->CreateAnimation("Poof", "Effect_Poof.png", 0, 14, 0.05f);
+	PoofRenderer->ChangeAnimation("Poof");
+	PoofRenderer->Destroy(0.75f);
+
 }
 
 AMonster::~AMonster()
 {
 }
-

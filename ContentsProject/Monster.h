@@ -30,7 +30,8 @@ public:
 
 	class USpriteRenderer* ShadowRenderer = nullptr;
 	class USpriteRenderer* MonsterRenderer = nullptr;
-	class U2DCollision* CollisionComponent;
+	class USpriteRenderer* PoofRenderer = nullptr;
+	class U2DCollision* CollisionComponent = nullptr;
 
 	UFSMStateManager FSM;
 	UEngineRandom Random;

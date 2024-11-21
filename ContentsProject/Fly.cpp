@@ -70,12 +70,21 @@ void AFly::Move(float _DeltaTime)
 		DieStart();
 	}
 
+	FVector2D PlayerDir = GetWorld()->GetPawn()->GetActorLocation() - GetActorLocation();
+	PlayerDir.Normalize();
+
+	PlayerDir= PlayerDir / 10.0f;
+
 	RandomDir = { Random.Randomfloat(-1.0f, 1.0f) ,Random.Randomfloat(-1.0f, 1.0f) };
+    RandomDir.Normalize();
 
-	RandomDir.Normalize();
+	FVector2D Dir = RandomDir + PlayerDir;
+	Dir.Normalize();
 
 
-	FVector2D NewLocation = GetActorLocation() += RandomDir * _DeltaTime * Speed;
+
+
+	FVector2D NewLocation = GetActorLocation() += Dir * _DeltaTime * Speed;
 	APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
 
 	if (PlayGameMode->CurRoom->RoomPos.X - NewLocation.X > 338.0f ||
@@ -89,7 +98,7 @@ void AFly::Move(float _DeltaTime)
 
 	else
 	{
-		AddActorLocation(RandomDir * _DeltaTime * Speed);
+		AddActorLocation(Dir * _DeltaTime * Speed);
 	}
 
 

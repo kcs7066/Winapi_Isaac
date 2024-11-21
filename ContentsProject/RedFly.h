@@ -4,11 +4,8 @@
 
 enum class  RedFlyState
 {
-	Idle,
 	Move,
 	Die
-
-
 };
 
 class ARedFly : public AMonster
@@ -27,7 +24,6 @@ public:
 	void BeginPlay() override;
 	void Tick(float _DeltaTime) override;
 
-	void Idle(float _DeltaTime);
 	void Move(float _DeltaTime);
 	void Die(float _DeltaTime);
 	void DieStart();

@@ -171,7 +171,15 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="Fatty.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="Fly.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Gaper.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -205,6 +213,10 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="Pacer.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="PickUp.h">
       <SubType>
       </SubType>
@@ -230,6 +242,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="Poop.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Pooter.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -310,7 +326,15 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="Fatty.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="Fly.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Gaper.cpp">
       <SubType>
       </SubType>
     </ClCompile>
@@ -344,6 +368,10 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="Pacer.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="PickUp.cpp">
       <SubType>
       </SubType>
@@ -369,6 +397,10 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="Poop.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Pooter.cpp">
       <SubType>
       </SubType>
     </ClCompile>

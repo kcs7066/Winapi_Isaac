@@ -70,7 +70,6 @@ void ARoundWorm::BeginPlay()
 		[this]()
 		{
 			MonsterRenderer->ChangeAnimation("Move_RoundWorm");
-			CollisionComponent->SetActive(false);CollisionComponent->SetActive(false);
 		}
 	);
 
@@ -167,22 +166,27 @@ void ARoundWorm::Move(float _DeltaTime)
 {
 	DelayTime += _DeltaTime;
 
+
+
 	if (DelayTime > 0.9f)
 	{
 		if (false == FindPos)
 		{
 			APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
+;
 			while (true)
 			{
 				float NewX = Random.Randomfloat(-338.0f, 338.0f);
 				float NewY = Random.Randomfloat(-182.0f, 182.0f);
 				SetActorLocation({ PlayGameMode->CurRoom->RoomPos.X + NewX , PlayGameMode->CurRoom->RoomPos.Y + NewY });
-				AActor* Result = CollisionComponent->CollisionOnce(ECollisionGroup::Structure);
-				if (nullptr == Result)
+				std::vector<AActor*> Results = CollisionComponent->CollisionAll(ECollisionGroup::Structure,FVector2D::ZERO);
+				if (true == Results.empty())
 				{
+					CollisionComponent->SetActive(false);
 					FindPos = true;
 					break;
 				}
+
 			}
 		}
 
@@ -193,7 +197,6 @@ void ARoundWorm::Move(float _DeltaTime)
 			DelayTime = 0.0f;
 		}
 	}
-
 }
 
 void ARoundWorm::DieStart()
