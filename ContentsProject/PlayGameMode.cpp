@@ -670,7 +670,7 @@ void APlayGameMode::CreateMap()
 	}
 	else
 	{
-		int RandomValue = Random.RandomInt(7 , 7);
+		int RandomValue = Random.RandomInt(3 , 3);
 		switch (RandomValue)
 		{
 		case 1:
