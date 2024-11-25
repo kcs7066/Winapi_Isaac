@@ -36,8 +36,6 @@ public:
 		return CollisionGroup;
 	}
 
-	// 충돌체에게 충돌그룹을 지정안해주는건 의미가 없다.
-	// 중간에 충돌 그룹이 바뀌어야 되면 이야기 부탁.
 	template<typename EnumType>
 	void SetCollisionGroup(EnumType _CollisionGroup)
 	{
@@ -84,7 +82,11 @@ public:
 		return CollisionType;
 	}
 
-	
+	void SetCameraEffect(bool _IsCameraEffect)
+	{
+		IsCameraEffect = _IsCameraEffect;
+	}
+
 	void SetCollisionEnter(std::function<void(AActor*)> _Function);
 	void SetCollisionStay(std::function<void(AActor*)> _Function);
 	void SetCollisionEnd(std::function<void(AActor*)> _Function);
@@ -94,14 +96,13 @@ protected:
 private:
 	void CollisionEventCheck(class U2DCollision* _Other);
 
-
 	ECollisionType CollisionType = ECollisionType::CirCle;
 	int CollisionGroup = -1;
-
 	std::set<U2DCollision*> CollisionCheckSet;
+
+	bool IsCameraEffect = true;
 
 	std::function<void(AActor*)> Enter;
 	std::function<void(AActor*)> Stay;
 	std::function<void(AActor*)> End;
 };
-

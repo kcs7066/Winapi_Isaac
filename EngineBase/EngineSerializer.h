@@ -3,7 +3,6 @@
 #include <string>
 #include "EngineMath.h"
 
-// 설명 :
 class UEngineSerializer
 {
 public:
@@ -17,7 +16,6 @@ public:
 	UEngineSerializer& operator=(const UEngineSerializer& _Other) = delete;
 	UEngineSerializer& operator=(UEngineSerializer&& _Other) noexcept = delete;
 
-	// 데이터의 크기
 	void Write(void* _Data, unsigned int _Size);
 
 	void operator<<(int& _Data)
@@ -42,10 +40,12 @@ public:
 
 	void operator<<(std::string& _Data)
 	{
-
 		int Size = static_cast<int>(_Data.size());
 		operator<<(Size);
-		Write(&_Data[0], static_cast<int>(_Data.size()));
+		if (0 != Size)
+		{
+			Write(&_Data[0], static_cast<int>(_Data.size()));
+		}
 	}
 
 	void operator<<(class ISerializObject& _Data);
@@ -58,7 +58,6 @@ public:
 
 		for (size_t i = 0; i < _vector.size(); i++)
 		{
-
 			operator<<(_vector[i]);
 		}
 	}
@@ -127,24 +126,16 @@ public:
 protected:
 
 private:
-
-	// 얼마나 데이터가 채워졌냐?
 	int WriteOffset = 0;
 
-	// 얼마나 데이터가 채워졌냐?
 	int ReadOffset = 0;
 
-	// 자료형이라는게 존재하지 않죠?
 	std::vector<char> Data;
 };
 
-
 class ISerializObject
 {
-
 public:
-	// 데이터를 직렬화(압축)
 	virtual void Serialize(UEngineSerializer& _Ser) = 0;
-	// 데이터를 복구(할때)
 	virtual void DeSerialize(UEngineSerializer& _Ser) = 0;
 };

@@ -4,14 +4,11 @@
 #include <EngineBase/EnginePath.h>
 #include <EngineBase/EngineString.h>
 
-// GDI Plus 용 헤더
 #include <objidl.h>
 #include <gdiplus.h>
 
-// BMP 확장용 라이브러리
 #pragma comment(lib, "Msimg32.lib")
 
-// PNG 를 통한 window 네이티브 그래픽 확장용 라이브러리
 #pragma comment(lib, "Gdiplus.lib")
 
 UEngineWinImage::UEngineWinImage()
@@ -31,6 +28,7 @@ UEngineWinImage::~UEngineWinImage()
 		DeleteDC(ImageDC);
 		ImageDC = nullptr;
 	}
+
 }
 
 void UEngineWinImage::Create(UEngineWinImage* _TargetImage, FVector2D _Scale)
@@ -65,7 +63,6 @@ void UEngineWinImage::CopyToBit(UEngineWinImage* _TargetImage, const FTransform&
 	HDC CopyDC = ImageDC;
 	HDC TargetDC = _TargetImage->ImageDC;
 
-
 	FVector2D LeftTop = _Trans.CenterLeftTop();
 	FVector2D RightBot = _Trans.CenterRightBottom();
 
@@ -80,18 +77,15 @@ void UEngineWinImage::CopyToBit(UEngineWinImage* _TargetImage, const FTransform&
 		0,
 		SRCCOPY);
 
+
 	FVector2D Vector;
 }
 
 void UEngineWinImage::CopyToTrans(UEngineWinImage* _TargetImage, const FTransform& _RenderTrans, const FTransform& _LTImageTrans, UColor _Color /*= UColor(255, 0, 255, 255)*/)
 {
 
-
 	HDC CopyDC = ImageDC;
 	HDC TargetDC = _TargetImage->ImageDC;
-
-
-
 
 	FVector2D LeftTop = _RenderTrans.CenterLeftTop();
 
@@ -115,7 +109,6 @@ void UEngineWinImage::CopyToAlpha(UEngineWinImage* _TargetImage,
 	const FTransform& _LTImageTrans,
 	unsigned char _Alpha)
 {
-
 
 	BLENDFUNCTION BLEND;
 	BLEND.BlendOp = AC_SRC_OVER;
@@ -145,7 +138,6 @@ void UEngineWinImage::CopyToAlpha(UEngineWinImage* _TargetImage,
 void UEngineWinImage::Load(UEngineWinImage* _TargetImage, std::string_view _Path)
 {
 
-
 	UEnginePath Path = _Path;
 
 	std::string UpperExt = UEngineString::ToUpper(Path.GetExtension());
@@ -154,7 +146,6 @@ void UEngineWinImage::Load(UEngineWinImage* _TargetImage, std::string_view _Path
 
 	if (".PNG" == UpperExt)
 	{
-
 
 		ULONG_PTR gidplustoken = 0;
 
@@ -176,10 +167,14 @@ void UEngineWinImage::Load(UEngineWinImage* _TargetImage, std::string_view _Path
 			return;
 		}
 
-
+		// 
 		delete pBitMap;
 		delete pImage;
-
+	}
+	else if (".BMP" == UpperExt)
+	{
+		HANDLE NewHandle = LoadImageA(nullptr, _Path.data(), IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+		NewBitmap = reinterpret_cast<HBITMAP>(NewHandle);
 	}
 
 	if (nullptr == NewBitmap)
@@ -188,6 +183,7 @@ void UEngineWinImage::Load(UEngineWinImage* _TargetImage, std::string_view _Path
 		return;
 	}
 
+	// 붓
 	HDC NewImageDC = CreateCompatibleDC(_TargetImage->GetDC());
 
 	HBITMAP OldBitMap = static_cast<HBITMAP>(SelectObject(NewImageDC, NewBitmap));

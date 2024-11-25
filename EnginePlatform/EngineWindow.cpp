@@ -3,7 +3,7 @@
 #include <EngineBase/EngineDebug.h>
 
 HINSTANCE UEngineWindow::hInstance = nullptr;
-std::map<std::string, WNDCLASSEXA> UEngineWindow::WindowClasses;
+std::map<std::string, WNDCLASSEXA> UEngineWindow::WindowClasss;
 int WindowCount = 0;
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
@@ -17,6 +17,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         EndPaint(hWnd, &ps);
     }
     break;
+    break;
     case WM_DESTROY:
         --WindowCount;
         break;
@@ -25,6 +26,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     }
     return 0;
 }
+
 
 void UEngineWindow::EngineWindowInit(HINSTANCE _Instance)
 {
@@ -49,7 +51,6 @@ void UEngineWindow::EngineWindowInit(HINSTANCE _Instance)
 int UEngineWindow::WindowMessageLoop(EngineDelegate _StartFunction, EngineDelegate _FrameFunction)
 {
     MSG msg = MSG();
-
     if (true == _StartFunction.IsBind())
     {
         _StartFunction();
@@ -68,16 +69,15 @@ int UEngineWindow::WindowMessageLoop(EngineDelegate _StartFunction, EngineDelega
             _FrameFunction();
         }
     }
-	
 
-	return (int)msg.wParam;
-
+    return (int)msg.wParam;
 }
 
 void UEngineWindow::CreateWindowClass(const WNDCLASSEXA& _Class)
 {
-    std::map<std::string, WNDCLASSEXA>::iterator EndIter = WindowClasses.end();
-    std::map<std::string, WNDCLASSEXA>::iterator FindIter = WindowClasses.find(std::string(_Class.lpszClassName));
+
+    std::map<std::string, WNDCLASSEXA>::iterator EndIter = WindowClasss.end();
+    std::map<std::string, WNDCLASSEXA>::iterator FindIter = WindowClasss.find(std::string(_Class.lpszClassName));
 
     if (EndIter != FindIter)
     {
@@ -87,12 +87,12 @@ void UEngineWindow::CreateWindowClass(const WNDCLASSEXA& _Class)
 
     RegisterClassExA(&_Class);
 
-    WindowClasses.insert(std::pair{ _Class.lpszClassName, _Class });
+    WindowClasss.insert(std::pair{ _Class.lpszClassName, _Class });
 }
 
 UEngineWindow::UEngineWindow()
 {
-  
+
 }
 
 UEngineWindow::~UEngineWindow()
@@ -118,7 +118,7 @@ UEngineWindow::~UEngineWindow()
 
 void UEngineWindow::Create(std::string_view _TitleName, std::string_view _ClassName)
 {
-    if (false == WindowClasses.contains(_ClassName.data()))
+    if (false == WindowClasss.contains(_ClassName.data()))
     {
         MSGASSERT(std::string(_ClassName) + " 등록하지 않은 클래스로 윈도우창을 만들려고 했습니다");
         return;
@@ -136,11 +136,10 @@ void UEngineWindow::Create(std::string_view _TitleName, std::string_view _ClassN
     HDC WindowMainDC = GetDC(WindowHandle);
 
     WindowImage = new UEngineWinImage();
-
     WindowImage->Create(WindowMainDC);
 }
 
-void UEngineWindow::Open(std::string_view _TitleName)
+void UEngineWindow::Open(std::string_view _TitleName /*= "Window"*/)
 {
     if (0 == WindowHandle)
     {
@@ -152,15 +151,13 @@ void UEngineWindow::Open(std::string_view _TitleName)
         return;
     }
 
-	ShowWindow(WindowHandle, SW_SHOW);
-	UpdateWindow(WindowHandle);
+    ShowWindow(WindowHandle, SW_SHOW);
+    UpdateWindow(WindowHandle);
     ++WindowCount;
-
 }
 
 void UEngineWindow::SetWindowPosAndScale(FVector2D _Pos, FVector2D _Scale)
 {
-
     if (false == WindowSize.EqualToInt(_Scale))
     {
         if (nullptr != BackBufferImage)
@@ -176,7 +173,6 @@ void UEngineWindow::SetWindowPosAndScale(FVector2D _Pos, FVector2D _Scale)
     WindowSize = _Scale;
 
     RECT Rc = { 0, 0, _Scale.iX(), _Scale.iY() };
-
     AdjustWindowRect(&Rc, WS_OVERLAPPEDWINDOW, FALSE);
 
     ::SetWindowPos(WindowHandle, nullptr, _Pos.iX(), _Pos.iY(), Rc.right - Rc.left, Rc.bottom - Rc.top, SWP_NOZORDER);

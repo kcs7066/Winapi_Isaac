@@ -13,9 +13,9 @@ USpriteRenderer::~USpriteRenderer()
 {
 }
 
-
 void USpriteRenderer::Render(float _DeltaTime)
 {
+	// 업데이트
 
 	if (nullptr == Sprite)
 	{
@@ -35,7 +35,12 @@ void USpriteRenderer::Render(float _DeltaTime)
 		Trans.Location = Trans.Location - (Level->CameraPos * CameraEffectScale);
 	}
 
-	Trans.Location += Pivot;
+	FVector2D PivotRealScale;
+
+	PivotRealScale.X = std::floorf((0.5f - Pivot.X) * Trans.Scale.X);
+	PivotRealScale.Y = std::floorf((0.5f - Pivot.Y) * Trans.Scale.Y);
+
+	Trans.Location += PivotRealScale;
 
 
 	if (Alpha == 255)
@@ -50,10 +55,7 @@ void USpriteRenderer::Render(float _DeltaTime)
 
 void USpriteRenderer::BeginPlay()
 {
-
 	Super::BeginPlay();
-
-
 
 	AActor* Actor = GetActor();
 	ULevel* Level = Actor->GetWorld();
@@ -65,7 +67,6 @@ void USpriteRenderer::ComponentTick(float _DeltaTime)
 {
 	Super::ComponentTick(_DeltaTime);
 
-
 	if (nullptr != CurAnimation)
 	{
 		CurAnimation->IsEnd = false;
@@ -75,10 +76,9 @@ void USpriteRenderer::ComponentTick(float _DeltaTime)
 		Sprite = CurAnimation->Sprite;
 
 
-		CurAnimation->CurTime += _DeltaTime;
+		CurAnimation->CurTime += _DeltaTime * CurAnimationSpeed;
 
 		float CurFrameTime = Times[CurAnimation->CurIndex];
-
 
 		if (CurAnimation->CurTime > CurFrameTime)
 		{
@@ -90,12 +90,14 @@ void USpriteRenderer::ComponentTick(float _DeltaTime)
 			{
 				CurAnimation->Events[CurIndex]();
 			}
-
-
 			if (CurAnimation->CurIndex >= Indexs.size())
 			{
 				CurAnimation->IsEnd = true;
 			}
+			else {
+				CurAnimation->IsEnd = false;
+			}
+
 
 			if (CurAnimation->CurIndex >= Indexs.size())
 			{
@@ -116,18 +118,13 @@ void USpriteRenderer::ComponentTick(float _DeltaTime)
 			}
 
 		}
-
-
-	
 		CurIndex = Indexs[CurAnimation->CurIndex];
-	
 	}
 
 }
 
 void USpriteRenderer::SetSprite(std::string_view _Name, int _CurIndex /*= 0*/)
 {
-
 	Sprite = UImageManager::GetInst().FindSprite(_Name);
 
 	if (nullptr == Sprite)
@@ -144,14 +141,10 @@ void USpriteRenderer::SetOrder(int _Order)
 	int PrevOrder = Order;
 
 	Order = _Order;
-
-
 	if (PrevOrder == Order)
 	{
 		return;
 	}
-
-
 	ULevel* Level = GetActor()->GetWorld();
 
 	if (nullptr != Level)
@@ -180,12 +173,6 @@ FVector2D USpriteRenderer::SetSpriteScale(float _Ratio /*= 1.0f*/, int _CurIndex
 
 void USpriteRenderer::CreateAnimation(std::string_view _AnimationName, std::string_view _SpriteName, int _Start, int _End, float Time /*= 0.1f*/, bool _Loop /*= true*/)
 {
-	if (_Start > _End)
-	{
-		MSGASSERT("애니메이션에서 Start가 End보다 클수는 없습니다. " + std::string(_AnimationName));
-		return;
-	}
-
 	int Inter = 0;
 
 	std::vector<int> Indexs;
@@ -332,7 +319,6 @@ void USpriteRenderer::SetCameraEffectScale(float _Effect)
 	CameraEffectScale = _Effect;
 }
 
-
 void USpriteRenderer::SetPivotType(PivotType _Type)
 {
 	if (PivotType::Center == _Type)
@@ -347,19 +333,32 @@ void USpriteRenderer::SetPivotType(PivotType _Type)
 		return;
 	}
 
-	UEngineSprite::USpriteData CurData = Sprite->GetSpriteData(CurIndex);
 
 	switch (_Type)
 	{
+	case PivotType::Center:
+		Pivot.X = 0.5f;
+		Pivot.Y = 0.5f;
+		break;
 	case PivotType::Bot:
-		Pivot.X = 0.0f;
-		Pivot.Y -= CurData.Transform.Scale.Y * 0.5f;
+		Pivot.X = 0.5f;
+		Pivot.Y = 1.0f;
 		break;
 	case PivotType::Top:
+		Pivot.X = 0.5f;
+		Pivot.Y = 0.0f;
+		break;
+	case PivotType::LeftTop:
 		Pivot.X = 0.0f;
-		Pivot.Y += CurData.Transform.Scale.Y * 0.5f;
+		Pivot.Y = 0.0f;
 		break;
 	default:
 		break;
 	}
+}
+
+
+void USpriteRenderer::SetPivotValue(FVector2D _Value)
+{
+	Pivot = _Value;
 }

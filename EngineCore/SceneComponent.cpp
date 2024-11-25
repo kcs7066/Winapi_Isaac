@@ -1,6 +1,5 @@
 #include "PreCompile.h"
 #include "SceneComponent.h"
-#include "Actor.h"
 
 USceneComponent::USceneComponent()
 {

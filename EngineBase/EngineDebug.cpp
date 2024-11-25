@@ -8,6 +8,4 @@ namespace UEngineDebug
 		std::string ResultText = Text + "\n";
 		OutputDebugStringA(ResultText.c_str());
 	}
-
-
 }

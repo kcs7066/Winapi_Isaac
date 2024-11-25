@@ -6,6 +6,8 @@
 
 #include "TitleLogo.h"
 #include <EngineCore/SpriteRenderer.h>
+#include "PlayGameMode.h"
+#include "Isaac.h"
 
 
 
@@ -23,6 +25,8 @@ void ATitleGameMode::BeginPlay()
 	Super::BeginPlay();
 	TitleLogo* NewActor = GetWorld()->SpawnActor<TitleLogo>();
 	BGMPlayer = UEngineSound::Play("title screen.ogg");
+
+	UEngineAPICore::GetCore()->DestroyLevel("Play");
 }
 
 
@@ -30,9 +34,10 @@ void ATitleGameMode::Tick(float _DeltaTime)
 {
 	Super::Tick(_DeltaTime);
 
-	if (true == UEngineInput::GetInst().IsDown('R'))
+	if (true == UEngineInput::GetInst().IsDown(VK_SPACE))
 	{
 		BGMPlayer.Off();
+		UEngineAPICore::GetCore()->CreateLevel<APlayGameMode, AIsaac>("Play");
 		UEngineAPICore::GetCore()->OpenLevel("Play");
 	}
 

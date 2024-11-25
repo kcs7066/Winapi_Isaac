@@ -1,18 +1,18 @@
 #include "PreCompile.h"
 #include "EngineAPICore.h"
 #include <EnginePlatform/EngineInput.h>
-#include <EnginePlatform/EngineSound.h>
+
 #include <EnginePlatform/EngineWindow.h>
+#include <EnginePlatform/EngineSound.h>
 #include <EngineBase/EngineDelegate.h>
 #include <EngineBase/EngineDebug.h>
-
-#include <Windows.h>
 
 UEngineAPICore* UEngineAPICore::MainCore = nullptr;
 UContentsCore* UEngineAPICore::UserCore = nullptr;
 
-UEngineAPICore::UEngineAPICore()
+#include <Windows.h>
 
+UEngineAPICore::UEngineAPICore()
 {
 
 }
@@ -35,6 +35,7 @@ UEngineAPICore::~UEngineAPICore()
 
 	UEngineSound::Release();
 }
+
 
 int UEngineAPICore::EngineStart(HINSTANCE _Inst, UContentsCore* _UserCore)
 {
@@ -66,6 +67,15 @@ void UEngineAPICore::EngineTick()
 
 void UEngineAPICore::Tick()
 {
+	if (true == IsCurLevelReset)
+	{
+		delete CurLevel;
+		CurLevel = nullptr;
+		IsCurLevelReset = false;
+	}
+
+
+
 	if (nullptr != NextLevel)
 	{
 
@@ -85,6 +95,10 @@ void UEngineAPICore::Tick()
 	DeltaTimer.TimeCheck();
 	float DeltaTime = DeltaTimer.GetDeltaTime();
 
+	DeltaTime *= GlobalTimeScale;
+
+	UEngineSound::Update();
+
 	UEngineInput::GetInst().KeyCheck(DeltaTime);
 
 	if (nullptr == CurLevel)
@@ -96,22 +110,27 @@ void UEngineAPICore::Tick()
 	UEngineInput::GetInst().EventCheck(DeltaTime);
 	CurLevel->Tick(DeltaTime);
 	CurLevel->Render(DeltaTime);
+
 	CurLevel->Collision(DeltaTime);
+
 	CurLevel->Release(DeltaTime);
 }
 
+
 void UEngineAPICore::OpenLevel(std::string_view _LevelName)
 {
-	std::string ChangeName = _LevelName.data();
+	std::string UpperName = UEngineString::ToUpper(_LevelName);
 
-	std::map<std::string, class ULevel*>::iterator FindIter = Levels.find(ChangeName);
+
+	std::map<std::string, class ULevel*>::iterator FindIter = Levels.find(UpperName);
 	std::map<std::string, class ULevel*>::iterator EndIter = Levels.end();
 
 	if (EndIter == FindIter)
 	{
-		MSGASSERT(ChangeName + "라는 이름의 레벨은 존재하지 않습니다.");
+		MSGASSERT(UpperName + " 라는 이름의 레벨은 존재하지 않습니다.");
 		return;
 	}
 
 	NextLevel = FindIter->second;
+
 }

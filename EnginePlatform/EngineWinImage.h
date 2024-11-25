@@ -41,6 +41,7 @@ public:
 		const FTransform& _LTImageTrans,
 		unsigned char _Alpha);
 
+
 	void Load(UEngineWinImage* _TargetImage, std::string_view _Path);
 
 	FVector2D GetImageScale() const
@@ -58,8 +59,10 @@ public:
 protected:
 
 private:
+
 	HDC ImageDC = nullptr;
 	HBITMAP hBitMap = nullptr;
+
 	BITMAP Info;
 };
 

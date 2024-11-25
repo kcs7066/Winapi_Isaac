@@ -25,7 +25,10 @@ enum class ERenderOrder
 	PLAYER = 0,
 	MAPBOARD = 9999,
 	UI = 10000,
-	ICON = 10001
+	ICON = 10001,
+
+	FADE = 20000,
+	MENU = 30000
 };
 
 enum class ECollisionGroup

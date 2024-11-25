@@ -60,9 +60,6 @@
     <ClCompile Include="Room.cpp">
       <Filter>ContentsObject\Play</Filter>
     </ClCompile>
-    <ClCompile Include="TitleGameMode.cpp">
-      <Filter>ContentsObject\Title</Filter>
-    </ClCompile>
     <ClCompile Include="EndGameMode.cpp">
       <Filter>ContentsObject\End</Filter>
     </ClCompile>
@@ -168,6 +165,12 @@
     <ClCompile Include="Pooter.cpp">
       <Filter>ContentsObject\Monster</Filter>
     </ClCompile>
+    <ClCompile Include="Fade.cpp">
+      <Filter>ContentsObject\Global</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleGameMode.cpp">
+      <Filter>GameMode</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PreCompile.h">
@@ -187,9 +190,6 @@
     </ClInclude>
     <ClInclude Include="Room.h">
       <Filter>ContentsObject\Play</Filter>
-    </ClInclude>
-    <ClInclude Include="TitleGameMode.h">
-      <Filter>ContentsObject\Title</Filter>
     </ClInclude>
     <ClInclude Include="EndGameMode.h">
       <Filter>ContentsObject\End</Filter>
@@ -295,6 +295,12 @@
     </ClInclude>
     <ClInclude Include="Pooter.h">
       <Filter>ContentsObject\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="Fade.h">
+      <Filter>ContentsObject\Global</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleGameMode.h">
+      <Filter>GameMode</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

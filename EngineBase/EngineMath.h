@@ -31,6 +31,11 @@ public:
 			return value;
 	}
 
+	template <typename DataType>
+	static DataType Lerp(DataType A, DataType B, DataType Alpha)
+	{
+		return A * (1 - Alpha) + B * Alpha;
+	}
 };
 
 class FVector2D
@@ -65,7 +70,7 @@ public:
 
 	}
 
-	static FVector2D LerpClamp(FVector2D p1, FVector2D p2, float d1)
+	static FVector2D MyLerpClamp(FVector2D p1, FVector2D p2, float d1)
 	{
 		if (0.0f >= d1)
 		{
@@ -77,30 +82,22 @@ public:
 			d1 = 1.0f;
 		}
 
-		return Lerp(p1, p2, d1);
+		return MyLerp(p1, p2, d1);
 	}
 
-	static FVector2D Lerp(FVector2D p1, FVector2D p2, float d1)
+	static FVector2D MyLerp(FVector2D p1, FVector2D p2, float d1)
 	{
 		return (p1 * (1.0f - d1)) + (p2 * d1);
 	}
 
-	//X값을 int로 바꿔주는 함수
 	int iX() const
 	{
 		return static_cast<int>(X);
 	}
 
-	//Y값을 int로 바꿔주는 함수
 	int iY() const
 	{
 		return static_cast<int>(Y);
-	}
-
-	// X든 Y든 0이있으면 터트리는 함수.
-	bool IsZeroed() const
-	{
-		return X == 0.0f || Y == 0.0f;
 	}
 
 	float hX() const
@@ -113,7 +110,11 @@ public:
 		return Y * 0.5f;
 	}
 
-	// 값을 절반으로 바꿔주는 함수
+	bool IsZeroed() const
+	{
+		return X == 0.0f || Y == 0.0f;
+	}
+
 	FVector2D Half() const
 	{
 		return { X * 0.5f, Y * 0.5f };
@@ -156,9 +157,7 @@ public:
 		return Result;
 	}
 
-
-
-	FVector2D operator+(FVector2D _Other) const
+	FVector2D operator+(const FVector2D& _Other) const
 	{
 		FVector2D Result;
 		Result.X = X + _Other.X;
@@ -166,7 +165,15 @@ public:
 		return Result;
 	}
 
-	FVector2D operator-(FVector2D _Other) const
+	FVector2D& operator-=(const FVector2D& _Other)
+	{
+		X -= _Other.X;
+		Y -= _Other.Y;
+		return *this;
+	}
+
+
+	FVector2D operator-(const FVector2D& _Other) const
 	{
 		FVector2D Result;
 		Result.X = X - _Other.X;
@@ -198,7 +205,7 @@ public:
 		return Result;
 	}
 
-	bool operator==(FVector2D _Other) const
+	bool operator==(const FVector2D& _Other) const
 	{
 		return X == _Other.X && Y == _Other.Y;
 	}
@@ -208,22 +215,29 @@ public:
 		return iX() == _Other.iX() && iY() == _Other.iY();
 	}
 
-	FVector2D& operator+=(FVector2D _Other)
+	FVector2D& operator+=(const FVector2D& _Other)
 	{
 		X += _Other.X;
 		Y += _Other.Y;
 		return *this;
 	}
 
-	FVector2D& operator-=(FVector2D _Other)
+	FVector2D& operator*=(const FVector2D& _Other)
 	{
-		X -= _Other.X;
-		Y -= _Other.Y;
+		X *= _Other.X;
+		Y *= _Other.Y;
 		return *this;
 	}
 
-	//X와Y의 값을 문자열로 표현해주는 함수
-	std::string ToString() const
+	FVector2D& operator*=(float _Other)
+	{
+		X *= _Other;
+		Y *= _Other;
+		return *this;
+	}
+
+
+	std::string ToString()
 	{
 		std::string Stream;
 
@@ -234,15 +248,24 @@ public:
 		Stream += "]";
 		return Stream;
 	}
+
+	static FVector2D Lerp(FVector2D _A, FVector2D _B, float _Alpha)
+	{
+		FVector2D Result;
+		_Alpha = UEngineMath::Clamp(_Alpha, 0.0f, 1.0f);
+		Result.X = UEngineMath::Lerp(_A.X, _B.X, _Alpha);
+		Result.Y = UEngineMath::Lerp(_A.Y, _B.Y, _Alpha);
+		return Result;
+	}
+
 };
 
 enum class ECollisionType
 {
 	Point,
 	Rect,
-	CirCle, 
+	CirCle,
 	Max
-
 };
 
 class FTransform
@@ -255,6 +278,7 @@ private:
 public:
 	static bool Collision(ECollisionType _LeftType, const FTransform& _Left, ECollisionType _RightType, const FTransform& _Right);
 
+	// 완전히 같은 형의 함수죠?
 	static bool PointToCirCle(const FTransform& _Left, const FTransform& _Right);
 	static bool PointToRect(const FTransform& _Left, const FTransform& _Right);
 
@@ -263,6 +287,7 @@ public:
 
 	static bool CirCleToCirCle(const FTransform& _Left, const FTransform& _Right);
 	static bool CirCleToRect(const FTransform& _Left, const FTransform& _Right);
+
 
 	FVector2D Scale;
 	FVector2D Location;
@@ -314,7 +339,6 @@ public:
 		return Location.Y + Scale.hY();
 	}
 };
-
 
 class FIntPoint
 {
@@ -398,6 +422,7 @@ public:
 	{
 		return R == _Other.R && G == _Other.G && B == _Other.B;
 	}
+
 
 	UColor(unsigned char _R, unsigned char _G, unsigned char _B, unsigned char _A)
 		:R(_R), G(_G), B(_B), A(_A)

@@ -1,13 +1,11 @@
 #pragma once
-// Os Header
+
 #include <Windows.h>
 
-// std Header
-#include <string>
 #include <map>
+#include <string>
 #include <functional>
 
-// User Header
 #include <EngineBase/EngineDelegate.h>
 #include <EngineBase/EngineMath.h>
 #include "EngineWinImage.h"
@@ -52,20 +50,22 @@ public:
 		SetWindowTextA(WindowHandle, Text.data());
 	}
 
+
 	void SetWindowPosAndScale(FVector2D _Pos, FVector2D _Scale);
 
 	FVector2D GetMousePos();
 
+
 protected:
 
 private:
-
 	static HINSTANCE hInstance;
-	static std::map<std::string, WNDCLASSEXA> WindowClasses;
-
+	static std::map<std::string, WNDCLASSEXA> WindowClasss;
 	FVector2D WindowSize;
 	UEngineWinImage* BackBufferImage = nullptr;
 	UEngineWinImage* WindowImage = nullptr;
+
 	HWND WindowHandle = nullptr;
 };
+
 

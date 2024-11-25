@@ -35,6 +35,7 @@ void ARoom::Tick(float _DeltaTime)
 {
 	Super::Tick(_DeltaTime);
 
+
 	if (0==MonsterNumber)
 	{
 		std::map<RoomDir, ADoor*>::iterator StartIter = Doors.begin();

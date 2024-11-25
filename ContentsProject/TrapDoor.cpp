@@ -4,6 +4,7 @@
 #include "Isaac.h"
 #include <EngineCore/EngineAPICore.h>
 #include "PlayGameMode.h"
+#include "TitleGameMode.h"
 
 
 
@@ -44,6 +45,7 @@ void ATrapDoor::Tick(float _DeltaTime)
 		AIsaac* NewResult = dynamic_cast<AIsaac*>(Result);
 		APlayGameMode* Mode = GetWorld()->GetGameMode<APlayGameMode>();
 		Mode->BGMPlayer.Off();
+		UEngineAPICore::GetCore()->CreateLevel<ATitleGameMode, AActor>("Title");
 		UEngineAPICore::GetCore()->OpenLevel("Title");
 		Destroy();
 	}

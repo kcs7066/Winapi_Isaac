@@ -69,6 +69,7 @@ void ARoundWorm::BeginPlay()
 	FSM.CreateState(RoundWormState::Move, std::bind(&ARoundWorm::Move, this, std::placeholders::_1),
 		[this]()
 		{
+			CollisionComponent->SetActive(false);
 			MonsterRenderer->ChangeAnimation("Move_RoundWorm");
 		}
 	);
@@ -173,7 +174,7 @@ void ARoundWorm::Move(float _DeltaTime)
 		if (false == FindPos)
 		{
 			APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
-;
+            CollisionComponent->SetActive(true);
 			while (true)
 			{
 				float NewX = Random.Randomfloat(-338.0f, 338.0f);

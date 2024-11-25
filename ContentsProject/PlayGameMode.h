@@ -2,6 +2,7 @@
 
 
 #include <EngineCore/GameMode.h>
+#include "Fade.h"
 #include "Room.h"
 #include "Door.h"
 #include "Monster.h"
@@ -135,6 +136,10 @@ public:
 	void CreateMap();
 	void CreateItem();
 
+	AFade* Fade;
+	USpriteRenderer* RestartGameRenderer = nullptr;
+	bool DeathValue = false;
+
 protected:
 	
 private:
@@ -179,6 +184,11 @@ private:
 	USpriteRenderer* MapRenderer = nullptr;
 	USpriteRenderer* BossMiniMapRenderer = nullptr;
 	USpriteRenderer* GoldMiniMapRenderer = nullptr;
+	USpriteRenderer* PauseGameRenderer = nullptr;
+
+
+	bool PauseGame = false;
+	bool ExitGameValue = false;
 
 	float RoomMoveCameraTime = 0.0f;
 

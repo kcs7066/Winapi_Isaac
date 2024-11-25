@@ -29,7 +29,7 @@
       <Filter>Object</Filter>
     </ClInclude>
     <ClInclude Include="EngineString.h">
-      <Filter>String</Filter>
+      <Filter>Object\String</Filter>
     </ClInclude>
     <ClInclude Include="EngineRandom.h">
       <Filter>Math</Filter>
@@ -76,7 +76,7 @@
       <Filter>Object</Filter>
     </ClCompile>
     <ClCompile Include="EngineString.cpp">
-      <Filter>String</Filter>
+      <Filter>Object\String</Filter>
     </ClCompile>
     <ClCompile Include="EngineRandom.cpp">
       <Filter>Math</Filter>
@@ -116,7 +116,7 @@
     <Filter Include="Object">
       <UniqueIdentifier>{c82106e3-787b-4242-9845-083693f40b7d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="String">
+    <Filter Include="Object\String">
       <UniqueIdentifier>{b17a01c4-9769-43f3-aa6e-02f388b0ce93}</UniqueIdentifier>
     </Filter>
   </ItemGroup>

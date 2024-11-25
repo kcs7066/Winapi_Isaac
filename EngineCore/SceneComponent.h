@@ -1,6 +1,5 @@
 #pragma once
 #include "ActorComponent.h"
-#include <EngineBase/EngineMath.h>
 
 class USceneComponent : public UActorComponent
 {
@@ -31,7 +30,6 @@ public:
 	{
 		return Transform.Location;
 	}
-
 
 	void SetComponentLocation(FVector2D _Location)
 	{

@@ -12,6 +12,7 @@ const FIntPoint FIntPoint::RIGHT = { 1, 0 };
 const FIntPoint FIntPoint::UP = { 0, -1 };
 const FIntPoint FIntPoint::DOWN = { 0, 1 };
 
+
 const UColor UColor::WHITE = { 255, 255, 255, 0 };
 const UColor UColor::BLACK = { 0, 0, 0, 0 };
 
@@ -19,6 +20,7 @@ FIntPoint FVector2D::ConvertToPoint() const
 {
 	return { iX(), iY() };
 }
+
 
 std::function<bool(const FTransform&, const FTransform&)> FTransform::AllCollisionFunction[static_cast<int>(ECollisionType::Max)][static_cast<int>(ECollisionType::Max)];
 
@@ -34,7 +36,6 @@ public:
 		FTransform::AllCollisionFunction[static_cast<int>(ECollisionType::Rect)][static_cast<int>(ECollisionType::CirCle)] = FTransform::RectToCirCle;
 
 		FTransform::AllCollisionFunction[static_cast<int>(ECollisionType::CirCle)][static_cast<int>(ECollisionType::Rect)] = FTransform::CirCleToRect;
-
 	}
 };
 
@@ -94,6 +95,7 @@ bool FTransform::RectToRect(const FTransform& _Left, const FTransform& _Right)
 	{
 		return false;
 	}
+	// 공식 만들면 된다.
 	return true;
 }
 
@@ -115,7 +117,6 @@ bool FTransform::CirCleToRect(const FTransform& _Left, const FTransform& _Right)
 	{
 		return true;
 	}
-
 
 	FVector2D ArrPoint[4];
 

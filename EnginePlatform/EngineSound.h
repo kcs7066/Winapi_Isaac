@@ -4,7 +4,6 @@
 
 #include "ThirdParty/FMOD/inc/fmod.hpp"
 
-
 class USoundPlayer
 {
 public:
@@ -42,10 +41,8 @@ public:
 	}
 
 private:
-
 	FMOD::Channel* Control = nullptr;
 };
-
 
 class UEngineSound : public UEngineResources
 {
@@ -59,8 +56,6 @@ public:
 	UEngineSound(UEngineSound&& _Other) noexcept = delete;
 	UEngineSound& operator=(const UEngineSound& _Other) = delete;
 	UEngineSound& operator=(UEngineSound&& _Other) noexcept = delete;
-
-
 
 	static void Load(std::string_view _Path);
 	static void Load(std::string_view _Name, std::string_view _Path);

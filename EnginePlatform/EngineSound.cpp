@@ -2,11 +2,9 @@
 #include "EngineSound.h"
 #include <EngineBase/EngineString.h>
 #include <EngineBase/EngineDebug.h>
-#include <EngineBase/EnginePath.h>
 
 std::map<std::string, UEngineSound*> UEngineSound::Sounds;
 
-// 사운드를 제어하기위한 핸들
 FMOD::System* SoundSystem = nullptr;
 
 #ifdef _DEBUG
@@ -26,10 +24,6 @@ public:
 			return;
 		}
 
-		// 사운드 채널설정
-		// int maxchannels, 동시에 몇개까지 사운드 재생이 되는가?
-		// FMOD_INITFLAGS flags, 지정사항이 있냐인데
-		// void* extradriverdata 지정사항에 대한 데이터넣어줄게 있냐.
 		if (FMOD_RESULT::FMOD_OK != SoundSystem->init(32, FMOD_DEFAULT, nullptr))
 		{
 			MSGASSERT("FMOD 시스템 이닛에 실패했습니다.");
@@ -54,7 +48,6 @@ void UEngineSound::Update()
 	}
 }
 
-// 엔진이 끝날때 직접 호출
 void UEngineSound::Release()
 {
 	std::map<std::string, UEngineSound*>::iterator StartIter = Sounds.begin();
@@ -87,6 +80,7 @@ UEngineSound::~UEngineSound()
 	if (nullptr != SoundHandle)
 	{
 		SoundHandle->release();
+		SoundHandle = nullptr;
 	}
 }
 
@@ -114,7 +108,6 @@ void UEngineSound::Load(std::string_view _Name, std::string_view _Path)
 	;
 
 	UEngineSound::Sounds.insert({ UpperString, NewSound });
-	// Load(FileName, Path);
 }
 
 UEngineSound* UEngineSound::Find(std::string_view _Name)
@@ -140,7 +133,6 @@ USoundPlayer UEngineSound::Play(std::string_view _Name)
 		MSGASSERT("로드하지 않은 사운드를 재생하려고 했습니다" + UpperString);
 	}
 
-
 	FMOD::Channel* Ch = nullptr;
 
 	SoundSystem->playSound(FindSound->SoundHandle, nullptr, false, &Ch);
@@ -158,7 +150,6 @@ USoundPlayer UEngineSound::Play(std::string_view _Name)
 
 bool UEngineSound::ResLoad(std::string_view _Path)
 {
-
 	SoundSystem->createSound(_Path.data(), FMOD_LOOP_NORMAL, nullptr, &SoundHandle);
 
 	if (nullptr == SoundHandle)

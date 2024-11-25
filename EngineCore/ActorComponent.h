@@ -1,12 +1,10 @@
 #pragma once
 #include <EngineBase/Object.h>
-#include "Actor.h"
 
 // 설명 :
 class UActorComponent : public UObject
 {
 public:
-	// 액터만이 ParentActor 세팅할수 있게 제한하기 위해서 아래와 같이 짠다.
 	friend class AActor;
 
 	typedef UActorComponent Super;
@@ -22,7 +20,6 @@ public:
 	UActorComponent& operator=(UActorComponent&& _Other) noexcept = delete;
 
 	virtual void BeginPlay() {}
-
 	virtual void ComponentTick(float _DeltaTime) {}
 
 	class AActor* GetActor()
@@ -32,7 +29,6 @@ public:
 
 	bool IsActive() override
 	{
-
 		return UObject::IsActive() && GetActor()->IsActive();
 	}
 
@@ -48,3 +44,4 @@ protected:
 private:
 	class AActor* ParentActor;
 };
+

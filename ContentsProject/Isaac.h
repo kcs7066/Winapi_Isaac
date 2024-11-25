@@ -61,10 +61,10 @@ public:
 
 	bool CanMove = true;
 
-	float Damage = 100.0f;
+	float Damage = 3.5f;
 	FVector2D PrevPos;
 
-	int Hp = 9999;
+	int Hp = 3;
 	int CoinNumber = 0;
 	int BombNumber = 1;
 	int KeyNumber = 0;

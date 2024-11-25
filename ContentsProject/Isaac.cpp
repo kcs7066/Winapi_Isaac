@@ -497,14 +497,14 @@ void AIsaac::Attack(float _DeltaTime)
 					NewSecondTear->Dir = SecondDir;
 				}
 				else {
-					NewSecondTear->Dir = SecondDir + Vector * _DeltaTime * Speed;
+					NewSecondTear->Dir = SecondDir + Vector * _DeltaTime * Speed * 0.5f;
 				}			
 				if (Vector.Y == 1)
 				{
 					NewThirdTear->Dir = ThirdDir;
 				}
 				else {
-					NewThirdTear->Dir = ThirdDir + Vector * _DeltaTime * Speed;
+					NewThirdTear->Dir = ThirdDir + Vector * _DeltaTime * Speed * 0.5f;
 				}
 			}
 			else
@@ -515,7 +515,7 @@ void AIsaac::Attack(float _DeltaTime)
 				NewTear->Dir = FVector2D::UP;
 			}
 			else {
-			   	NewTear->Dir = FVector2D::UP + Vector * _DeltaTime * Speed;
+			   	NewTear->Dir = FVector2D::UP + Vector * _DeltaTime * Speed * 0.5f;
 			     }
 			HeadRenderer->ChangeAnimation("Attack_UpHead");
 		}
@@ -540,14 +540,14 @@ void AIsaac::Attack(float _DeltaTime)
 					NewSecondTear->Dir = SecondDir;
 				}
 				else {
-					NewSecondTear->Dir = SecondDir + Vector * _DeltaTime * Speed;
+					NewSecondTear->Dir = SecondDir + Vector * _DeltaTime * Speed * 0.5f;
 				}
 				if (Vector.X == -1)
 				{
 					NewThirdTear->Dir = ThirdDir;
 				}
 				else {
-					NewThirdTear->Dir = ThirdDir + Vector * _DeltaTime * Speed;
+					NewThirdTear->Dir = ThirdDir + Vector * _DeltaTime * Speed * 0.5f;
 				}
 			}
 			else
@@ -559,7 +559,7 @@ void AIsaac::Attack(float _DeltaTime)
 				NewTear->Dir = FVector2D::RIGHT;
 			}
 			else {
-				NewTear->Dir = FVector2D::RIGHT + Vector * _DeltaTime * Speed;
+				NewTear->Dir = FVector2D::RIGHT + Vector * _DeltaTime * Speed * 0.5f;
 			}
 			HeadRenderer->ChangeAnimation("Attack_RightHead");
 		}
@@ -583,14 +583,14 @@ void AIsaac::Attack(float _DeltaTime)
 					NewSecondTear->Dir = SecondDir;
 				}
 				else {
-					NewSecondTear->Dir = SecondDir + Vector * _DeltaTime * Speed;
+					NewSecondTear->Dir = SecondDir + Vector * _DeltaTime * Speed * 0.5f;
 				}
 				if (Vector.Y == -1)
 				{
 					NewThirdTear->Dir = ThirdDir;
 				}
 				else {
-					NewThirdTear->Dir = ThirdDir + Vector * _DeltaTime * Speed;
+					NewThirdTear->Dir = ThirdDir + Vector * _DeltaTime * Speed * 0.5f;
 				}
 			}
 			else
@@ -601,7 +601,7 @@ void AIsaac::Attack(float _DeltaTime)
 				NewTear->Dir = FVector2D::DOWN;
 			}
 			else {
-				NewTear->Dir = FVector2D::DOWN + Vector * _DeltaTime * Speed;
+				NewTear->Dir = FVector2D::DOWN + Vector * _DeltaTime * Speed * 0.5f;
 			}
 		HeadRenderer->ChangeAnimation("Attack_DownHead");
 		}
@@ -625,14 +625,14 @@ void AIsaac::Attack(float _DeltaTime)
 					NewSecondTear->Dir = SecondDir;
 				}
 				else {
-					NewSecondTear->Dir = SecondDir + Vector * _DeltaTime * Speed;
+					NewSecondTear->Dir = SecondDir + Vector * _DeltaTime * Speed * 0.5f;
 				}
 				if (Vector.X == 1)
 				{
 					NewThirdTear->Dir = ThirdDir;
 				}
 				else {
-					NewThirdTear->Dir = ThirdDir + Vector * _DeltaTime * Speed;
+					NewThirdTear->Dir = ThirdDir + Vector * _DeltaTime * Speed * 0.5f;
 				}
 			}
 			else
@@ -644,7 +644,7 @@ void AIsaac::Attack(float _DeltaTime)
 				NewTear->Dir = FVector2D::LEFT;
 			}
 			else {
-				NewTear->Dir = FVector2D::LEFT + Vector * _DeltaTime * Speed;
+				NewTear->Dir = FVector2D::LEFT + Vector * _DeltaTime * Speed * 0.5f;
 			}
 			HeadRenderer->ChangeAnimation("Attack_LeftHead");
 		}
@@ -1032,8 +1032,15 @@ void AIsaac::Item(float _DeltaTime)
 
 void AIsaac::Die(float _DeltaTime)
 {
+	DelayTime += _DeltaTime;
 	GhostPos -= _DeltaTime * 200.0f;
 	GhostRenderer->SetComponentLocation({ 20.0f,GhostPos });
+	if (2.0f < DelayTime)
+	{
+		APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
+		PlayGameMode->DeathValue = true;
+		FSM.ChangeState(IsaacState::Idle);
+	}
 
 }
 
@@ -1054,6 +1061,8 @@ void AIsaac::DieStart()
 	GhostRenderer->ChangeAnimation("Ghost");
 
 	FSM.ChangeState(IsaacState::Die);
+	Speed = 0.0f;
+	DelayTime = 0.0f;
 }
 
 void AIsaac::LevelChangeStart()

@@ -2,7 +2,6 @@
 #include "GameMode.h"
 
 
-
 class CollisionLinkData
 {
 public:
@@ -18,8 +17,7 @@ public:
 };
 
 
-// 설명 :
-class ULevel
+class ULevel : public UObject
 {
 public:
 	friend class U2DCollision;
@@ -48,11 +46,9 @@ public:
 	ActorType* SpawnActor()
 	{
 		ActorType* NewActor = new ActorType();
+
 		AActor* ActorPtr = dynamic_cast<AActor*>(NewActor);
-
-
 		ActorPtr->World = this;
-
 
 		BeginPlayList.push_back(ActorPtr);
 		return NewActor;
@@ -93,7 +89,13 @@ public:
 		return MainPawn;
 	}
 
-	AGameMode* GetGameMode()
+	template<typename ConvertType>
+	ConvertType* GetPawn()
+	{
+		return dynamic_cast<ConvertType*>(MainPawn);
+	}
+
+	AActor* GetGameMode()
 	{
 		return GameMode;
 	}
@@ -104,11 +106,6 @@ public:
 		return dynamic_cast<ConvertType*>(GameMode);
 	}
 
-	template<typename ConvertType>
-	ConvertType* GetPawn()
-	{
-		return dynamic_cast<ConvertType*>(MainPawn);
-	}
 
 	template<typename LeftEnumType, typename RightEnumType>
 	static void CollisionGroupLink(LeftEnumType _Left, RightEnumType _Right)
@@ -124,13 +121,37 @@ public:
 
 		for (size_t i = 0; i < CollisionLink.size(); i++)
 		{
-			if (CollisionLink[i].Key == _Right)
+			if (CollisionLink[i].Key == LinkData.Key)
 			{
 				return;
 			}
 		}
 
 		CollisionLink.push_back(LinkData);
+	}
+
+	template<typename ActorType>
+	std::list<ActorType*> GetActorsFromClass()
+	{
+		std::list<ActorType*> Result;
+
+		std::list<AActor*>::iterator StartIter = AllActors.begin();
+		std::list<AActor*>::iterator EndIter = AllActors.end();
+
+		for (; StartIter != EndIter; ++StartIter)
+		{
+			AActor* CurActor = *StartIter;
+
+			ActorType* ConvertActor = dynamic_cast<ActorType*>(CurActor);
+
+			if (nullptr == ConvertActor)
+			{
+				continue;
+			}
+
+			Result.push_back(ConvertActor);
+		}
+		return Result;
 	}
 
 
@@ -140,6 +161,7 @@ private:
 	void ScreenClear();
 	void DoubleBuffering();
 	void BeginPlayCheck();
+
 
 	template<typename GameModeType, typename MainPawnType>
 	void CreateGameMode()
@@ -153,8 +175,6 @@ private:
 
 		BeginPlayList.push_back(GameMode);
 		BeginPlayList.push_back(MainPawn);
-
-
 	}
 
 	void PushRenderer(class USpriteRenderer* _Renderer);
@@ -166,9 +186,9 @@ private:
 
 	void CollisionEventCheck(class U2DCollision* _Left, class U2DCollision* _Right);
 
-
 	class AGameMode* GameMode = nullptr;
 
+	// 주인공
 	class AActor* MainPawn = nullptr;
 
 	std::list<AActor*> AllActors;
@@ -186,7 +206,5 @@ private:
 	static std::vector<CollisionLinkData> CollisionLink;
 
 	std::map<int, std::list<class U2DCollision*>> CheckCollisions;
-
-
 };
 

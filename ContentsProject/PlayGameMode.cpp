@@ -1,5 +1,6 @@
 #include "PreCompile.h"
 #include "PlayGameMode.h"
+#include "TitleGameMode.h"
 #include <EnginePlatform/EngineWindow.h>
 #include <EngineCore/EngineCoreDebug.h>
 #include <EngineCore/EngineAPICore.h>
@@ -35,6 +36,7 @@
 #include "Pooter.h"
 
 
+
 APlayGameMode::APlayGameMode()
 {
 	MapRenderer = CreateDefaultSubObject<USpriteRenderer>();
@@ -58,6 +60,18 @@ APlayGameMode::APlayGameMode()
 	GoldMiniMapRenderer->SetComponentScale({ 30,30 });
 	GoldMiniMapRenderer->CreateAnimation("Gold", "Minimap_Icons.png", 4, 4, 0.1f);
 	GoldMiniMapRenderer->ChangeAnimation("Gold");
+
+	PauseGameRenderer = CreateDefaultSubObject<USpriteRenderer>();
+	PauseGameRenderer->SetOrder(ERenderOrder::MENU);
+	PauseGameRenderer->SetSprite("PauseGame.png");
+	PauseGameRenderer->SetSpriteScale(0.0f);
+	PauseGameRenderer->SetComponentLocation({ 0,0 });
+	
+	RestartGameRenderer = CreateDefaultSubObject<USpriteRenderer>();
+	RestartGameRenderer->SetOrder(ERenderOrder::MENU);
+	RestartGameRenderer->SetSprite("Die.png");
+	RestartGameRenderer->SetSpriteScale(0.0f);
+	RestartGameRenderer->SetComponentLocation({ 0,0 });
 }
 
 APlayGameMode::~APlayGameMode()
@@ -69,6 +83,11 @@ APlayGameMode::~APlayGameMode()
 
 void APlayGameMode::BeginPlay()
 {
+UEngineAPICore::GetCore()->DestroyLevel("Title");
+	
+Fade = GetWorld()->SpawnActor<AFade>();
+Fade->FadeOut();
+	
 
  AIsaac* Player = GetWorld()->GetPawn<AIsaac>();
 
@@ -221,11 +240,85 @@ void APlayGameMode::Tick(float _DeltaTime)
 	{
 		UEngineDebug::SwitchIsDebug();
 	}
+	
+	if (true == DeathValue)
+	{
+		RestartGameRenderer->SetComponentLocation(CurRoom->RoomPos);
+		RestartGameRenderer->SetSpriteScale(1.0f);
+		UEngineAPICore::GetCore()->SetGlobalTimeScale(0.0f);
+		Fade->BackSpriteRenderer->SetAlphafloat(0.8f);
+	}
+
+	if (true == UEngineInput::GetInst().IsDown(VK_ESCAPE))
+	{
+
+		if (false == PauseGame)
+		{
+			if (true == DeathValue)
+			{
+				BGMPlayer.Off();
+				UEngineAPICore::GetCore()->SetGlobalTimeScale(1.0f);
+				UEngineAPICore::GetCore()->CreateLevel<ATitleGameMode, AActor>("Title");
+				UEngineAPICore::GetCore()->OpenLevel("Title");
+			}
+			else
+			{
+				BGMPlayer.Off();
+				PauseGameRenderer->SetComponentLocation(CurRoom->RoomPos);
+				PauseGameRenderer->SetSpriteScale(1.0f);
+				UEngineAPICore::GetCore()->SetGlobalTimeScale(0.0f);
+				Fade->BackSpriteRenderer->SetAlphafloat(0.8f);
+				PauseGame = true;
+			}
+		}
+	
+	}
+
+	if (true == UEngineInput::GetInst().IsDown(VK_DOWN)||
+		true == UEngineInput::GetInst().IsDown(VK_UP)
+		)
+	{
+		if (true == PauseGame && false == ExitGameValue)
+		{
+			PauseGameRenderer->SetSprite("ExitGame.png");
+			ExitGameValue = true;
+		}
+        else if (true == PauseGame && true == ExitGameValue)
+		{
+			PauseGameRenderer->SetSprite("PauseGame.png");
+			ExitGameValue = false;
+		}
+	}
+
+	if (true == UEngineInput::GetInst().IsDown(VK_SPACE))
+	{
+		if(false == PauseGame)
+		BGMPlayer.On();
+		PauseGameRenderer->SetSpriteScale(0.0f);
+		UEngineAPICore::GetCore()->SetGlobalTimeScale(1.0f);
+		Fade->BackSpriteRenderer->SetAlphafloat(0.00f);
+		PauseGame = false;
+
+		if (true == ExitGameValue)
+		{
+	    BGMPlayer.Off();
+		UEngineAPICore::GetCore()->CreateLevel<ATitleGameMode, AActor>("Title");
+        UEngineAPICore::GetCore()->OpenLevel("Title");
+		}
+
+
+		if (true == DeathValue)
+		{
+			UEngineAPICore::GetCore()->SetGlobalTimeScale(1.0f);
+		UEngineAPICore::GetCore()->ResetLevel<APlayGameMode, AIsaac>("Play");
+		DeathValue = false;
+		}
+	}
+
 
 	if (true == UEngineInput::GetInst().IsDown('R'))
 	{
-		BGMPlayer.Off();
-		UEngineAPICore::GetCore()->OpenLevel("Title");
+	UEngineAPICore::GetCore()->ResetLevel<APlayGameMode, AIsaac>("Play");
 	}
 
 
@@ -321,7 +414,7 @@ void APlayGameMode::Tick(float _DeltaTime)
 
 		FVector2D TargetCameraPos = { CurRoom->RoomPos.X - 480.0f ,CurRoom->RoomPos.Y - 270.0f };
 
-		FVector2D CurCameraPos = FVector2D::LerpClamp(StartCameraPos, TargetCameraPos, RoomMoveCameraTime);
+		FVector2D CurCameraPos = FVector2D::MyLerpClamp(StartCameraPos, TargetCameraPos, RoomMoveCameraTime);
 		
 	    GetWorld()->SetCameraPos(CurCameraPos);
 
@@ -670,7 +763,7 @@ void APlayGameMode::CreateMap()
 	}
 	else
 	{
-		int RandomValue = Random.RandomInt(3 , 3);
+		int RandomValue = Random.RandomInt(1 , 5);
 		switch (RandomValue)
 		{
 		case 1:
@@ -724,21 +817,20 @@ void APlayGameMode::CreateMap()
 			break;
 
 		case 4:
-			SetMonster<AFly>({ CurRoom->RoomPos.X + 52.0f * (0.0f), CurRoom->RoomPos.Y - 52.0f * (0.0f) });
+			SetMonster<APooter>({ CurRoom->RoomPos.X + 52.0f * (0.0f), CurRoom->RoomPos.Y - 52.0f * (0.0f) });
+			SetMonster<APooter>({ CurRoom->RoomPos.X + 52.0f * (1.0f), CurRoom->RoomPos.Y - 52.0f * (1.0f) });
+			SetMonster<APooter>({ CurRoom->RoomPos.X + 52.0f * (1.0f), CurRoom->RoomPos.Y - 52.0f * (-1.0f) });
+			SetMonster<APooter>({ CurRoom->RoomPos.X + 52.0f * (-1.0f), CurRoom->RoomPos.Y - 52.0f * (1.0f) });
+			SetMonster<APooter>({ CurRoom->RoomPos.X + 52.0f * (-1.0f), CurRoom->RoomPos.Y - 52.0f * (-1.0f) });
+			SetStructure<APoop>({ CurRoom->RoomPos.X + 52.0f * (2.0f), CurRoom->RoomPos.Y - 52.0f * (0.0f) });
+			SetStructure<APoop>({ CurRoom->RoomPos.X + 52.0f * (-2.0f), CurRoom->RoomPos.Y - 52.0f * (0.0f) });
 			break;
 
 		case 5:
 			SetMonster<ABabyLongLegs>({ CurRoom->RoomPos.X + 52.0f * (0.0f), CurRoom->RoomPos.Y - 52.0f * (0.0f) });
+			SetMonster<ALevelTwoSpiderSmall>({ CurRoom->RoomPos.X + 52.0f * (2.0f), CurRoom->RoomPos.Y - 52.0f * (0.0f) });
+			SetMonster<ALevelTwoSpiderSmall>({ CurRoom->RoomPos.X + 52.0f * (-2.0f), CurRoom->RoomPos.Y - 52.0f * (0.0f) });
 			break;
-
-		case 6:
-			SetMonster<ALevelTwoSpiderSmall>({ CurRoom->RoomPos.X + 52.0f * (0.0f), CurRoom->RoomPos.Y - 52.0f * (0.0f) });
-			break;
-
-		case 7:
-
-			break;
-
 
 		default:
 			break;

@@ -1,9 +1,10 @@
 #pragma once
 #include <EngineBase/Object.h>
 #include <EngineBase/EngineMath.h>
+#include <EngineBase/TimeEvent.h>
+
 
 #include "EngineSprite.h"
-#include <EngineBase/TimeEvent.h>
 
 class AActor : public UObject
 {
@@ -61,9 +62,7 @@ public:
 
 		UActorComponent* ComponentPtr = dynamic_cast<UActorComponent*>(NewComponent);
 		ComponentPtr->ParentActor = this;
-
 		Components.push_back(NewComponent);
-
 		ComponentList.push_back(NewComponent);
 		return NewComponent;
 	}
@@ -83,6 +82,7 @@ private:
 
 	class ULevel* World = nullptr;
 	FTransform Transform;
+
 
 	std::list<class UActorComponent*> Components;
 };

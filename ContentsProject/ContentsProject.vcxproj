@@ -137,6 +137,8 @@
       <AdditionalIncludeDirectories>..\;</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>PreCompile.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -144,6 +146,9 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <Lib>
+      <AdditionalLibraryDirectories>$(SolutionDir)Bin\$(Platform)\$(Configuration)\</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="BabyLongLegs.h">
@@ -168,6 +173,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="EndingCredit.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Fade.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -326,6 +335,10 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="Fade.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="Fatty.cpp">
       <SubType>
       </SubType>
@@ -406,6 +419,7 @@
     </ClCompile>
     <ClCompile Include="PreCompile.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="PurpleFly.cpp">
       <SubType>

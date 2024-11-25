@@ -1,8 +1,6 @@
 #include "PreCompile.h"
 #include "2DCollision.h"
 #include <EngineCore/EngineCoreDebug.h>
-#include "Actor.h"
-#include "Level.h"
 
 
 U2DCollision::U2DCollision()
@@ -16,8 +14,6 @@ U2DCollision::~U2DCollision()
 void U2DCollision::BeginPlay()
 {
 	Super::BeginPlay();
-
-	// 스프라이트 랜더러가 
 
 	AActor* Actor = GetActor();
 	ULevel* Level = Actor->GetWorld();
@@ -46,7 +42,11 @@ void U2DCollision::ComponentTick(float _DeltaTime)
 		FTransform ActorTransform = GetActorTransform();
 		FVector2D CameraPos = GetActor()->GetWorld()->GetCameraPos();
 
-		ActorTransform.Location -= CameraPos;
+
+		if (true == IsCameraEffect)
+		{
+			ActorTransform.Location -= CameraPos;
+		}
 
 		switch (CollisionType)
 		{
@@ -66,16 +66,12 @@ void U2DCollision::ComponentTick(float _DeltaTime)
 
 bool U2DCollision::Collision(int _OtherCollisionGroup, std::vector<AActor*>& _Result, FVector2D _NextPos, unsigned int  _Limite)
 {
-
 	U2DCollision* ThisCollision = this;
 
 	if (false == ThisCollision->IsActive())
 	{
 		return false;
 	}
-
-
-
 
 	std::list<class U2DCollision*>& OtherCollisions = GetActor()->GetWorld()->Collisions[_OtherCollisionGroup];
 
@@ -96,7 +92,7 @@ bool U2DCollision::Collision(int _OtherCollisionGroup, std::vector<AActor*>& _Re
 		{
 			continue;
 		}
-	 
+
 		FTransform ThisTrans = ThisCollision->GetActorTransform();
 		FTransform DestTrans = DestCollision->GetActorTransform();
 
@@ -107,7 +103,6 @@ bool U2DCollision::Collision(int _OtherCollisionGroup, std::vector<AActor*>& _Re
 
 		bool Result = FTransform::Collision(ThisType, ThisTrans, DestType, DestTrans);
 
-		
 		if (true == Result)
 		{
 			_Result.push_back(DestCollision->GetActor());
@@ -123,9 +118,6 @@ bool U2DCollision::Collision(int _OtherCollisionGroup, std::vector<AActor*>& _Re
 	return 0 != _Result.size();
 }
 
-
-
-// 이벤트 방식
 void U2DCollision::SetCollisionEnter(std::function<void(AActor*)> _Function)
 {
 	Enter = _Function;
@@ -164,13 +156,10 @@ void U2DCollision::SetCollisionEnd(std::function<void(AActor*)> _Function)
 
 }
 
-
 void U2DCollision::CollisionEventCheck(class U2DCollision* _Other)
 {
-
 	U2DCollision* ThisCollision = this;
 	U2DCollision* DestCollision = _Other;
-	
 	FTransform ThisTrans = ThisCollision->GetActorTransform();
 	FTransform DestTrans = DestCollision->GetActorTransform();
 
@@ -178,7 +167,6 @@ void U2DCollision::CollisionEventCheck(class U2DCollision* _Other)
 	ECollisionType DestType = DestCollision->GetCollisionType();
 
 	bool Result = FTransform::Collision(ThisType, ThisTrans, DestType, DestTrans);
-
 
 	if (true == Result)
 	{
@@ -201,7 +189,6 @@ void U2DCollision::CollisionEventCheck(class U2DCollision* _Other)
 	}
 	else
 	{
-
 		if (true == CollisionCheckSet.contains(DestCollision))
 		{
 			if (nullptr != End)

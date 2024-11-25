@@ -1,11 +1,15 @@
 #include "PreCompile.h"
 #include "EngineInput.h"
 
+
 void UEngineInput::UEngineKey::KeyCheck(float _DeltaTime)
 {
 	if (0 != GetAsyncKeyState(Key))
 	{
-		PressTime += _DeltaTime;
+		if (true == IsPress)
+		{
+			PressTime += _DeltaTime;
+		}
 		if (true == IsFree)
 		{
 			IsDown = true;
@@ -15,16 +19,20 @@ void UEngineInput::UEngineKey::KeyCheck(float _DeltaTime)
 		}
 		else if (true == IsDown)
 		{
+			FreeTime = 0.0f;
 			IsDown = false;
 			IsPress = true;
 			IsFree = false;
 			IsUp = false;
 		}
-
 	}
 	else
 	{
-		PressTime = 0.0f;
+		if (true == IsFree)
+		{
+			FreeTime += _DeltaTime;
+		}
+
 		if (true == IsPress)
 		{
 			IsDown = false;
@@ -34,6 +42,7 @@ void UEngineInput::UEngineKey::KeyCheck(float _DeltaTime)
 		}
 		else if (true == IsUp)
 		{
+			PressTime = 0.0f;
 			IsDown = false;
 			IsPress = false;
 			IsFree = true;
@@ -132,6 +141,7 @@ UEngineInput::UEngineInput()
 	Keys.insert({ VK_UP, UEngineKey(VK_UP) });
 	Keys.insert({ VK_DOWN, UEngineKey(VK_DOWN) });
 
+	Keys.insert({ VK_ESCAPE		, UEngineKey(VK_ESCAPE) });
 	Keys.insert({ VK_SPACE		, UEngineKey(VK_SPACE) });
 	Keys.insert({ VK_PRIOR		, UEngineKey(VK_PRIOR) });
 	Keys.insert({ VK_NEXT		, UEngineKey(VK_NEXT) });

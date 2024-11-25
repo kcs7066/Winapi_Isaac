@@ -8,8 +8,6 @@
 #include <EnginePlatform/EngineWinImage.h>
 
 #include "EngineSprite.h"
-#include <EngineBase/EngineDebug.h>
-
 #include "ImageManager.h"
 #include "EngineCoreDebug.h"
 
@@ -76,6 +74,11 @@ void AActor::Tick(float _DeltaTime)
 
 	for (; StartIter != EndIter; ++StartIter)
 	{
+		if (false == (*StartIter)->IsActive())
+		{
+			continue;
+		}
+
 		(*StartIter)->ComponentTick(_DeltaTime);
 	}
 
@@ -93,7 +96,6 @@ void AActor::ReleaseTimeCheck(float _DeltaTime)
 		Component->ReleaseTimeCheck(_DeltaTime);
 	}
 }
-
 
 void AActor::ReleaseCheck(float _DeltaTime)
 {

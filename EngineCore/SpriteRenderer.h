@@ -8,10 +8,11 @@
 enum class PivotType
 {
 	Center,
+	Left,
 	Bot,
 	Top,
+	LeftTop,
 };
-
 
 class USpriteRenderer : public USceneComponent
 {
@@ -36,6 +37,7 @@ public:
 			CurIndex = 0;
 			CurTime = 0;
 			ResultIndex = 0;
+			IsEnd = false;
 		}
 	};
 
@@ -54,7 +56,6 @@ public:
 	void Render(float _DeltaTime);
 	void BeginPlay() override;
 	void ComponentTick(float _DeltaTime) override;
-
 
 	template<typename EnumType>
 	void SetOrder(EnumType _Order)
@@ -92,32 +93,35 @@ public:
 		IsCameraEffect = _Value;
 	}
 
-	void SetPivot(FVector2D _Pivot)
-	{
-		Pivot = _Pivot;
-	}
+	void SetPivotValue(FVector2D _Value);
 
 	void SetPivotType(PivotType _Type);
 
 	void SetCameraEffectScale(float _Effect);
 	void SetSprite(std::string_view _Name, int _CurIndex = 0);
 
-
 	bool IsCurAnimationEnd()
 	{
 		return CurAnimation->IsEnd;
 	}
 
-	
 	void SetAlphaChar(unsigned char _Value)
 	{
 		Alpha = _Value;
+	}
+	void SetAnimationSpeed(float _Speed)
+	{
+		CurAnimationSpeed = _Speed;
+	}
+
+	void ResetAnimationSpeed()
+	{
+		CurAnimationSpeed = 1.0f;
 	}
 
 	void SetAlphafloat(float _Value)
 	{
 		_Value = UEngineMath::Clamp(_Value, 0.0f, 1.0f);
-
 		Alpha = static_cast<unsigned char>(_Value * 255.0f);
 	}
 
@@ -128,10 +132,11 @@ private:
 	int CurIndex = 0;
 	bool IsCameraEffect = true;
 	float CameraEffectScale = 1.0f;
+	float CurAnimationSpeed = 1.0f;
 
 	unsigned char Alpha = 255;
 
-	FVector2D Pivot = FVector2D::ZERO;
+	FVector2D Pivot = FVector2D(0.5f, 0.5f);
 
 	class UEngineSprite* Sprite = nullptr;
 

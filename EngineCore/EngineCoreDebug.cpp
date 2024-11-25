@@ -12,11 +12,9 @@ namespace UEngineDebug
 		FVector2D Pos;
 	};
 
-
 	std::vector<DebugTextInfo> DebugTexts;
 
 	FVector2D EngineTextPos = FVector2D::ZERO;
-
 
 #ifdef _DEBUG
 	bool IsDebug = true;
@@ -40,7 +38,6 @@ namespace UEngineDebug
 		{
 			return;
 		}
-
 		DebugTexts.push_back({ _Text.data(), EngineTextPos });
 		EngineTextPos.Y += 20;
 	}
@@ -51,7 +48,6 @@ namespace UEngineDebug
 		{
 			return;
 		}
-
 		DebugTexts.push_back({ _Text.data(), _Pos });
 	}
 

@@ -3,6 +3,7 @@
 #include <vector>
 #include <EngineBase/EngineDebug.h>
 
+// Ό³Έν :
 class UEngineSprite : public UObject
 {
 public:
@@ -40,10 +41,8 @@ public:
 		Data.clear();
 	}
 
-
-
 protected:
-
 	std::vector<USpriteData> Data;
-
 };
+
+

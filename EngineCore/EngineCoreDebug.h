@@ -1,5 +1,4 @@
 #pragma once
-#include <EngineBase/EngineMath.h>
 
 namespace UEngineDebug
 {
