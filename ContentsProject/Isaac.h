@@ -64,7 +64,7 @@ public:
 	float Damage = 3.5f;
 	FVector2D PrevPos;
 
-	int Hp = 3;
+	int Hp = 6;
 	int CoinNumber = 0;
 	int BombNumber = 1;
 	int KeyNumber = 0;

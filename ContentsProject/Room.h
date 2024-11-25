@@ -2,6 +2,7 @@
 #include <EngineCore/Actor.h>
 #include <EngineCore/SpriteRenderer.h>
 #include <EngineCore/EngineAPICore.h>
+#include <EngineBase/EngineRandom.h>
 #include "Door.h"
 
 enum class RoomDir
@@ -51,6 +52,7 @@ public:
 
 	USpriteRenderer* RoomRenderer;
 	USpriteRenderer* MiniMapRenderer;
+	UEngineRandom Random;
 
 	RoomType Type = RoomType::NORMAL;
 
@@ -61,6 +63,7 @@ public:
 	int CanSpawnNumber = 1;
 
 	bool RoomClear = true;
+	bool RewardValue = false;
 
 protected:
 

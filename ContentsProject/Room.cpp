@@ -4,6 +4,8 @@
 #include "PlayGameMode.h"
 #include "ContentsEnum.h"
 #include <EngineCore/2DCollision.h>
+#include "PickUpBomb.h"
+#include "PickUpHeart.h"
 
 ARoom::ARoom()
 {
@@ -46,6 +48,21 @@ void ARoom::Tick(float _DeltaTime)
 			StartIter->second->DoorOpen();
 		}
 		RoomClear = true;
+		if (true == RewardValue)
+		{
+			int RandomValue = Random.RandomInt(1, 2);
+			if (1 == RandomValue)
+			{
+				APickUpBomb* Bomb = GetWorld()->SpawnActor<APickUpBomb>();
+				Bomb->SetActorLocation({ RoomPos.X + 52.0f,RoomPos.Y });
+			}
+			else if (2 == RandomValue)
+			{
+				APickUpHeart* Heart = GetWorld()->SpawnActor<APickUpHeart>();
+				Heart->SetActorLocation({ RoomPos.X + 52.0f,RoomPos.Y });
+			}
+			RewardValue = false;
+		}
 	}
 
 	else

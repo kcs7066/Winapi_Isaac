@@ -448,6 +448,7 @@ void APlayGameMode::Tick(float _DeltaTime)
 				{
 					CreateMap();
 					CurRoom->RoomClear = false;
+					CurRoom->RewardValue = true;
 					CurRoom->CanSpawnNumber--;
 				}
 
@@ -658,6 +659,8 @@ void APlayGameMode::CreateRoom(std::string_view _RoomName,FVector2D _Pos, RoomTy
 	NewRoom->RoomPos = { 960.0f * _Pos.X , 540.0f * _Pos.Y };
 	NewRoom->RoomRenderer->SetComponentLocation(NewRoom->RoomPos);
 	NewRoom->Type = _Type;
+	NewRoom->Random.SetSeed(time(nullptr) + SeedValue);
+	SeedValue++;
 
 	Rooms.insert({ RoomNumber,NewRoom });	
 	RoomNumber++;
