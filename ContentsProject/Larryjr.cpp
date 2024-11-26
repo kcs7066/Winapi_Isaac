@@ -151,10 +151,6 @@ void ALarryjr::Tick(float _DeltaTime)
 
 void ALarryjr::DirChange(float _DeltaTime)
 {
-	if (this->Hp <= 0.0f || true == LinkedParts.empty())
-	{
-		DieStart();
-	}
 
 	if 
 		(LarryjrPart::HEAD == Part)
@@ -243,17 +239,6 @@ void ALarryjr::DirChange(float _DeltaTime)
 			SavePos = NewNewPos;
 		}
 
-
-		//int Key = Poopkey(FuturePos);
-		//if (nullptr == PoopPos[Key])
-		//{
-		//	FVector2D NewLocation = GetActorLocation() + Dir * _DeltaTime * Speed;
-		//	APlayGameMode* ABPlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
-
-		//		AddActorLocation(Dir * _DeltaTime * Speed);
-
-		//}
-
 	}
 
 	else
@@ -293,16 +278,16 @@ void ALarryjr::DirChange(float _DeltaTime)
 		}
 
     }
-
+	if (this->Hp <= 0.0f || true == LinkedParts.empty())
+	{
+		DieStart();
+	}
 }
 
 void ALarryjr::UpMove(float _DeltaTime)
 {
 	DelayTime += _DeltaTime;
-	if (this->Hp <= 0.0f || true == LinkedParts.empty())
-	{
-		DieStart();
-	}
+
 
 	if (LarryjrPart::HEAD == Part)
 	{
@@ -330,15 +315,14 @@ void ALarryjr::UpMove(float _DeltaTime)
 			AddActorLocation(Dir * _DeltaTime * Speed);
 		}
 
-
+		if (this->Hp <= 0.0f || true == LinkedParts.empty())
+		{
+			DieStart();
+		}
 }
 void ALarryjr::RightMove(float _DeltaTime)
 {
 	DelayTime += _DeltaTime;
-	if (this->Hp <= 0.0f || true == LinkedParts.empty())
-	{
-		DieStart();
-	}
 
 	if (LarryjrPart::HEAD == Part)
 	{
@@ -365,16 +349,15 @@ void ALarryjr::RightMove(float _DeltaTime)
 		Dir = { 1,0 };
 		AddActorLocation(Dir * _DeltaTime * Speed);
 	}
-
-}
-void ALarryjr::DownMove(float _DeltaTime)
-{
-	DelayTime += _DeltaTime;
 	if (this->Hp <= 0.0f || true == LinkedParts.empty())
 	{
 		DieStart();
 	}
 
+}
+void ALarryjr::DownMove(float _DeltaTime)
+{
+	DelayTime += _DeltaTime;
 	if (LarryjrPart::HEAD == Part)
 	{
 		AActor* Result = CollisionComponent->CollisionOnce(ECollisionGroup::Structure);
@@ -400,15 +383,14 @@ void ALarryjr::DownMove(float _DeltaTime)
 		Dir = { 0,1 };
 		AddActorLocation(Dir * _DeltaTime * Speed);
 	}
-
-}
-void ALarryjr::LeftMove(float _DeltaTime)
-{
-	DelayTime += _DeltaTime;
 	if (this->Hp <= 0.0f || true == LinkedParts.empty())
 	{
 		DieStart();
 	}
+}
+void ALarryjr::LeftMove(float _DeltaTime)
+{
+	DelayTime += _DeltaTime;
 
 	if (LarryjrPart::HEAD == Part)
 	{
@@ -436,6 +418,10 @@ void ALarryjr::LeftMove(float _DeltaTime)
 		AddActorLocation(Dir * _DeltaTime * Speed);
 	}
 
+	if (this->Hp <= 0.0f || true == LinkedParts.empty())
+	{
+		DieStart();
+	}
 }
 
 

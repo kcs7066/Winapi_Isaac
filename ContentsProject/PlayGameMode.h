@@ -143,11 +143,6 @@ public:
 protected:
 	
 private:
-
-
-	
-
-
 	
 	std::map<int, FVector2D> RoomBind;
 
@@ -203,6 +198,8 @@ private:
 	ALarryjr* Monster6 = nullptr;
 	ALarryjr* Monster7 = nullptr;
 	long long SeedValue = 0;
+
+	int SpawnCaseValue = 1;
 
 };
 
