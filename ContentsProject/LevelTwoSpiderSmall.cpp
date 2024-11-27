@@ -214,6 +214,8 @@ void ALevelTwoSpiderSmall::Move(float _DeltaTime)
 void ALevelTwoSpiderSmall::DieStart()
 {
 	CollisionComponent->SetActive(false);
+	ShadowRenderer->SetSpriteScale(0.0f);
+
 	FSM.ChangeState(LevelTwoSpiderSmallState::Die);
 }
 

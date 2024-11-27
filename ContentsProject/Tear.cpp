@@ -121,6 +121,7 @@ void ATear::Fly(float _DeltaTime)
             }
 
 			DelayTime = 0.0f;
+			ShadowRenderer->SetSpriteScale(0.0f);
 			FSM.ChangeState(TearState::Poof);
 			BGMPlayer = UEngineSound::Play("tear block.wav");
 		}
@@ -132,6 +133,7 @@ void ATear::Fly(float _DeltaTime)
 		{
 				NewResult->Hp -= Ptr->Damage;
 				DelayTime = 0.0f;
+				ShadowRenderer->SetSpriteScale(0.0f);
 				FSM.ChangeState(TearState::Poof);
 				BGMPlayer = UEngineSound::Play("tear block.wav");
 	
@@ -148,6 +150,7 @@ void ATear::Fly(float _DeltaTime)
 					)
 				{
 					DelayTime = 0.0f;
+					ShadowRenderer->SetSpriteScale(0.0f);
 					FSM.ChangeState(TearState::Poof);
 					BGMPlayer = UEngineSound::Play("tear block.wav");
 				}
@@ -161,6 +164,7 @@ void ATear::Fly(float _DeltaTime)
 	else
 	{
 		DelayTime = 0.0f;
+		ShadowRenderer->SetSpriteScale(0.0f);
 		FSM.ChangeState(TearState::Poof);
 		BGMPlayer = UEngineSound::Play("tear block.wav");
 	}

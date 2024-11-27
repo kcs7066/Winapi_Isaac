@@ -143,6 +143,8 @@ void APacer::DieStart()
 {
 	CollisionComponent->SetActive(false);
 	MonsterRenderer->SetComponentScale(FVector2D::ZERO);
+	ShadowRenderer->SetSpriteScale(0.0f);
+
 	FSM.ChangeState(PacerState::Die);
 }
 

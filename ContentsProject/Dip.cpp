@@ -46,14 +46,12 @@ void ADip::BeginPlay()
 	FSM.CreateState(DipState::IdleRight, std::bind(&ADip::Idle, this, std::placeholders::_1),
 		[this]()
 		{
-			MonsterRenderer->ChangeAnimation("Idle_Dip_Right");
 		}
 	);
 
 	FSM.CreateState(DipState::IdleLeft, std::bind(&ADip::Idle, this, std::placeholders::_1),
 		[this]()
 		{
-			MonsterRenderer->ChangeAnimation("Idle_Dip_Left");
 		}
 	);
 
@@ -79,8 +77,26 @@ void ADip::BeginPlay()
 	);
 
 	FSM.ChangeState(DipState::IdleRight);
+	float XValue = Random.Randomfloat(-0.5f, 0.5f);
+	float YValue = Random.Randomfloat(-0.5f, 0.5f);
+	if (0.0f > XValue)
+	{
+		XValue -= 0.25f;
+	}
+	else
+	{
+		XValue += 0.25f;
+	}
+	if (0.0f > YValue)
+	{
+		YValue -= 0.25f;
+	}
+	else
+	{
+		YValue += 0.25f;
+	}
 
-	RandomDir = { Random.Randomfloat(-1.0f, 1.0f) ,Random.Randomfloat(-1.0f, 1.0f) };
+	RandomDir = { XValue ,YValue };
 
 	RandomDir.Normalize();
 }
@@ -178,22 +194,70 @@ void ADip::Move(float _DeltaTime)
 
 		AddActorLocation(RandomDir * _DeltaTime * Speed);
 	}
-	
+
+	if (0.0f < RandomDir.X)
+	{
+		MonsterRenderer->ChangeAnimation("Move_Dip_Right");
+	}
+
+	else
+	{
+		MonsterRenderer->ChangeAnimation("Move_Dip_Left");
+	}
+
 	if (DelayTime > 1.0f)
 	{
-		RandomDir = { Random.Randomfloat(-1.0f, 1.0f) ,Random.Randomfloat(-1.0f, 1.0f) };
-
-		RandomDir.Normalize();
-
-		FSM.ChangeState(DipState::IdleRight);
+		DirChange();
 		DelayTime = 0.0f;
 	}
 
 }
 
+void ADip::DirChange()
+{
+
+	if (0.0f < RandomDir.X)
+	{
+		MonsterRenderer->ChangeAnimation("Idle_Dip_Right");
+	}
+
+	else
+	{
+		MonsterRenderer->ChangeAnimation("Idle_Dip_Left");
+	}
+
+	float XValue = Random.Randomfloat(-0.5f, 0.5f);
+	float YValue = Random.Randomfloat(-0.5f, 0.5f);
+	if (0.0f > XValue)
+	{
+		XValue -= 0.25f;
+	}
+	else
+	{
+		XValue += 0.25f;
+	}
+	if (0.0f > YValue)
+	{
+		YValue -= 0.25f;
+	}
+	else
+	{
+		YValue += 0.25f;
+	}
+
+	RandomDir = { XValue ,YValue };
+
+	RandomDir.Normalize();
+
+	FSM.ChangeState(DipState::IdleRight);
+}
+
+
 void ADip::DieStart()
 {
 	CollisionComponent->SetActive(false);
+	ShadowRenderer->SetSpriteScale(0.0f);
+
 	FSM.ChangeState(DipState::Die);
 }
 

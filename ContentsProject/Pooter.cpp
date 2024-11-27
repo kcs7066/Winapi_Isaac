@@ -173,6 +173,8 @@ void APooter::Attack(float _DeltaTime)
 void APooter::DieStart()
 {
 	CollisionComponent->SetActive(false);
+	ShadowRenderer->SetSpriteScale(0.0f);
+
 	FSM.ChangeState(PooterState::Die);
 }
 

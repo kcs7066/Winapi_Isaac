@@ -181,6 +181,8 @@ void AFatty::DieStart()
 {
 	CollisionComponent->SetActive(false);
 	BodyRenderer->SetComponentScale(FVector2D::ZERO);
+	ShadowRenderer->SetSpriteScale(0.0f);
+
 	FSM.ChangeState(FattyState::Die);
 }
 

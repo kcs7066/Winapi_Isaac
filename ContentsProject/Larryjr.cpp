@@ -470,6 +470,8 @@ void ALarryjr::DieStart()
 	}
 
 	DelayTime = 0.0f;
+	ShadowRenderer->SetSpriteScale(0.0f);
+
 	FSM.ChangeState(LarryjrState::Die);
 }
 

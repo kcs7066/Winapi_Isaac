@@ -95,6 +95,8 @@ void APurpleFly::Move(float _DeltaTime)
 void APurpleFly::DieStart()
 {
 	CollisionComponent->SetActive(false);
+	ShadowRenderer->SetSpriteScale(0.0f);
+
 	FSM.ChangeState(PurpleFlyState::Die);
 }
 

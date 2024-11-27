@@ -149,6 +149,7 @@ void ASpider::Move(float _DeltaTime)
 void ASpider::DieStart()
 {
 	CollisionComponent->SetActive(false);
+	ShadowRenderer->SetSpriteScale(0.0f);
 	FSM.ChangeState(SpiderState::Die);
 }
 

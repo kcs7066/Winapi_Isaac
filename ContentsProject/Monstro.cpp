@@ -102,12 +102,6 @@ void AMonstro::Idle(float _DeltaTime)
 
 	if (this->Hp <= 0.0f)
 	{
-		APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
-		PlayGameMode->CurRoom->MonsterNumber--;
-		ATrapDoor* NewTrapDoor = GetWorld()->SpawnActor<ATrapDoor>();
-		NewTrapDoor->SetActorLocation({ PlayGameMode->CurRoom->RoomPos.X + 52.0f * (0.0f), PlayGameMode->CurRoom->RoomPos.Y - 52.0f * (2.0f) });
-		DelayTime = 0.0f;
-		EffectPlayer = UEngineSound::Play("death burst large.wav");
 		DieStart();
 	}
 
@@ -141,12 +135,6 @@ void AMonstro::Move(float _DeltaTime)
 
 	if (this->Hp <= 0.0f)
 	{
-		APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
-		PlayGameMode->CurRoom->MonsterNumber--;
-		ATrapDoor* NewTrapDoor = GetWorld()->SpawnActor<ATrapDoor>();
-		NewTrapDoor->SetActorLocation({ PlayGameMode->CurRoom->RoomPos.X + 52.0f * (0.0f), PlayGameMode->CurRoom->RoomPos.Y - 52.0f * (2.0f) });
-		DelayTime = 0.0f;
-		EffectPlayer = UEngineSound::Play("death burst large.wav");
 		DieStart();
 	}
 
@@ -193,14 +181,7 @@ void AMonstro::Attack(float _DeltaTime)
 
 	if (this->Hp <= 0.0f)
 	{
-		APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
-		PlayGameMode->CurRoom->MonsterNumber--;
-		ATrapDoor* NewTrapDoor = GetWorld()->SpawnActor<ATrapDoor>();
-		NewTrapDoor->SetActorLocation({ PlayGameMode->CurRoom->RoomPos.X + 52.0f * (0.0f), PlayGameMode->CurRoom->RoomPos.Y - 52.0f * (2.0f) });
-		DelayTime = 0.0f;
-		EffectPlayer = UEngineSound::Play("death burst large.wav");
 		DieStart();
-
 	}
 
 	if (DelayTime > 0.5f)
@@ -208,9 +189,10 @@ void AMonstro::Attack(float _DeltaTime)
 		if (TearCoolTime < 0.0f)
 		{
 			AMonsterTear* NewTear = GetWorld()->SpawnActor<AMonsterTear>();
-			NewTear->TearSpeed = 1.0f;
+			NewTear->TearSpeed = 500.0f;
 			NewTear->SetActorLocation(GetActorLocation());
 			NewTear->Dir = GetWorld()->GetPawn()->GetActorLocation() - GetActorLocation();
+			NewTear->Dir.Normalize();
 			TearCoolTime = 1.5f;
 		}
 
@@ -232,7 +214,7 @@ void AMonstro::Jump(float _DeltaTime)
 
 	if (DelayTime > 0.3f)
 	{
-		if (DelayTime > 1.6f)
+		if (DelayTime > 1.0f)
 		{
 
 		}
@@ -264,16 +246,56 @@ void AMonstro::Jump(float _DeltaTime)
 	if (DelayTime > 1.8f)
 	{
 		ShadowRenderer->SetSpriteScale(1.0f);
-
+		if (TearCoolTime < 0.0f)
+		{
+			AMonsterTear* NewTear1 = GetWorld()->SpawnActor<AMonsterTear>();
+			AMonsterTear* NewTear2 = GetWorld()->SpawnActor<AMonsterTear>();
+			AMonsterTear* NewTear3 = GetWorld()->SpawnActor<AMonsterTear>();
+			AMonsterTear* NewTear4 = GetWorld()->SpawnActor<AMonsterTear>();
+			AMonsterTear* NewTear5 = GetWorld()->SpawnActor<AMonsterTear>();
+			AMonsterTear* NewTear6 = GetWorld()->SpawnActor<AMonsterTear>();
+			AMonsterTear* NewTear7 = GetWorld()->SpawnActor<AMonsterTear>();
+			AMonsterTear* NewTear8 = GetWorld()->SpawnActor<AMonsterTear>();
+			NewTear1->TearSpeed = 500.0f;
+			NewTear2->TearSpeed = 500.0f;
+			NewTear3->TearSpeed = 500.0f;
+			NewTear4->TearSpeed = 500.0f;
+			NewTear5->TearSpeed = 500.0f;
+			NewTear6->TearSpeed = 500.0f;
+			NewTear7->TearSpeed = 500.0f;
+			NewTear8->TearSpeed = 500.0f;
+			NewTear1->SetActorLocation(GetActorLocation());
+			NewTear2->SetActorLocation(GetActorLocation());
+			NewTear3->SetActorLocation(GetActorLocation());
+			NewTear4->SetActorLocation(GetActorLocation());
+			NewTear5->SetActorLocation(GetActorLocation());
+			NewTear6->SetActorLocation(GetActorLocation());
+			NewTear7->SetActorLocation(GetActorLocation());
+			NewTear8->SetActorLocation(GetActorLocation());
+			NewTear1->Dir = FVector2D::UP;
+			NewTear2->Dir = FVector2D::RIGHT;
+			NewTear3->Dir = FVector2D::DOWN;
+			NewTear4->Dir = FVector2D::LEFT;
+			NewTear5->Dir = FVector2D::UP + FVector2D::RIGHT;
+			NewTear6->Dir = FVector2D::UP + FVector2D::LEFT;
+			NewTear7->Dir = FVector2D::DOWN + FVector2D::RIGHT;
+			NewTear8->Dir = FVector2D::DOWN + FVector2D::LEFT;
+			NewTear5->Dir.Normalize();
+			NewTear6->Dir.Normalize();
+			NewTear7->Dir.Normalize();
+			NewTear8->Dir.Normalize();
+			TearCoolTime = 1.5f;
+		}
 		if (DelayTime > 2.1f)
 		{
-			MonsterRenderer->SetComponentLocation({ 0,-40 });
+			MonsterRenderer->SetComponentLocation({ 0,0 });
 
 		}
 	}
 	
 		if (DelayTime > 2.6f)
 		{
+			MonsterRenderer->SetComponentLocation({ 0,-40 });
 			FSM.ChangeState(MonstroState::Idle);
 			DelayTime = 0.0f;
 		}
@@ -285,10 +307,17 @@ void AMonstro::Jump(float _DeltaTime)
 
 void AMonstro::DieStart()
 {
-	CollisionComponent->SetActive(false);
 	APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
+	PlayGameMode->CurRoom->MonsterNumber--;
+	ATrapDoor* NewTrapDoor = GetWorld()->SpawnActor<ATrapDoor>();
+	NewTrapDoor->SetActorLocation({ PlayGameMode->CurRoom->RoomPos.X + 52.0f * (0.0f), PlayGameMode->CurRoom->RoomPos.Y - 52.0f * (2.0f) });
+	DelayTime = 0.0f;
+	EffectPlayer = UEngineSound::Play("death burst large.wav");
+	CollisionComponent->SetActive(false);
 	PlayGameMode->BGMPlayer.Off();
 	PlayGameMode->BGMPlayer = UEngineSound::Play("secret to everyone.ogg");
+	ShadowRenderer->SetSpriteScale(0.0f);
+
 	FSM.ChangeState(MonstroState::Die);
 }
 

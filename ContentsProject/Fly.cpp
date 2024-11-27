@@ -110,6 +110,8 @@ void AFly::Move(float _DeltaTime)
 void AFly::DieStart()
 {
 	CollisionComponent->SetActive(false);
+	ShadowRenderer->SetSpriteScale(0.0f);
+
 	FSM.ChangeState(FlyState::Die);
 }
 

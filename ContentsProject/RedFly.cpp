@@ -98,6 +98,8 @@ void ARedFly::Move(float _DeltaTime)
 void ARedFly::DieStart()
 {
 	CollisionComponent->SetActive(false);
+	ShadowRenderer->SetSpriteScale(0.0f);
+
 	FSM.ChangeState(RedFlyState::Die);
 }
 

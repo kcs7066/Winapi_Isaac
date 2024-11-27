@@ -32,6 +32,7 @@ public:
 	void Idle(float _DeltaTime);
 	void Move(float _DeltaTime);
 	void Die(float _DeltaTime);
+	void DirChange();
 	void DieStart();
 
 

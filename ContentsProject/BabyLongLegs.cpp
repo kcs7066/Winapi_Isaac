@@ -145,6 +145,7 @@ void ABabyLongLegs::Move(float _DeltaTime)
 void ABabyLongLegs::DieStart()
 {
 	CollisionComponent->SetActive(false);
+	ShadowRenderer->SetSpriteScale(0.0f);
 	FSM.ChangeState(BabyLongLegsState::Die);
 }
 

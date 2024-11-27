@@ -136,6 +136,8 @@ void AGaper::DieStart()
 {
 	CollisionComponent->SetActive(false);
 	BodyRenderer->SetComponentScale(FVector2D::ZERO);
+	ShadowRenderer->SetSpriteScale(0.0f);
+
 	FSM.ChangeState(GaperState::Die);
 	int RandomValue = Random.RandomInt(1, 2);
 	if(1 == RandomValue)

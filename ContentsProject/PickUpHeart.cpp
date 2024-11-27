@@ -52,10 +52,19 @@ void APickUpHeart::Tick(float _DeltaTime)
 	{
 		AIsaac* NewResult = dynamic_cast<AIsaac*>(Result);
 
-		NewResult->Hp += 2;
-		//APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
-		//PlayGameMode->HeartUi->SetValue(NewResult->HeartNumber);
-		Destroy();
+		if (4 >= NewResult->Hp)
+		{
+			NewResult->Hp += 2;
+			Destroy();
+		}
+		else if (5 == NewResult->Hp)
+		{
+			NewResult->Hp += 1;
+			Destroy();
+		}
+		else 
+		{
+		}
 	}
 
 }

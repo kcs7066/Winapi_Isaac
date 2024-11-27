@@ -203,6 +203,7 @@ void ARoundWorm::Move(float _DeltaTime)
 void ARoundWorm::DieStart()
 {
 	CollisionComponent->SetActive(false);
+	ShadowRenderer->SetSpriteScale(0.0f); 
 	FSM.ChangeState(RoundWormState::Die);
 }
 
