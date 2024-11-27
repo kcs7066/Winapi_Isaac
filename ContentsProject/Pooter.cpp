@@ -1,11 +1,14 @@
 #include "PreCompile.h"
 #include "Pooter.h"
 
-#include <EnginePlatform/EngineInput.h>
-#include "PlayGameMode.h"
-#include <EngineCore/SpriteRenderer.h>
 #include <EngineBase/FSMStateManager.h>
+
+#include <EnginePlatform/EngineInput.h>
+
+#include <EngineCore/SpriteRenderer.h>
 #include <EngineCore/2DCollision.h>
+
+#include "PlayGameMode.h"
 #include "MonsterTear.h"
 #include "ContentsEnum.h"
 
@@ -91,7 +94,7 @@ void APooter::Move(float _DeltaTime)
 	FVector2D PlayerDir = GetWorld()->GetPawn()->GetActorLocation() - GetActorLocation();
 	PlayerDir.Normalize();
 
-	PlayerDir = PlayerDir / 10.0f;
+	PlayerDir = PlayerDir / 10;
 
 	RandomDir = { Random.Randomfloat(-1.0f, 1.0f) ,Random.Randomfloat(-1.0f, 1.0f) };
 	RandomDir.Normalize();

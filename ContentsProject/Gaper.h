@@ -1,12 +1,10 @@
 #pragma once
 #include "Monster.h"
 
-
 enum class GaperState
 {
 	Move,
 	Die
-
 };
 
 class AGaper : public AMonster
@@ -34,7 +32,8 @@ protected:
 
 private:
 	float Speed = 150.0f;
-	class USpriteRenderer* BodyRenderer = nullptr;
+
 	FVector2D Dir = FVector2D::DOWN;
 
+	class USpriteRenderer* BodyRenderer = nullptr;
 };

@@ -1,11 +1,14 @@
 #include "PreCompile.h"
 #include "Pacer.h"
 
-#include <EnginePlatform/EngineInput.h>
-#include "PlayGameMode.h"
-#include <EngineCore/SpriteRenderer.h>
 #include <EngineBase/FSMStateManager.h>
+
+#include <EnginePlatform/EngineInput.h>
+
+#include <EngineCore/SpriteRenderer.h>
 #include <EngineCore/2DCollision.h>
+
+#include "PlayGameMode.h"
 #include "ContentsEnum.h"
 
 

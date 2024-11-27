@@ -1,7 +1,8 @@
 #include "PreCompile.h"
 #include "TitleLogo.h"
-#include <EngineCore/EngineAPICore.h>
+
 #include <EngineCore/SpriteRenderer.h>
+
 #include "ContentsEnum.h"
 
 TitleLogo::TitleLogo()

@@ -168,23 +168,11 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="EndGameMode.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
-    <ClInclude Include="EndingCredit.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
     <ClInclude Include="Fade.h">
       <SubType>
       </SubType>
     </ClInclude>
     <ClInclude Include="Fatty.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
-    <ClInclude Include="Fly.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -203,10 +191,6 @@
     </ClInclude>
     <ClInclude Include="Larryjr.h" />
     <ClInclude Include="LevelTwoSpiderSmall.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
-    <ClInclude Include="Map.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -234,15 +218,7 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="PickUpCoin.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
     <ClInclude Include="PickUpHeart.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
-    <ClInclude Include="PickUpKey.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -259,10 +235,6 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="PreCompile.h" />
-    <ClInclude Include="PurpleFly.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
     <ClInclude Include="RedFly.h">
       <SubType>
       </SubType>
@@ -327,23 +299,11 @@
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="EndGameMode.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
-    <ClCompile Include="EndingCredit.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
     <ClCompile Include="Fade.cpp">
       <SubType>
       </SubType>
     </ClCompile>
     <ClCompile Include="Fatty.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
-    <ClCompile Include="Fly.cpp">
       <SubType>
       </SubType>
     </ClCompile>
@@ -362,10 +322,6 @@
     </ClCompile>
     <ClCompile Include="Larryjr.cpp" />
     <ClCompile Include="LevelTwoSpiderSmall.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
-    <ClCompile Include="Map.cpp">
       <SubType>
       </SubType>
     </ClCompile>
@@ -393,15 +349,7 @@
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="PickUpCoin.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
     <ClCompile Include="PickUpHeart.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
-    <ClCompile Include="PickUpKey.cpp">
       <SubType>
       </SubType>
     </ClCompile>
@@ -420,10 +368,6 @@
     <ClCompile Include="PreCompile.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="PurpleFly.cpp">
-      <SubType>
-      </SubType>
     </ClCompile>
     <ClCompile Include="RedFly.cpp">
       <SubType>

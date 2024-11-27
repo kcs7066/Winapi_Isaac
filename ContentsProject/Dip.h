@@ -1,8 +1,6 @@
 #pragma once
 #include "Monster.h"
 
-
-
 enum class DipState
 {
     IdleRight,
@@ -10,7 +8,6 @@ enum class DipState
 	MoveRight,
 	MoveLeft,
 	Die
-
 };
 
 class ADip : public AMonster
@@ -35,14 +32,12 @@ public:
 	void DirChange();
 	void DieStart();
 
-
-
 protected:
 
 
 private:
 
 	float Speed = 300.0f;
+
 	FVector2D RandomDir = { 0,0 };
-	
 };

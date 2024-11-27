@@ -22,9 +22,6 @@
     <Filter Include="Global">
       <UniqueIdentifier>{bb8374ab-1304-4494-b404-7f7b3f9f5a48}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ContentsObject\End">
-      <UniqueIdentifier>{46649ed2-2de2-427c-a35a-ef3081f7ea24}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ContentsObject\Monster">
       <UniqueIdentifier>{88d851b0-7ba5-45ad-a492-d92340e30654}</UniqueIdentifier>
     </Filter>
@@ -54,23 +51,14 @@
     <ClCompile Include="ContentsEnum.cpp">
       <Filter>Global</Filter>
     </ClCompile>
-    <ClCompile Include="EndingCredit.cpp">
-      <Filter>ContentsObject\End</Filter>
-    </ClCompile>
     <ClCompile Include="Room.cpp">
       <Filter>ContentsObject\Play</Filter>
-    </ClCompile>
-    <ClCompile Include="EndGameMode.cpp">
-      <Filter>ContentsObject\End</Filter>
     </ClCompile>
     <ClCompile Include="Door.cpp">
       <Filter>ContentsObject\Play</Filter>
     </ClCompile>
     <ClCompile Include="Tear.cpp">
       <Filter>ContentsObject\Play</Filter>
-    </ClCompile>
-    <ClCompile Include="PurpleFly.cpp">
-      <Filter>ContentsObject\Monster</Filter>
     </ClCompile>
     <ClCompile Include="RoundWorm.cpp">
       <Filter>ContentsObject\Monster</Filter>
@@ -90,9 +78,6 @@
     <ClCompile Include="LevelTwoSpiderSmall.cpp">
       <Filter>ContentsObject\Monster</Filter>
     </ClCompile>
-    <ClCompile Include="Fly.cpp">
-      <Filter>ContentsObject\Monster</Filter>
-    </ClCompile>
     <ClCompile Include="RedFly.cpp">
       <Filter>ContentsObject\Monster</Filter>
     </ClCompile>
@@ -107,9 +92,6 @@
     </ClCompile>
     <ClCompile Include="Rock.cpp">
       <Filter>ContentsObject\Structure</Filter>
-    </ClCompile>
-    <ClCompile Include="Map.cpp">
-      <Filter>ContentsObject\Play</Filter>
     </ClCompile>
     <ClCompile Include="Poop.cpp">
       <Filter>ContentsObject\Structure</Filter>
@@ -132,13 +114,7 @@
     <ClCompile Include="Ui.cpp">
       <Filter>ContentsObject\Global</Filter>
     </ClCompile>
-    <ClCompile Include="PickUpCoin.cpp">
-      <Filter>ContentsObject\PickUp</Filter>
-    </ClCompile>
     <ClCompile Include="PickUpBomb.cpp">
-      <Filter>ContentsObject\PickUp</Filter>
-    </ClCompile>
-    <ClCompile Include="PickUpKey.cpp">
       <Filter>ContentsObject\PickUp</Filter>
     </ClCompile>
     <ClCompile Include="PickUpHeart.cpp">
@@ -185,23 +161,14 @@
     <ClInclude Include="ContentsEnum.h">
       <Filter>Global</Filter>
     </ClInclude>
-    <ClInclude Include="EndingCredit.h">
-      <Filter>ContentsObject\End</Filter>
-    </ClInclude>
     <ClInclude Include="Room.h">
       <Filter>ContentsObject\Play</Filter>
-    </ClInclude>
-    <ClInclude Include="EndGameMode.h">
-      <Filter>ContentsObject\End</Filter>
     </ClInclude>
     <ClInclude Include="Door.h">
       <Filter>ContentsObject\Play</Filter>
     </ClInclude>
     <ClInclude Include="Tear.h">
       <Filter>ContentsObject\Play</Filter>
-    </ClInclude>
-    <ClInclude Include="PurpleFly.h">
-      <Filter>ContentsObject\Monster</Filter>
     </ClInclude>
     <ClInclude Include="RoundWorm.h">
       <Filter>ContentsObject\Monster</Filter>
@@ -221,9 +188,6 @@
     <ClInclude Include="LevelTwoSpiderSmall.h">
       <Filter>ContentsObject\Monster</Filter>
     </ClInclude>
-    <ClInclude Include="Fly.h">
-      <Filter>ContentsObject\Monster</Filter>
-    </ClInclude>
     <ClInclude Include="RedFly.h">
       <Filter>ContentsObject\Monster</Filter>
     </ClInclude>
@@ -238,9 +202,6 @@
     </ClInclude>
     <ClInclude Include="Rock.h">
       <Filter>ContentsObject\Structure</Filter>
-    </ClInclude>
-    <ClInclude Include="Map.h">
-      <Filter>ContentsObject\Play</Filter>
     </ClInclude>
     <ClInclude Include="Poop.h">
       <Filter>ContentsObject\Structure</Filter>
@@ -263,13 +224,7 @@
     <ClInclude Include="Ui.h">
       <Filter>ContentsObject\Global</Filter>
     </ClInclude>
-    <ClInclude Include="PickUpCoin.h">
-      <Filter>ContentsObject\PickUp</Filter>
-    </ClInclude>
     <ClInclude Include="PickUpBomb.h">
-      <Filter>ContentsObject\PickUp</Filter>
-    </ClInclude>
-    <ClInclude Include="PickUpKey.h">
       <Filter>ContentsObject\PickUp</Filter>
     </ClInclude>
     <ClInclude Include="PickUpHeart.h">

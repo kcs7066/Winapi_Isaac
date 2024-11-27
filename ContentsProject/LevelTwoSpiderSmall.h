@@ -1,7 +1,6 @@
 #pragma once
 #include "Monster.h"
 
-
 enum class LevelTwoSpiderSmallState
 {
 	Idle,
@@ -39,6 +38,7 @@ protected:
 private:
 
 	float Speed = 300.0f;
+
 	FVector2D Dir = { 0,0 };
 
 };

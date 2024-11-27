@@ -1,8 +1,6 @@
 #pragma once
 #include "Monster.h"
 
-
-
 enum class SpiderState
 {
 	Idle,

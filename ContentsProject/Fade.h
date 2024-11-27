@@ -19,15 +19,18 @@ public:
 	AFade& operator=(AFade&& _Other) noexcept = delete;
 
 	void FadeIn();
-
 	void FadeOut();
+
 	float FadeValue = 0.0f;
+
 	USpriteRenderer* BackSpriteRenderer;
 protected:
 
 private:
-	void LevelChangeStart() override;
+
 	float FadeDir = 1.0f;
+
+	void LevelChangeStart() override;
 	void FadeChange();
 
 };

@@ -1,7 +1,6 @@
 #pragma once
 #include "Monster.h"
 
-
 enum class MonstroState
 {
 	Idle,
@@ -39,9 +38,10 @@ public:
 protected:
 
 private:
+
 	float TearCoolTime = 1.5f;
 	float Speed = 300.0f;
-	FVector2D Dir;
 
+	FVector2D Dir;
 };
 

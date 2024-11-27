@@ -14,7 +14,6 @@ public:
 	APickUpBomb& operator=(const APickUpBomb& _Other) = delete;
 	APickUpBomb& operator=(APickUpBomb&& _Other) noexcept = delete;
 
-
 	void BeginPlay() override;
 	void Tick(float _DeltaTime) override;
 

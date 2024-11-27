@@ -1,7 +1,9 @@
 #include "PreCompile.h"
 #include "Item.h"
+
 #include <EngineCore/SpriteRenderer.h>
 #include <EngineCore/2DCollision.h>
+
 #include "ContentsEnum.h"
 
 AItem::AItem()

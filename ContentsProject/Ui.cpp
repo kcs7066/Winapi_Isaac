@@ -1,7 +1,10 @@
 #include "PreCompile.h"
 #include "Ui.h"
 
+#include <EngineCore/SpriteRenderer.h>
+
 AUi::AUi()
+	: AActor()
 {
 	for (size_t i = 0; i < 10; i++)
 	{

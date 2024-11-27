@@ -1,57 +1,55 @@
 #include "PreCompile.h"
 #include "Isaac.h"
+
 #include <EnginePlatform/EngineInput.h>
+
 #include <EngineCore/SpriteRenderer.h>
 #include <EngineCore/EngineAPICore.h>
 #include <EngineCore/EngineCoreDebug.h>
+#include <EngineCore/2DCollision.h>
+
 #include "Tear.h"
 #include "ContentsEnum.h"
 #include "PlayGameMode.h"
 #include "Bomb.h"
 #include "TheInnerEye.h"
+#include "Item.h"
 
 AIsaac::AIsaac()
+	: AActor()
 {
 	SetActorLocation({ 0, 0 });
-	{
-		ShadowRenderer = CreateDefaultSubObject<USpriteRenderer>();
-		ShadowRenderer->SetOrder(ERenderOrder::SHADOW);
-		ShadowRenderer->SetSprite("Shadow.png");
-		ShadowRenderer->SetSpriteScale(0.3f);
-	}
+
+	ShadowRenderer = CreateDefaultSubObject<USpriteRenderer>();
+	ShadowRenderer->SetOrder(ERenderOrder::SHADOW);
+	ShadowRenderer->SetSprite("Shadow.png");
+	ShadowRenderer->SetSpriteScale(0.3f);
+
+	BodyRenderer = CreateDefaultSubObject<USpriteRenderer>();
+	BodyRenderer->SetOrder(ERenderOrder::PLAYER);
+	BodyRenderer->SetComponentScale({ 70, 70 });
+	BodyRenderer->SetComponentLocation({ 0,-10 });
+	BodyRenderer->CreateAnimation("Idle_Body", "Body.png", 29, 29, 0.1f);
+	BodyRenderer->CreateAnimation("Run_RightBody", "Body.png", 10, 19, 0.1f);
+	BodyRenderer->CreateAnimation("Run_DownBody", "Body.png", 20, 29, 0.1f);
+	BodyRenderer->CreateAnimation("Run_LeftBody", "Body.png", 0, 9, 0.1f);
+	BodyRenderer->CreateAnimation("Item_Body", "Character_IsaacItem.png", 3, 3, 0.1f);
+
+	HeadRenderer = CreateDefaultSubObject<USpriteRenderer>();
+	HeadRenderer->SetOrder(ERenderOrder::PLAYER);
+	HeadRenderer->SetComponentScale({ 70, 70 });
+	HeadRenderer->SetComponentLocation({ 0,-40 });
 
 
-	{
-		BodyRenderer = CreateDefaultSubObject<USpriteRenderer>();
-		BodyRenderer->SetOrder(ERenderOrder::PLAYER);
-		BodyRenderer->SetComponentScale({ 70, 70 });
-		BodyRenderer->SetComponentLocation({ 0,-10 });
-		BodyRenderer->CreateAnimation("Idle_Body", "Body.png", 29, 29, 0.1f);
-		BodyRenderer->CreateAnimation("Run_RightBody", "Body.png", 10, 19, 0.1f);
-		BodyRenderer->CreateAnimation("Run_DownBody", "Body.png", 20, 29, 0.1f);
-		BodyRenderer->CreateAnimation("Run_LeftBody", "Body.png", 0, 9, 0.1f);
-		BodyRenderer->CreateAnimation("Item_Body", "Character_IsaacItem.png", 3, 3, 0.1f);
-	}
-
-	
-
-	{
-		HeadRenderer = CreateDefaultSubObject<USpriteRenderer>();
-		HeadRenderer->SetOrder(ERenderOrder::PLAYER);
-		HeadRenderer->SetComponentScale({ 70, 70 });
-		HeadRenderer->SetComponentLocation({ 0,-40 });
-
-
-		HeadRenderer->CreateAnimation("Idle_Head", "Head.png", 7, 7, 0.1f);
-		HeadRenderer->CreateAnimation("Attack_UpHead", "Head.png", {  4, 5 }, { 0.1f,0.266666f });
-		HeadRenderer->CreateAnimation("Attack_RightHead", "Head.png", { 2, 3 }, { 0.1f,0.266666f });
-		HeadRenderer->CreateAnimation("Attack_DownHead", "Head.png", { 6, 7 }, { 0.1f,0.266666f });
-		HeadRenderer->CreateAnimation("Attack_LeftHead", "Head.png", { 0, 1 }, { 0.1f,0.266666f });
-		HeadRenderer->CreateAnimation("Run_UpHead", "Head.png", 5, 5, 0.1f);
-		HeadRenderer->CreateAnimation("Run_RightHead", "Head.png", 3, 3, 0.1f);
-		HeadRenderer->CreateAnimation("Run_LeftHead", "Head.png", 1, 1, 0.1f);
-		HeadRenderer->CreateAnimation("Item_Head", "Character_IsaacItem.png", 0, 0, 0.1f);
-	}
+	HeadRenderer->CreateAnimation("Idle_Head", "Head.png", 7, 7, 0.1f);
+	HeadRenderer->CreateAnimation("Attack_UpHead", "Head.png", { 4, 5 }, { 0.1f,0.266666f });
+	HeadRenderer->CreateAnimation("Attack_RightHead", "Head.png", { 2, 3 }, { 0.1f,0.266666f });
+	HeadRenderer->CreateAnimation("Attack_DownHead", "Head.png", { 6, 7 }, { 0.1f,0.266666f });
+	HeadRenderer->CreateAnimation("Attack_LeftHead", "Head.png", { 0, 1 }, { 0.1f,0.266666f });
+	HeadRenderer->CreateAnimation("Run_UpHead", "Head.png", 5, 5, 0.1f);
+	HeadRenderer->CreateAnimation("Run_RightHead", "Head.png", 3, 3, 0.1f);
+	HeadRenderer->CreateAnimation("Run_LeftHead", "Head.png", 1, 1, 0.1f);
+	HeadRenderer->CreateAnimation("Item_Head", "Character_IsaacItem.png", 0, 0, 0.1f);
 
 	HitRenderer = CreateDefaultSubObject<USpriteRenderer>();
 	HitRenderer->SetOrder(ERenderOrder::PLAYER);
@@ -72,32 +70,10 @@ AIsaac::AIsaac()
 	CollisionComponent->SetCollisionGroup(ECollisionGroup::Player);
 	CollisionComponent->SetCollisionType(ECollisionType::CirCle);
 
-
-	//GetWorld()->CollisionGroupLink(ECollisionGroup::Player, ECollisionGroup::Monster);
-	//GetWorld()->CollisionGroupLink(ECollisionGroup::Monster, ECollisionGroup::Player);
-
-
-	//CollisionComponent->SetCollisionEnter(std::bind(&AIsaac::CollisionEnter, this, std::placeholders::_1));
-	//CollisionComponent->SetCollisionStay(std::bind(&AIsaac::CollisionStay, this, std::placeholders::_1));
-	//CollisionComponent->SetCollisionEnd(std::bind(&AIsaac::CollisionEnd, this, std::placeholders::_1));
-
 	DebugOn();
 }
 
-//void AIsaac::CollisionEnter(AActor* _ColActor)
-//{
-//	int a = 0;
-//}
-//
-//void AIsaac::CollisionStay(AActor* _ColActor)
-//{
-//	int a = 0;
-//}
-//
-//void AIsaac::CollisionEnd(AActor* _ColActor)
-//{
-//	int  a = 0;
-//}
+
 
 AIsaac::~AIsaac()
 {
@@ -107,9 +83,7 @@ void AIsaac::BeginPlay()
 {
 	Super::BeginPlay();
 	GetWorld()->SetCameraToMainPawn(false);
-	
-	//BGMPlayer = UEngineSound::Play("title screen.ogg");
-	
+
 	FVector2D Size = UEngineAPICore::GetCore()->GetMainWindow().GetWindowSize();
 	GetWorld()->SetCameraPivot(Size.Half() * -1.0f);
 	
@@ -445,9 +419,7 @@ void AIsaac::Move(float _DeltaTime)
 
 		if (true == CanMove) 
 		{
-			//AddActorLocation(Vector * _DeltaTime * Speed);
 			Speed = UEngineMath::Clamp(Speed + (_DeltaTime * 1000.0f), 0.0f, 330.0f);
-
 		}
 	}
 

@@ -33,10 +33,7 @@ protected:
 
 private:
 
-
 	float Speed = 300.0f;
+
 	FVector2D Dir = { 0,0 };
-
-	
-
 };

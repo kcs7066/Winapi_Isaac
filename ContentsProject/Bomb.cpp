@@ -1,7 +1,10 @@
 #include "PreCompile.h"
 #include "Bomb.h"
-#include "ContentsEnum.h"
+
 #include <EngineCore/SpriteRenderer.h>
+#include <EngineCore/2DCollision.h>
+
+#include "ContentsEnum.h"
 #include "Monster.h"
 #include "Isaac.h"
 #include "Structure.h"
@@ -129,7 +132,7 @@ void ABomb::Explosion(float _DeltaTime)
 		for (; StartIter != EndIter; ++StartIter)
 		{
 			AStructure* NewStructureResult = dynamic_cast<AStructure*>(*StartIter);
-			NewStructureResult->Hp = 0.0f;
+			NewStructureResult->Hp = 0;
 
 			APoop* ResultPoop = dynamic_cast<APoop*>(NewStructureResult);
 			ARock* ResultRock = dynamic_cast<ARock*>(NewStructureResult);

@@ -15,16 +15,15 @@ public:
 	AItem& operator=(const AItem& _Other) = delete;
 	AItem& operator=(AItem&& _Other) noexcept = delete;
 
-	class U2DCollision* CollisionComponent;
-	class USpriteRenderer* ShadowRenderer = nullptr;
 	class USpriteRenderer* ItemRenderer = nullptr;
-	class USpriteRenderer* AlterRenderer = nullptr;
+	class U2DCollision* CollisionComponent;
 
 protected:
 
 private:
 
-
+	class USpriteRenderer* ShadowRenderer = nullptr;
+	class USpriteRenderer* AlterRenderer = nullptr;
 
 };
 

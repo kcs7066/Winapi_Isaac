@@ -1,7 +1,5 @@
 #pragma once
 #include <EngineCore/Actor.h>
-#include <EngineCore/SpriteRenderer.h>
-#include <EngineCore/2DCollision.h>
 
 class ATrapDoor : public AActor
 {
@@ -22,7 +20,7 @@ protected:
 
 private:
 
-	USpriteRenderer* TrapDoorRenderer;
-	U2DCollision* CollisionComponent;
+	class USpriteRenderer* TrapDoorRenderer;
+	class U2DCollision* CollisionComponent;
 };
 

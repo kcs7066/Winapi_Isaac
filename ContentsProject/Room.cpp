@@ -1,14 +1,15 @@
 #include "PreCompile.h"
 #include "Room.h"
-#include <EngineCore/EngineAPICore.h>
+
+#include <EngineCore/SpriteRenderer.h>
+#include <EngineCore/2DCollision.h>
+
 #include "PlayGameMode.h"
 #include "ContentsEnum.h"
-#include <EngineCore/2DCollision.h>
 #include "PickUpHeart.h"
 
 ARoom::ARoom()
 {
-
 	RoomRenderer = CreateDefaultSubObject<USpriteRenderer>();
 	RoomRenderer->SetOrder(ERenderOrder::BACKGROUND);
 	RoomRenderer->SetSprite("Room_01.png");
@@ -22,6 +23,8 @@ ARoom::ARoom()
 	MiniMapRenderer->CreateAnimation("Now", "Minimap2.png", 1, 1, 0.1f);
 	MiniMapRenderer->CreateAnimation("Dark", "Minimap2.png", 2, 2, 0.1f);
 	MiniMapRenderer->ChangeAnimation("Dark");
+
+	Size = UEngineAPICore::GetCore()->GetMainWindow().GetWindowSize();
 }
 
 ARoom::~ARoom()
@@ -176,15 +179,5 @@ void ARoom::CreateDoor(RoomDir _Dir, FVector2D _Pos, ARoom* _LinkRoom)
 	default:
 		break;
 	}
-
-	
-
-	//U2DCollision* CollisionComponent = CreateDefaultSubObject<U2DCollision>();
-	//CollisionComponent->SetComponentLocation(NewDoor->GetActorLocation());
-	//CollisionComponent->SetComponentScale({ 50, 70 });
-	//CollisionComponent->SetCollisionGroup(ECollisionGroup::Door);
-	//CollisionComponent->SetCollisionType(ECollisionType::Rect);
-
-	
 	Doors.insert({ _Dir,NewDoor });
 }

@@ -1,10 +1,13 @@
 #include "PreCompile.h"
 #include "Dip.h"
-#include <EngineCore/SpriteRenderer.h>
+
 #include <EngineBase/FSMStateManager.h>
-#include <EngineCore/2DCollision.h>
+
 #include <EnginePlatform/EngineInput.h>
-#include <EngineBase/EngineMath.h>
+
+#include <EngineCore/SpriteRenderer.h>
+#include <EngineCore/2DCollision.h>
+
 #include "PlayGameMode.h"
 #include "Structure.h"
 #include "ContentsEnum.h"
@@ -111,6 +114,11 @@ void ADip::Idle(float _DeltaTime)
 {
 	DelayTime += _DeltaTime;
 
+	if (DelayTime > 1.6f)
+	{
+		FSM.ChangeState(DipState::MoveRight);
+		DelayTime = 0.0f;
+	}
 	if (this->Hp <= 0.0f)
 	{
 		APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
@@ -118,27 +126,12 @@ void ADip::Idle(float _DeltaTime)
 		DelayTime = 0.0f;
 		EffectPlayer = UEngineSound::Play("death burst small.wav");
 		DieStart();
-	}
-
-	if (DelayTime > 1.6f)
-	{
-		FSM.ChangeState(DipState::MoveRight);
-		DelayTime = 0.0f;
 	}
 }
 
 void ADip::Move(float _DeltaTime)
 {
 	DelayTime += _DeltaTime;
-
-	if (this->Hp <= 0.0f)
-	{
-		APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
-		PlayGameMode->CurRoom->MonsterNumber--;
-		DelayTime = 0.0f;
-		EffectPlayer = UEngineSound::Play("death burst small.wav");
-		DieStart();
-	}
 
 	FVector2D NewLocation = GetActorLocation() += RandomDir * _DeltaTime * Speed;
 	APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
@@ -211,6 +204,14 @@ void ADip::Move(float _DeltaTime)
 		DelayTime = 0.0f;
 	}
 
+	if (this->Hp <= 0.0f)
+	{
+		APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
+		PlayGameMode->CurRoom->MonsterNumber--;
+		DelayTime = 0.0f;
+		EffectPlayer = UEngineSound::Play("death burst small.wav");
+		DieStart();
+	}
 }
 
 void ADip::DirChange()

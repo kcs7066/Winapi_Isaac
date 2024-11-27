@@ -1,14 +1,16 @@
 #include "PreCompile.h"
 #include "Monstro.h"
 
+#include <EngineBase/FSMStateManager.h>
+
 #include <EnginePlatform/EngineInput.h>
+
+#include <EngineCore/SpriteRenderer.h>
+#include <EngineCore/2DCollision.h>
+
 #include "MonsterTear.h"
 #include "PlayGameMode.h"
 #include "TrapDoor.h"
-#include <EngineCore/SpriteRenderer.h>
-#include <EngineBase/FSMStateManager.h>
-#include <EngineCore/2DCollision.h>
-
 
 AMonstro::AMonstro()
 	: AMonster()

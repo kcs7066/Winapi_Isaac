@@ -1,10 +1,13 @@
 #include "PreCompile.h"
 #include "BabyLongLegs.h"
-#include <EngineCore/SpriteRenderer.h>
+
 #include <EngineBase/FSMStateManager.h>
-#include <EngineCore/2DCollision.h>
+
 #include <EnginePlatform/EngineInput.h>
-#include <EngineBase/EngineMath.h>
+
+#include <EngineCore/SpriteRenderer.h>
+#include <EngineCore/2DCollision.h>
+
 #include "PlayGameMode.h"
 #include "Spider.h"
 

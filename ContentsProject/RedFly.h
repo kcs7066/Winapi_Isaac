@@ -34,6 +34,4 @@ private:
 
 	FVector2D Dir;
 	float Speed = 100.0f;
-
-	
 };

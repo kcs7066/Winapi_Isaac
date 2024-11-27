@@ -1,7 +1,9 @@
 #include "PreCompile.h"
 #include "Monster.h"
+
 #include <EngineCore/SpriteRenderer.h>
 #include <EngineCore/2DCollision.h>
+
 #include "ContentsEnum.h"
 
 

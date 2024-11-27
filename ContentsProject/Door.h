@@ -36,16 +36,15 @@ public:
 	void DoorOpen();
 	void DoorClose();
 
-
-	class ARoom* LinkedRoom = nullptr;
-
-	USpriteRenderer* DoorRenderer = nullptr;
 	DoorDir Dir = DoorDir::NONE;
 	DoorType Type = DoorType::NORMAL;
+
+	class ARoom* LinkedRoom = nullptr;
+	class USpriteRenderer* DoorRenderer = nullptr;
 
 protected:
 
 private:
-	U2DCollision* CollisionComponent;
+	class U2DCollision* CollisionComponent = nullptr;
 };
 

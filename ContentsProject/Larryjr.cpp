@@ -1,18 +1,18 @@
 #include "PreCompile.h"
 #include "Larryjr.h"
 
+#include <EngineBase/EngineRandom.h>
+#include <EngineBase/FSMStateManager.h>
+
 #include <EnginePlatform/EngineInput.h>
+
+#include <EngineCore/SpriteRenderer.h>
+#include <EngineCore/2DCollision.h>
+
 #include "PlayGameMode.h"
 #include "TrapDoor.h"
 #include "Poop.h"
 #include "ContentsEnum.h"
-
-#include <EngineCore/SpriteRenderer.h>
-#include <EngineBase/FSMStateManager.h>
-#include <EngineCore/2DCollision.h>
-#include <EngineBase/EngineRandom.h>
-
-#include <EngineCore/EngineCoreDebug.h>
 
 ALarryjr::ALarryjr()
 	: AMonster()

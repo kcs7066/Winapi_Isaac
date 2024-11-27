@@ -1,6 +1,9 @@
 #include "PreCompile.h"
 #include "MonsterTear.h"
+
 #include <EngineCore/SpriteRenderer.h>
+#include <EngineCore/2DCollision.h>
+
 #include "ContentsEnum.h"
 #include "Structure.h"
 #include "Isaac.h"

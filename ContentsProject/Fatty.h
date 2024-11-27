@@ -1,13 +1,11 @@
 #pragma once
 #include "Monster.h"
 
-
 enum class FattyState
 {
 	Move,
 	Attack,
 	Die
-
 };
 
 class AFatty : public AMonster
@@ -36,9 +34,11 @@ public:
 protected:
 
 private:
+
 	float Speed = 100.0f;
-	class USpriteRenderer* BodyRenderer = nullptr;
-	class USpriteRenderer* NewPoofRenderer = nullptr;
+
 	FVector2D Dir = FVector2D::DOWN;
 
+	class USpriteRenderer* BodyRenderer = nullptr;
+	class USpriteRenderer* NewPoofRenderer = nullptr;
 };

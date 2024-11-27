@@ -2,10 +2,11 @@
 #include "TitleGameMode.h"
 
 #include <EnginePlatform/EngineInput.h>
+
 #include <EngineCore/EngineAPICore.h>
+#include <EngineCore/SpriteRenderer.h>
 
 #include "TitleLogo.h"
-#include <EngineCore/SpriteRenderer.h>
 #include "PlayGameMode.h"
 #include "Isaac.h"
 

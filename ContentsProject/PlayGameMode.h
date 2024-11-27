@@ -1,16 +1,11 @@
 #pragma once
+#include <EngineBase/EngineRandom.h>
 
+#include <EnginePlatform/EngineSound.h>
 
 #include <EngineCore/GameMode.h>
-#include "Fade.h"
+
 #include "Room.h"
-#include "Door.h"
-#include "Monster.h"
-#include <EnginePlatform/EngineSound.h>
-#include <EngineBase/EngineRandom.h>
-#include "RoundWorm.h"
-#include "Dip.h"
-#include "Larryjr.h"
 #include "Ui.h"
 
 
@@ -28,125 +23,62 @@ public:
 	APlayGameMode& operator=(APlayGameMode&& _Other) noexcept = delete;
 
 	void BeginPlay() override;
-
 	void Tick(float _DeltaTime) override;
 
 	void Link(ARoom* _Room);
+	bool IsBind(FVector2D _Pos);
+	bool IsAdjacentTwice(FVector2D _Pos);
+	int Roomkey(FVector2D _Pos);
 
-	bool IsBind(FVector2D _Pos)
-	{
-		{
-			std::map<int, FVector2D>::iterator StartIter = RoomBind.begin();
-			std::map<int, FVector2D>::iterator EndIter = RoomBind.end();
+	class ARoom* PrevRoom = nullptr;
+	class ARoom* CurRoom = nullptr;
+	class USpriteRenderer* RestartGameRenderer = nullptr;
+	class AUi* HeartUi = nullptr;
+	class AUi* SecondHeartUi = nullptr;
+	class AUi* ThirdHeartUi = nullptr;
+	class AUi* BombUi = nullptr;
+	class AFade* Fade = nullptr;
 
-			for (; StartIter != EndIter; ++StartIter)
-			{
-				if (StartIter->second == _Pos)
-				{
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	bool IsAdjacentTwice(FVector2D _Pos)
-	{
-		int AdjacentRoom = 0;
-		FVector2D AdjacentPos1 = { _Pos.X + 1 , _Pos.Y };
-		FVector2D AdjacentPos2 = { _Pos.X - 1 , _Pos.Y };
-		FVector2D AdjacentPos3 = { _Pos.X , _Pos.Y + 1 };
-		FVector2D AdjacentPos4 = { _Pos.X , _Pos.Y - 1 };
-
-		{
-			std::map<int, FVector2D>::iterator StartIter = RoomBind.begin();
-			std::map<int, FVector2D>::iterator EndIter = RoomBind.end();
-
-			for (; StartIter != EndIter; ++StartIter)
-			{
-				if (StartIter->second == AdjacentPos1)
-					AdjacentRoom++;
-			}
-		}
-
-		{
-			std::map<int, FVector2D>::iterator StartIter = RoomBind.begin();
-			std::map<int, FVector2D>::iterator EndIter = RoomBind.end();
-
-			for (; StartIter != EndIter; ++StartIter)
-			{
-				if (StartIter->second == AdjacentPos2)
-					AdjacentRoom++;
-			}
-		}
-		{
-			std::map<int, FVector2D>::iterator StartIter = RoomBind.begin();
-			std::map<int, FVector2D>::iterator EndIter = RoomBind.end();
-
-			for (; StartIter != EndIter; ++StartIter)
-			{
-				if (StartIter->second == AdjacentPos3)
-					AdjacentRoom++;
-			}
-		}
-		{
-			std::map<int, FVector2D>::iterator StartIter = RoomBind.begin();
-			std::map<int, FVector2D>::iterator EndIter = RoomBind.end();
-
-			for (; StartIter != EndIter; ++StartIter)
-			{
-				if (StartIter->second == AdjacentPos4)
-					AdjacentRoom++;
-			}
-		}
-
-		if (AdjacentRoom == 1)
-		{
-			return false;
-		}
-		return true;
-	}
-	
-	int Roomkey(FVector2D _Pos)
-	{
-		std::map<int, FVector2D>::iterator StartIter = RoomBind.begin();
-		std::map<int, FVector2D>::iterator EndIter = RoomBind.end();
-
-		for (; StartIter != EndIter; ++StartIter)
-		{
-			if (StartIter->second == _Pos)
-				return StartIter->first;
-		}
-
-	}
-
-	ARoom* PrevRoom = nullptr;
-	ARoom* CurRoom = nullptr;
-	std::map<int, ARoom*> Rooms;
+	std::map<int, class ARoom*> Rooms;
 
 	USoundPlayer BGMPlayer;
 
-	class AUi* HeartUi;
-	class AUi* SecondHeartUi;
-	class AUi* ThirdHeartUi;
-	class AUi* CoinUi;
-	class AUi* BombUi;
-	class AUi* KeyUi;
-
-	void CreateMap();
-	void CreateItem();
-
-	AFade* Fade;
-	USpriteRenderer* RestartGameRenderer = nullptr;
 	bool DeathValue = false;
 
 protected:
 	
 private:
 	
+	int RoomNumber = 0;
+	int SpawnCaseValue = 1;
+	long long SeedValue = 0;
+
+	float RoomMoveCameraTime = 0.0f;
+
+	bool PauseGame = false;
+	bool ExitGameValue = false;
+
 	std::map<int, FVector2D> RoomBind;
 
+	class USpriteRenderer* SpriteRenderer = nullptr;
+	class USpriteRenderer* MapRenderer = nullptr;
+	class USpriteRenderer* BossMiniMapRenderer = nullptr;
+	class USpriteRenderer* GoldMiniMapRenderer = nullptr;
+	class USpriteRenderer* PauseGameRenderer = nullptr;
 
+	class ALarryjr* Monster0 = nullptr;
+	class ALarryjr* Monster1 = nullptr;
+	class ALarryjr* Monster2 = nullptr;
+	class ALarryjr* Monster3 = nullptr;
+	class ALarryjr* Monster4 = nullptr;
+	class ALarryjr* Monster5 = nullptr;
+	class ALarryjr* Monster6 = nullptr;
+	class ALarryjr* Monster7 = nullptr;
+
+	UEngineRandom Random;
+
+	void CreateMap();
+	void CreateItem();
 	void CreateBossRoomPath();
 	void CreateRestRoomPath(int _RoomNumber);
 	void CreateRoom(std::string_view _RoomName,FVector2D _Pos,RoomType _Type = RoomType::NORMAL);
@@ -173,33 +105,6 @@ private:
 		NewActor->SetActorLocation(_Pos);
 		NewActor->Pos = _Pos;
 	}
-
-	UEngineRandom Random;
-	USpriteRenderer* SpriteRenderer = nullptr;
-	USpriteRenderer* MapRenderer = nullptr;
-	USpriteRenderer* BossMiniMapRenderer = nullptr;
-	USpriteRenderer* GoldMiniMapRenderer = nullptr;
-	USpriteRenderer* PauseGameRenderer = nullptr;
-
-
-	bool PauseGame = false;
-	bool ExitGameValue = false;
-
-	float RoomMoveCameraTime = 0.0f;
-
-	int RoomNumber = 0;
-
-	ALarryjr* Monster0 = nullptr;
-	ALarryjr* Monster1 = nullptr;
-	ALarryjr* Monster2 = nullptr;
-	ALarryjr* Monster3 = nullptr;
-	ALarryjr* Monster4 = nullptr;
-	ALarryjr* Monster5 = nullptr;
-	ALarryjr* Monster6 = nullptr;
-	ALarryjr* Monster7 = nullptr;
-	long long SeedValue = 0;
-
-	int SpawnCaseValue = 1;
 
 };
 

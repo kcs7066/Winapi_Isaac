@@ -1,39 +1,41 @@
 #include "PreCompile.h"
 #include "PlayGameMode.h"
-#include "TitleGameMode.h"
-#include <EnginePlatform/EngineWindow.h>
-#include <EngineCore/EngineCoreDebug.h>
-#include <EngineCore/EngineAPICore.h>
-#include <EnginePlatform/EngineInput.h>
-#include "Room.h"
-#include "ContentsEnum.h"
+
 #include <EngineBase/EngineMath.h>
 #include <EngineBase/EngineString.h>
-#include "Isaac.h"
-#include <EngineCore/Level.h>
-#include "Tear.h"
+
+#include <EnginePlatform/EngineInput.h>
+#include <EnginePlatform/EngineWindow.h>
+#include <EngineCore/SpriteRenderer.h>
+
+#include <EngineCore/EngineCoreDebug.h>
+#include <EngineCore/EngineAPICore.h>
 #include <EngineCore/2DCollision.h>
-#include "PurpleFly.h"
+#include <EngineCore/Level.h>
+
+#include "TitleGameMode.h"
+#include "ContentsEnum.h"
+#include "Isaac.h"
+
 #include "RoundWorm.h"
 #include "Dip.h"
 #include "Spider.h"
 #include "BabyLongLegs.h"
 #include "LevelTwoSpiderSmall.h"
-#include "Fly.h"
 #include "RedFly.h"
-#include "Monstro.h"
-#include "Rock.h"
-#include "Poop.h"
-#include "Larryjr.h"
-#include "PickUpBomb.h"
-#include "PickUpCoin.h"
-#include "PickUpKey.h"
-#include "PickUpHeart.h"
-#include "TheInnerEye.h"
 #include "Gaper.h"
 #include "Pacer.h"
 #include "Fatty.h"
 #include "Pooter.h"
+#include "Monstro.h"
+#include "Larryjr.h"
+#include "Rock.h"
+#include "Poop.h"
+#include "PickUpBomb.h"
+#include "PickUpHeart.h"
+#include "TheInnerEye.h"
+#include "Fade.h"
+
 
 
 
@@ -107,10 +109,8 @@ Fade->FadeOut();
 	CreateRoom("GoldRoom", RoomBind[7], RoomType::GOLD);
 
 	Rooms[0]->MiniMapRenderer->ChangeAnimation("Now");
-
 	Rooms[0]->RoomRenderer->SetSprite("FirstRoom.png");
 	Rooms[4]->RoomRenderer->SetSprite("Room_03.png");
-
 
 	Link(Rooms[0]);
 	Link(Rooms[1]);
@@ -121,112 +121,71 @@ Fade->FadeOut();
 	Link(Rooms[6]);
 	Link(Rooms[7]);
 
-
-
 	CurRoom = Rooms[0];
 	PrevRoom = Rooms[0];
 	GetWorld()->SetCameraPos({ CurRoom->RoomPos.X - 480.0f ,CurRoom->RoomPos.Y - 270.0f });
 
-	{
-	CoinUi = GetWorld()->SpawnActor<AUi>();
-	CoinUi->SetActorLocation({80, 105});
-	CoinUi->SetTextSpriteName("Number.png");
-	CoinUi->SetOrder(ERenderOrder::UI);
-	CoinUi->SetTextScale({30, 30});
-	CoinUi->SetValue(0);
-	CoinUi->HUDRenderer = CreateDefaultSubObject<USpriteRenderer>();	
-	CoinUi->HUDRenderer->SetCameraEffect(false);
-	CoinUi->HUDRenderer->SetOrder(ERenderOrder::UI);
-	CoinUi->HUDRenderer->SetComponentScale({ 30, 30 });
-	CoinUi->HUDRenderer->SetComponentLocation({ 50, 102 });
-	CoinUi->HUDRenderer->CreateAnimation("HUD_Coin", "HUDPickups.png", 0, 0, 0.1f);
-	CoinUi->HUDRenderer->ChangeAnimation("HUD_Coin");
+	BombUi = GetWorld()->SpawnActor<AUi>();
+	BombUi->SetActorLocation({ 80, 130 });
+	BombUi->SetTextSpriteName("Number.png");
+	BombUi->SetOrder(ERenderOrder::UI);
+	BombUi->SetTextScale({ 30, 30 });
+	BombUi->SetValue(1);
+	BombUi->HUDRenderer = CreateDefaultSubObject<USpriteRenderer>();
+	BombUi->HUDRenderer->SetCameraEffect(false);
+	BombUi->HUDRenderer->SetOrder(ERenderOrder::UI);
+	BombUi->HUDRenderer->SetComponentScale({ 30, 30 });
+	BombUi->HUDRenderer->SetComponentLocation({ 50, 127 });
+	BombUi->HUDRenderer->CreateAnimation("HUD_Bomb", "HUDPickups.png", 8, 8, 0.1f);
+	BombUi->HUDRenderer->ChangeAnimation("HUD_Bomb");
 
-    }
-	{
-		BombUi = GetWorld()->SpawnActor<AUi>();
-		BombUi->SetActorLocation({ 80, 130 });
-		BombUi->SetTextSpriteName("Number.png");
-		BombUi->SetOrder(ERenderOrder::UI);
-		BombUi->SetTextScale({ 30, 30 });
-		BombUi->SetValue(1);
-		BombUi->HUDRenderer = CreateDefaultSubObject<USpriteRenderer>();
-		BombUi->HUDRenderer->SetCameraEffect(false);
-		BombUi->HUDRenderer->SetOrder(ERenderOrder::UI);
-		BombUi->HUDRenderer->SetComponentScale({ 30, 30 });
-		BombUi->HUDRenderer->SetComponentLocation({ 50, 127 });
-		BombUi->HUDRenderer->CreateAnimation("HUD_Bomb", "HUDPickups.png", 8, 8, 0.1f);
-		BombUi->HUDRenderer->ChangeAnimation("HUD_Bomb");
-	}
-	{
-		KeyUi = GetWorld()->SpawnActor<AUi>();
-		KeyUi->SetActorLocation({ 80, 155 });
-		KeyUi->SetTextSpriteName("Number.png");
-		KeyUi->SetOrder(ERenderOrder::UI);
-		KeyUi->SetTextScale({ 30, 30 });
-		KeyUi->SetValue(0);
-		KeyUi->HUDRenderer = CreateDefaultSubObject<USpriteRenderer>();
-		KeyUi->HUDRenderer->SetCameraEffect(false);
-		KeyUi->HUDRenderer->SetOrder(ERenderOrder::UI);
-		KeyUi->HUDRenderer->SetComponentScale({ 30, 30 });
-		KeyUi->HUDRenderer->SetComponentLocation({ 50, 152 });
-		KeyUi->HUDRenderer->CreateAnimation("HUD_Key", "HUDPickups.png", 1, 1, 0.1f);
-		KeyUi->HUDRenderer->ChangeAnimation("HUD_Key");
-	}
+	HeartUi = GetWorld()->SpawnActor<AUi>();
+	HeartUi->SetActorLocation({ 120, -120 });
+	HeartUi->SetTextSpriteName("Number.png");
+	HeartUi->SetOrder(ERenderOrder::UI);
 
-	{
-		HeartUi = GetWorld()->SpawnActor<AUi>();
-		HeartUi->SetActorLocation({ 120, -120 });
-		HeartUi->SetTextSpriteName("Number.png");
-		HeartUi->SetOrder(ERenderOrder::UI);
-		
-		HeartUi->HUDRenderer = CreateDefaultSubObject<USpriteRenderer>();
-		HeartUi->HUDRenderer->SetCameraEffect(false);
-		HeartUi->HUDRenderer->SetOrder(ERenderOrder::UI);
-		HeartUi->HUDRenderer->SetComponentScale({ 30, 30 });
-		HeartUi->HUDRenderer->SetComponentLocation({ 120, 45 });
-		HeartUi->HUDRenderer->CreateAnimation("Full_Heart", "Ui_Hearts.png", 0, 0, 0.1f);
-		HeartUi->HUDRenderer->CreateAnimation("Half_Heart", "Ui_Hearts.png", 1, 1, 0.1f);
-		HeartUi->HUDRenderer->CreateAnimation("Empty_Heart", "Ui_Hearts.png", 2, 2, 0.1f);
-		HeartUi->HUDRenderer->ChangeAnimation("Full_Heart");
-	}
-	{
-		SecondHeartUi = GetWorld()->SpawnActor<AUi>();
-		SecondHeartUi->SetActorLocation({ 120, -120 });
-		SecondHeartUi->SetTextSpriteName("Number.png");
-		SecondHeartUi->SetOrder(ERenderOrder::UI);
+	HeartUi->HUDRenderer = CreateDefaultSubObject<USpriteRenderer>();
+	HeartUi->HUDRenderer->SetCameraEffect(false);
+	HeartUi->HUDRenderer->SetOrder(ERenderOrder::UI);
+	HeartUi->HUDRenderer->SetComponentScale({ 30, 30 });
+	HeartUi->HUDRenderer->SetComponentLocation({ 120, 45 });
+	HeartUi->HUDRenderer->CreateAnimation("Full_Heart", "Ui_Hearts.png", 0, 0, 0.1f);
+	HeartUi->HUDRenderer->CreateAnimation("Half_Heart", "Ui_Hearts.png", 1, 1, 0.1f);
+	HeartUi->HUDRenderer->CreateAnimation("Empty_Heart", "Ui_Hearts.png", 2, 2, 0.1f);
+	HeartUi->HUDRenderer->ChangeAnimation("Full_Heart");
 
-		SecondHeartUi->HUDRenderer = CreateDefaultSubObject<USpriteRenderer>();
-		SecondHeartUi->HUDRenderer->SetCameraEffect(false);
-		SecondHeartUi->HUDRenderer->SetOrder(ERenderOrder::UI);
-		SecondHeartUi->HUDRenderer->SetComponentScale({ 30, 30 });
-		SecondHeartUi->HUDRenderer->SetComponentLocation({ 145, 45 });
-		SecondHeartUi->HUDRenderer->CreateAnimation("Full_Heart", "Ui_Hearts.png", 0, 0, 0.1f);
-		SecondHeartUi->HUDRenderer->CreateAnimation("Half_Heart", "Ui_Hearts.png", 1, 1, 0.1f);
-		SecondHeartUi->HUDRenderer->CreateAnimation("Empty_Heart", "Ui_Hearts.png", 2, 2, 0.1f);
-		SecondHeartUi->HUDRenderer->ChangeAnimation("Full_Heart");
-	}
-	{
-		ThirdHeartUi = GetWorld()->SpawnActor<AUi>();
-		ThirdHeartUi->SetActorLocation({ 120, -120 });
-		ThirdHeartUi->SetTextSpriteName("Number.png");
-		ThirdHeartUi->SetOrder(ERenderOrder::UI);
+	SecondHeartUi = GetWorld()->SpawnActor<AUi>();
+	SecondHeartUi->SetActorLocation({ 120, -120 });
+	SecondHeartUi->SetTextSpriteName("Number.png");
+	SecondHeartUi->SetOrder(ERenderOrder::UI);
 
-		ThirdHeartUi->HUDRenderer = CreateDefaultSubObject<USpriteRenderer>();
-		ThirdHeartUi->HUDRenderer->SetCameraEffect(false);
-		ThirdHeartUi->HUDRenderer->SetOrder(ERenderOrder::UI);
-		ThirdHeartUi->HUDRenderer->SetComponentScale({ 30, 30 });
-		ThirdHeartUi->HUDRenderer->SetComponentLocation({ 170, 45 });
-		ThirdHeartUi->HUDRenderer->CreateAnimation("Full_Heart", "Ui_Hearts.png", 0, 0, 0.1f);
-		ThirdHeartUi->HUDRenderer->CreateAnimation("Half_Heart", "Ui_Hearts.png", 1, 1, 0.1f);
-		ThirdHeartUi->HUDRenderer->CreateAnimation("Empty_Heart", "Ui_Hearts.png", 2, 2, 0.1f);
-		ThirdHeartUi->HUDRenderer->ChangeAnimation("Full_Heart");
-	}
-	
+	SecondHeartUi->HUDRenderer = CreateDefaultSubObject<USpriteRenderer>();
+	SecondHeartUi->HUDRenderer->SetCameraEffect(false);
+	SecondHeartUi->HUDRenderer->SetOrder(ERenderOrder::UI);
+	SecondHeartUi->HUDRenderer->SetComponentScale({ 30, 30 });
+	SecondHeartUi->HUDRenderer->SetComponentLocation({ 145, 45 });
+	SecondHeartUi->HUDRenderer->CreateAnimation("Full_Heart", "Ui_Hearts.png", 0, 0, 0.1f);
+	SecondHeartUi->HUDRenderer->CreateAnimation("Half_Heart", "Ui_Hearts.png", 1, 1, 0.1f);
+	SecondHeartUi->HUDRenderer->CreateAnimation("Empty_Heart", "Ui_Hearts.png", 2, 2, 0.1f);
+	SecondHeartUi->HUDRenderer->ChangeAnimation("Full_Heart");
+
+	ThirdHeartUi = GetWorld()->SpawnActor<AUi>();
+	ThirdHeartUi->SetActorLocation({ 120, -120 });
+	ThirdHeartUi->SetTextSpriteName("Number.png");
+	ThirdHeartUi->SetOrder(ERenderOrder::UI);
+
+	ThirdHeartUi->HUDRenderer = CreateDefaultSubObject<USpriteRenderer>();
+	ThirdHeartUi->HUDRenderer->SetCameraEffect(false);
+	ThirdHeartUi->HUDRenderer->SetOrder(ERenderOrder::UI);
+	ThirdHeartUi->HUDRenderer->SetComponentScale({ 30, 30 });
+	ThirdHeartUi->HUDRenderer->SetComponentLocation({ 170, 45 });
+	ThirdHeartUi->HUDRenderer->CreateAnimation("Full_Heart", "Ui_Hearts.png", 0, 0, 0.1f);
+	ThirdHeartUi->HUDRenderer->CreateAnimation("Half_Heart", "Ui_Hearts.png", 1, 1, 0.1f);
+	ThirdHeartUi->HUDRenderer->CreateAnimation("Empty_Heart", "Ui_Hearts.png", 2, 2, 0.1f);
+	ThirdHeartUi->HUDRenderer->ChangeAnimation("Full_Heart");
+
+
 	BGMPlayer = UEngineSound::Play("diptera sonata.ogg");
-	
-
-
 
 }
 
@@ -322,85 +281,6 @@ void APlayGameMode::Tick(float _DeltaTime)
 	}
 
 
-	if (true == UEngineInput::GetInst().IsDown('1'))
-	{
-		APacer* Monster = GetWorld()->SpawnActor<APacer>();
-	}
-
-	if (true == UEngineInput::GetInst().IsDown('2'))
-	{
-		AFatty* Monster = GetWorld()->SpawnActor<AFatty>();
-	}
-
-	if (true == UEngineInput::GetInst().IsDown('3'))
-	{
-		APooter* Monster = GetWorld()->SpawnActor<APooter>();
-	}
-
-	if (true == UEngineInput::GetInst().IsDown('4'))
-	{
-		ARoundWorm* Monster = GetWorld()->SpawnActor<ARoundWorm>();
-	}
-
-	if (true == UEngineInput::GetInst().IsDown('5'))
-	{
-		AFly* Monster = GetWorld()->SpawnActor<AFly>();
-	}
-
-	if (true == UEngineInput::GetInst().IsDown('6'))
-	{
-		ARedFly* Monster = GetWorld()->SpawnActor<ARedFly>();
-	}
-
-	if (true == UEngineInput::GetInst().IsDown('7'))
-	{
-		AMonstro* Monster = GetWorld()->SpawnActor<AMonstro>();
-	}
-
-	if (true == UEngineInput::GetInst().IsDown('8'))
-	{
-		ASpider* Monster = GetWorld()->SpawnActor<ASpider>();
-	}
-
-	if (true == UEngineInput::GetInst().IsDown('9'))
-	{
-		ALarryjr* Monster = GetWorld()->SpawnActor<ALarryjr>();
-	}
-
-	if (true == UEngineInput::GetInst().IsDown('0'))
-	{
-		AGaper* Monster = GetWorld()->SpawnActor<AGaper>();
-	}
-
-	if (true == UEngineInput::GetInst().IsDown(VK_NUMPAD1))
-	{
-		APickUpBomb* Bomb = GetWorld()->SpawnActor<APickUpBomb>();
-	}
-	
-	if (true == UEngineInput::GetInst().IsDown(VK_NUMPAD2))
-	{
-		APickUpCoin* Coin = GetWorld()->SpawnActor<APickUpCoin>();
-	}
-	if (true == UEngineInput::GetInst().IsDown(VK_NUMPAD3))
-	{
-		APickUpKey* Key = GetWorld()->SpawnActor<APickUpKey>();
-	}
-	if (true == UEngineInput::GetInst().IsDown(VK_NUMPAD4))
-	{
-		APickUpHeart* Heart = GetWorld()->SpawnActor<APickUpHeart>();
-	}
-	if (true == UEngineInput::GetInst().IsDown(VK_NUMPAD5))
-	{
-		ATheInnerEye* Item = GetWorld()->SpawnActor<ATheInnerEye>();
-	}
-	if (true == UEngineInput::GetInst().IsDown(VK_NUMPAD6))
-	{
-		CurRoom = Rooms[6];
-	}
-	if (true == UEngineInput::GetInst().IsDown(VK_NUMPAD7))
-	{
-		CurRoom = Rooms[7];
-	}
 
 	if (CurRoom != PrevRoom)
 	{
@@ -408,12 +288,9 @@ void APlayGameMode::Tick(float _DeltaTime)
 
 
 		RoomMoveCameraTime += _DeltaTime * 5;
-		FVector2D Size = UEngineAPICore::GetCore()->GetMainWindow().GetWindowSize();
-				
+		FVector2D Size = UEngineAPICore::GetCore()->GetMainWindow().GetWindowSize();		
 		FVector2D StartCameraPos = { PrevRoom->RoomPos.X - 480.0f ,PrevRoom->RoomPos.Y - 270.0f };
-
 		FVector2D TargetCameraPos = { CurRoom->RoomPos.X - 480.0f ,CurRoom->RoomPos.Y - 270.0f };
-
 		FVector2D CurCameraPos = FVector2D::MyLerpClamp(StartCameraPos, TargetCameraPos, RoomMoveCameraTime);
 		
 	    GetWorld()->SetCameraPos(CurCameraPos);
@@ -426,7 +303,6 @@ void APlayGameMode::Tick(float _DeltaTime)
 			PrevRoom = CurRoom;
 
 			GetWorld()->SetCameraPos({ CurRoom->RoomPos.X - 480.0f ,CurRoom->RoomPos.Y - 270.0f });
-			//GetWorld()->GetPawn()->SetActorLocation(CurRoom->RoomPos);
 
 			if (nullptr != Ptr)
 			{
@@ -453,16 +329,9 @@ void APlayGameMode::Tick(float _DeltaTime)
 				}
 
 			}
-
-
 			CurRoom->MiniMapRenderer->ChangeAnimation("Now");
-
 		}
-
-		
-	
 	}
-
 }
 
 void APlayGameMode::CreateBossRoomPath()
@@ -587,6 +456,93 @@ void APlayGameMode::CreateBossRoomPath()
 		break;
 	}
 
+}
+
+bool APlayGameMode::IsBind(FVector2D _Pos)
+{
+	{
+		std::map<int, FVector2D>::iterator StartIter = RoomBind.begin();
+		std::map<int, FVector2D>::iterator EndIter = RoomBind.end();
+
+		for (; StartIter != EndIter; ++StartIter)
+		{
+			if (StartIter->second == _Pos)
+			{
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+bool APlayGameMode::IsAdjacentTwice(FVector2D _Pos)
+{
+	int AdjacentRoom = 0;
+	FVector2D AdjacentPos1 = { _Pos.X + 1 , _Pos.Y };
+	FVector2D AdjacentPos2 = { _Pos.X - 1 , _Pos.Y };
+	FVector2D AdjacentPos3 = { _Pos.X , _Pos.Y + 1 };
+	FVector2D AdjacentPos4 = { _Pos.X , _Pos.Y - 1 };
+
+	{
+		std::map<int, FVector2D>::iterator StartIter = RoomBind.begin();
+		std::map<int, FVector2D>::iterator EndIter = RoomBind.end();
+
+		for (; StartIter != EndIter; ++StartIter)
+		{
+			if (StartIter->second == AdjacentPos1)
+				AdjacentRoom++;
+		}
+	}
+
+	{
+		std::map<int, FVector2D>::iterator StartIter = RoomBind.begin();
+		std::map<int, FVector2D>::iterator EndIter = RoomBind.end();
+
+		for (; StartIter != EndIter; ++StartIter)
+		{
+			if (StartIter->second == AdjacentPos2)
+				AdjacentRoom++;
+		}
+	}
+	{
+		std::map<int, FVector2D>::iterator StartIter = RoomBind.begin();
+		std::map<int, FVector2D>::iterator EndIter = RoomBind.end();
+
+		for (; StartIter != EndIter; ++StartIter)
+		{
+			if (StartIter->second == AdjacentPos3)
+				AdjacentRoom++;
+		}
+	}
+	{
+		std::map<int, FVector2D>::iterator StartIter = RoomBind.begin();
+		std::map<int, FVector2D>::iterator EndIter = RoomBind.end();
+
+		for (; StartIter != EndIter; ++StartIter)
+		{
+			if (StartIter->second == AdjacentPos4)
+				AdjacentRoom++;
+		}
+	}
+
+	if (AdjacentRoom == 1)
+	{
+		return false;
+	}
+	return true;
+}
+
+int APlayGameMode::Roomkey(FVector2D _Pos)
+{
+	std::map<int, FVector2D>::iterator StartIter = RoomBind.begin();
+	std::map<int, FVector2D>::iterator EndIter = RoomBind.end();
+
+	for (; StartIter != EndIter; ++StartIter)
+	{
+		if (StartIter->second == _Pos)
+			return StartIter->first;
+	}
+	return 0;
 }
 
 void APlayGameMode::CreateRestRoomPath(int _RoomNumber)

@@ -1,7 +1,5 @@
 #pragma once
 #include "Monster.h"
-#include "Poop.h"
-
 
 enum class LarryjrState
 {
@@ -62,39 +60,17 @@ public:
 	void Die(float _DeltaTime);
 	void DieStart();
 
-
-	int Poopkey(FVector2D _Pos)
-	{
-		std::map<int, FVector2D>::iterator StartIter = PoopBind.begin();
-		std::map<int, FVector2D>::iterator EndIter = PoopBind.end();
-
-		for (; StartIter != EndIter; ++StartIter)
-		{
-			if (StartIter->second == _Pos)
-				return StartIter->first;
-		}
-
-	}
-
 	LarryjrPart Part = LarryjrPart::BODY;
-
 	std::map<LinkDir, ALarryjr*> LinkedParts;
-
-	//ALarryjr* LinkedFront = nullptr;
-	//ALarryjr* LinkedBack = nullptr;
-
-	std::map<int, FVector2D> PoopBind;
-	std::map<int, APoop*> PoopPos;
-	FVector2D FuturePos = { 0.0f,0.0f };
-	FVector2D SavePos = { 0.0f , 0.0f };
-	//FVector2D BodyFuturePos = { 0.0f,0.0f };
-	float Speed = 208.0f;
-	FVector2D Dir = { 1,0 };
 
 protected:
 
 private:
 
+	float Speed = 208.0f;
 
+	FVector2D FuturePos = { 0.0f,0.0f };
+	FVector2D SavePos = { 0.0f , 0.0f };
+	FVector2D Dir = { 1,0 };
 };
 

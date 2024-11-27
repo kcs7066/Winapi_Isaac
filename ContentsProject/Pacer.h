@@ -1,7 +1,6 @@
 #pragma once
 #include "Monster.h"
 
-
 enum class PacerState
 {
 	Move,
@@ -33,8 +32,10 @@ public:
 protected:
 
 private:
+
 	float Speed = 75.0f;
-	class USpriteRenderer* BodyRenderer = nullptr;
+
 	FVector2D RandomDir = FVector2D::DOWN;
 
+	class USpriteRenderer* BodyRenderer = nullptr;
 };

@@ -1,11 +1,15 @@
 #include "PreCompile.h"
 #include "Spider.h"
 
-#include <EnginePlatform/EngineInput.h>
-#include "PlayGameMode.h"
-#include <EngineCore/SpriteRenderer.h>
 #include <EngineBase/FSMStateManager.h>
+
+#include <EnginePlatform/EngineInput.h>
+
+#include <EngineCore/SpriteRenderer.h>
 #include <EngineCore/2DCollision.h>
+
+#include "PlayGameMode.h"
+
 
 ASpider::ASpider()
 	: AMonster()

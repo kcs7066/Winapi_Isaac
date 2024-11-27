@@ -1,7 +1,9 @@
 #include "PreCompile.h"
 #include "Fade.h"
+
 #include <EngineCore/SpriteRenderer.h>
 #include <EngineCore/EngineAPICore.h>
+
 #include "ContentsEnum.h"
 
 AFade* AFade::MainFade = nullptr;

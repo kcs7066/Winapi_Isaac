@@ -1,10 +1,14 @@
 #pragma once
-#include <EngineCore/Actor.h>
-#include <EngineBase/EngineMath.h>
-#include <EngineCore/2DCollision.h>
-#include <EngineBase/FSMStateManager.h>
-#include <EnginePlatform/EngineSound.h>
+
 #include <EngineBase/EngineRandom.h>
+#include <EngineBase/EngineMath.h>
+#include <EngineBase/FSMStateManager.h>
+
+#include <EnginePlatform/EngineSound.h>
+
+#include <EngineCore/Actor.h>
+
+
 
 enum class TearState
 {
@@ -34,15 +38,16 @@ protected:
 	void Fly(float _DeltaTime);
 	void Poof(float _DeltaTime);
 
+private:
+
 	float DelayTime = 0.0f;
 	float DropPos = 0.0f;
+	float TearSpeed = 450.0f;
 
-private:
 	class USpriteRenderer* TearRenderer;
 	class USpriteRenderer* ShadowRenderer;
-	U2DCollision* CollisionComponent;
+	class U2DCollision* CollisionComponent;
 
-	float TearSpeed = 450.0f;
 	UFSMStateManager FSM = UFSMStateManager();
 	USoundPlayer BGMPlayer;
 	UEngineRandom Random;

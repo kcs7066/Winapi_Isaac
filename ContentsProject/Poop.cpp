@@ -1,8 +1,11 @@
 #include "PreCompile.h"
 #include "Poop.h"
-#include "ContentsEnum.h"
+
 #include <EngineCore/SpriteRenderer.h>
 #include <EngineCore/2DCollision.h>
+
+#include "ContentsEnum.h"
+
 
 APoop::APoop()
 	:AStructure()

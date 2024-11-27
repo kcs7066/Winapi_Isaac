@@ -1,7 +1,6 @@
 #pragma once
 #include "Monster.h"
 
-
 enum class RoundWormState
 {
 	Idle,
@@ -9,8 +8,6 @@ enum class RoundWormState
 	Idle2,
 	Move,
 	Die
-
-
 };
 
 class ARoundWorm : public AMonster
@@ -36,15 +33,13 @@ public:
 	void Die(float _DeltaTime);
 	void DieStart();
 
-	bool FindPos = false;
-
 protected:
 
 private:
-	float TearCoolTime = 0.5f;
 
+	float TearCoolTime = 0.5f;
 	float Speed = 500.0f;
 
-	
+	bool FindPos = false;
 };
 

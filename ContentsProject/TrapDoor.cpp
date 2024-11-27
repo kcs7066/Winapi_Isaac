@@ -1,8 +1,11 @@
 #include "PreCompile.h"
 #include "TrapDoor.h"
+
+#include <EngineCore/SpriteRenderer.h>
+#include <EngineCore/2DCollision.h>
+
 #include "ContentsEnum.h"
 #include "Isaac.h"
-#include <EngineCore/EngineAPICore.h>
 #include "PlayGameMode.h"
 #include "TitleGameMode.h"
 

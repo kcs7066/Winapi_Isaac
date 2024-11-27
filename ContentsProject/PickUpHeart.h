@@ -14,7 +14,6 @@ public:
 	APickUpHeart& operator=(const APickUpHeart& _Other) = delete;
 	APickUpHeart& operator=(APickUpHeart&& _Other) noexcept = delete;
 
-
 	void BeginPlay() override;
 	void Tick(float _DeltaTime) override;
 

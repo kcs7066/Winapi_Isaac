@@ -1,16 +1,16 @@
 #include "PreCompile.h"
 #include "RoundWorm.h"
 
-#include "ContentsEnum.h"
+#include <EngineBase/FSMStateManager.h>
+
 #include <EnginePlatform/EngineInput.h>
-#include "MonsterTear.h"
-#include "PlayGameMode.h"
 
 #include <EngineCore/SpriteRenderer.h>
-#include <EngineBase/FSMStateManager.h>
 #include <EngineCore/2DCollision.h>
 
-
+#include "ContentsEnum.h"
+#include "MonsterTear.h"
+#include "PlayGameMode.h"
 
 ARoundWorm::ARoundWorm()
 	: AMonster()
@@ -41,8 +41,6 @@ ARoundWorm::~ARoundWorm()
 void ARoundWorm::BeginPlay()
 {
 	Super::BeginPlay();
-
-
 
 	FSM.CreateState(RoundWormState::Idle, std::bind(&ARoundWorm::Idle, this, std::placeholders::_1),
 		[this]()

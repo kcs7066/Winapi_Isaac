@@ -1,13 +1,15 @@
 #include "PreCompile.h"
 #include "LevelTwoSpiderSmall.h"
 
+#include <EngineBase/FSMStateManager.h>
+
 #include <EnginePlatform/EngineInput.h>
-#include <EngineBase/EngineMath.h>
+
+#include <EngineCore/SpriteRenderer.h>
+#include <EngineCore/2DCollision.h>
+
 #include "PlayGameMode.h"
 #include "Spider.h"
-#include <EngineCore/SpriteRenderer.h>
-#include <EngineBase/FSMStateManager.h>
-#include <EngineCore/2DCollision.h>
 
 
 ALevelTwoSpiderSmall::ALevelTwoSpiderSmall()

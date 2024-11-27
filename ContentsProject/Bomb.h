@@ -1,6 +1,6 @@
 #pragma once
 #include <EngineCore/Actor.h>
-#include <EngineCore/2DCollision.h>
+
 #include <EngineBase/FSMStateManager.h>
 #include <EnginePlatform/EngineSound.h>
 
@@ -32,15 +32,15 @@ protected:
 	void Idle(float _DeltaTime);
 	void Explosion(float _DeltaTime);
 	void ExplosionStay(float _DeltaTime);
-	float DelayTime = 0.0f;
-
 
 private:
 
-	UFSMStateManager FSM = UFSMStateManager();
+	float DelayTime = 0.0f;
+
 	class USpriteRenderer* BombRenderer;
 	class USpriteRenderer* ShadowRenderer;
-	U2DCollision* CollisionComponent;
+	class U2DCollision* CollisionComponent;
 
+	UFSMStateManager FSM = UFSMStateManager();
 };
 

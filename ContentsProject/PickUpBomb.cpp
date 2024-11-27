@@ -1,10 +1,12 @@
 #include "PreCompile.h"
 #include "PickUpBomb.h"
+
 #include "ContentsEnum.h"
 #include "Isaac.h"
 #include "PlayGameMode.h"
 
 APickUpBomb::APickUpBomb()
+	:APickUp()
 {
 
 	SetActorLocation({ 200,0 });

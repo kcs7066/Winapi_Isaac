@@ -1,7 +1,6 @@
 #pragma once
 #include "Monster.h"
 
-
 enum class PooterState
 {
 	Move,
@@ -39,7 +38,8 @@ private:
 	float Speed = 500.0f;
 	float TearSpeed = 0.7f;
 	float TearCoolTime = 0.0f;
-	FVector2D RandomDir;
-	class U2DCollision* AttackRadius = nullptr;
 
+	FVector2D RandomDir;
+
+	class U2DCollision* AttackRadius = nullptr;
 };

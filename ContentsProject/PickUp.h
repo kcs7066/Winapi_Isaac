@@ -1,7 +1,6 @@
 #pragma once
 #include <EngineCore/Actor.h>
 
-
 class APickUp : public AActor
 {
 public:
@@ -17,15 +16,12 @@ public:
 
 
 	class USpriteRenderer* ShadowRenderer = nullptr;
-	class USpriteRenderer* PickUpRenderer;
-	class U2DCollision* CollisionComponent;
+	class USpriteRenderer* PickUpRenderer = nullptr;
+	class U2DCollision* CollisionComponent = nullptr;
 
 protected:
 
-
-
 private:
-
 
 };
 

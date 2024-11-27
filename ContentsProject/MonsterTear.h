@@ -1,10 +1,11 @@
 #pragma once
-#include <EngineCore/Actor.h>
-#include <EngineBase/EngineMath.h>
-#include <EngineCore/2DCollision.h>
+
 #include <EngineBase/FSMStateManager.h>
-#include <EnginePlatform/EngineSound.h>
 #include <EngineBase/EngineRandom.h>
+
+#include <EnginePlatform/EngineSound.h>
+
+#include <EngineCore/Actor.h>
 
 enum class MonsterTearState
 {
@@ -24,11 +25,10 @@ public:
 	AMonsterTear(AMonsterTear&& _Other) noexcept = delete;
 	AMonsterTear& operator=(const AMonsterTear& _Other) = delete;
 	AMonsterTear& operator=(AMonsterTear&& _Other) noexcept = delete;
-	FVector2D Dir = FVector2D::ZERO;
+	
 	float TearSpeed = 500.0f;
 
-	float DelayTime = 0.0f;
-	float DropPos = 0.0f;
+	FVector2D Dir = FVector2D::ZERO;
 
 protected:
 
@@ -40,11 +40,14 @@ protected:
 
 private:
 
+	float DelayTime = 0.0f;
+	float DropPos = 0.0f;
+
 	class USpriteRenderer* TearRenderer;
 	class USpriteRenderer* ShadowRenderer;
-	U2DCollision* CollisionComponent;
+	class U2DCollision* CollisionComponent;
 
-	UFSMStateManager FSM = UFSMStateManager();
+	UFSMStateManager FSM;
 	USoundPlayer BGMPlayer;
 	UEngineRandom Random;
 };
