@@ -97,10 +97,6 @@ void ARoundWorm::Idle(float _DeltaTime)
 
 	if (this->Hp <= 0.0f)
 	{
-		APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
-		PlayGameMode->CurRoom->MonsterNumber--;
-		DelayTime = 0.0f;
-		EffectPlayer = UEngineSound::Play("death burst small.wav");
 		DieStart();
 	}
 
@@ -114,13 +110,9 @@ void ARoundWorm::Idle(float _DeltaTime)
 void ARoundWorm::Attack(float _DeltaTime)
 {
 	DelayTime += _DeltaTime;
-
+	
 	if (this->Hp <= 0.0f)
 	{
-		APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
-		PlayGameMode->CurRoom->MonsterNumber--;
-		DelayTime = 0.0f;
-		EffectPlayer = UEngineSound::Play("death burst small.wav");
 		DieStart();
 	}
 
@@ -130,7 +122,7 @@ void ARoundWorm::Attack(float _DeltaTime)
 		NewTear->SetActorLocation(GetActorLocation());
 		NewTear->Dir = GetWorld()->GetPawn()->GetActorLocation() - GetActorLocation();
 		NewTear->Dir.Normalize();
-		
+		EffectPlayer = UEngineSound::Play("worm spit 1.wav");
 		TearCoolTime = 0.5f;
 	}
 
@@ -147,10 +139,6 @@ void ARoundWorm::Idle2(float _DeltaTime)
 
 	if (this->Hp <= 0.0f)
 	{
-		APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
-		PlayGameMode->CurRoom->MonsterNumber--;
-		DelayTime = 0.0f;
-		EffectPlayer = UEngineSound::Play("death burst small.wav");
 		DieStart();
 	}
 
@@ -200,8 +188,25 @@ void ARoundWorm::Move(float _DeltaTime)
 
 void ARoundWorm::DieStart()
 {
+	APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
+	PlayGameMode->CurRoom->MonsterNumber--;
+	DelayTime = 0.0f;
 	CollisionComponent->SetActive(false);
 	ShadowRenderer->SetSpriteScale(0.0f); 
+	int RandomValue = Random.RandomInt(1, 3);
+	switch (RandomValue)
+	{
+	case 1:
+		EffectPlayer = UEngineSound::Play("death burst small.wav");
+		break;
+	case 2:
+		EffectPlayer = UEngineSound::Play("death burst small 2.wav");
+		break;
+	default:
+		EffectPlayer = UEngineSound::Play("death burst small 3.wav");
+		break;
+	}
+
 	FSM.ChangeState(RoundWormState::Die);
 }
 

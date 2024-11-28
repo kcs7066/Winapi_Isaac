@@ -320,6 +320,17 @@ void AMonstro::DieStart()
 	PlayGameMode->BGMPlayer = UEngineSound::Play("secret to everyone.ogg");
 	ShadowRenderer->SetSpriteScale(0.0f);
 
+
+	int RandomValue = Random.RandomInt(1, 2);
+	switch (RandomValue)
+	{
+	case 1:
+		EffectPlayer = UEngineSound::Play("death burst large.wav");
+		break;
+	default:
+		EffectPlayer = UEngineSound::Play("death burst large 2.wav");
+		break;
+	}
 	FSM.ChangeState(MonstroState::Die);
 }
 

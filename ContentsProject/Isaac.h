@@ -1,6 +1,7 @@
 #pragma once
 
 #include <EngineBase/FSMStateManager.h>
+#include <EngineBase/EngineRandom.h>
 
 #include <EnginePlatform/EngineSound.h>
 
@@ -87,6 +88,7 @@ private:
 	class USpriteRenderer* ItemRenderer = nullptr;
 
 	UFSMStateManager FSM = UFSMStateManager();
-	USoundPlayer BGMPlayer;
+	USoundPlayer EffectPlayer;
+	UEngineRandom Random;
 };
 

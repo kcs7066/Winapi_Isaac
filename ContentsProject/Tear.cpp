@@ -66,11 +66,11 @@ void ATear::BeginPlay()
 
 	if (1 == Value)
 	{
-		BGMPlayer = UEngineSound::Play("tear fire 1.wav");
+		EffectPlayer = UEngineSound::Play("tear fire 1.wav");
 	}
 	else
 	{
-		BGMPlayer = UEngineSound::Play("tear fire 2.wav");
+		EffectPlayer = UEngineSound::Play("tear fire 2.wav");
 	}
 
 	
@@ -120,6 +120,7 @@ void ATear::Fly(float _DeltaTime)
 				default:
 					ResultPoop->StructureRenderer->ChangeAnimation("Poop0");
 					ResultPoop->CollisionComponent->SetActive(false);
+					EffectPlayer = UEngineSound::Play("plop.wav");
 					break;
 				}
             }
@@ -127,7 +128,7 @@ void ATear::Fly(float _DeltaTime)
 			DelayTime = 0.0f;
 			ShadowRenderer->SetSpriteScale(0.0f);
 			FSM.ChangeState(TearState::Poof);
-			BGMPlayer = UEngineSound::Play("tear block.wav");
+			EffectPlayer = UEngineSound::Play("tear block.wav");
 		}
 	
 		AActor* Result = CollisionComponent->CollisionOnce(ECollisionGroup::Monster);
@@ -139,7 +140,7 @@ void ATear::Fly(float _DeltaTime)
 				DelayTime = 0.0f;
 				ShadowRenderer->SetSpriteScale(0.0f);
 				FSM.ChangeState(TearState::Poof);
-				BGMPlayer = UEngineSound::Play("tear block.wav");
+				EffectPlayer = UEngineSound::Play("tear block.wav");
 	
 	    }
 		else
@@ -156,7 +157,7 @@ void ATear::Fly(float _DeltaTime)
 					DelayTime = 0.0f;
 					ShadowRenderer->SetSpriteScale(0.0f);
 					FSM.ChangeState(TearState::Poof);
-					BGMPlayer = UEngineSound::Play("tear block.wav");
+					EffectPlayer = UEngineSound::Play("tear block.wav");
 				}
 				else
 				{
@@ -170,7 +171,7 @@ void ATear::Fly(float _DeltaTime)
 		DelayTime = 0.0f;
 		ShadowRenderer->SetSpriteScale(0.0f);
 		FSM.ChangeState(TearState::Poof);
-		BGMPlayer = UEngineSound::Play("tear block.wav");
+		EffectPlayer = UEngineSound::Play("tear block.wav");
 	}
 }
 

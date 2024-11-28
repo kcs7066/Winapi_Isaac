@@ -42,6 +42,7 @@ public:
 	std::map<int, class ARoom*> Rooms;
 
 	USoundPlayer BGMPlayer;
+	USoundPlayer EffectPlayer;
 
 	bool DeathValue = false;
 

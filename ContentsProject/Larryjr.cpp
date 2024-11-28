@@ -471,7 +471,19 @@ void ALarryjr::DieStart()
 
 	DelayTime = 0.0f;
 	ShadowRenderer->SetSpriteScale(0.0f);
-
+	int RandomValue = Random.RandomInt(1, 3);
+	switch (RandomValue)
+	{
+	case 1:
+		EffectPlayer = UEngineSound::Play("death burst small.wav");
+		break;
+	case 2:
+		EffectPlayer = UEngineSound::Play("death burst small 2.wav");
+		break;
+	default:
+		EffectPlayer = UEngineSound::Play("death burst small 3.wav");
+		break;
+	}
 	FSM.ChangeState(LarryjrState::Die);
 }
 

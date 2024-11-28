@@ -61,16 +61,10 @@ void ABomb::BeginPlay()
 	FSM.CreateState(BombState::Explosion, std::bind(&ABomb::Explosion, this, std::placeholders::_1),
 		[this]()
 		{
-	
-		}
-	);
-
-	FSM.CreateState(BombState::ExplosionStay, std::bind(&ABomb::ExplosionStay, this, std::placeholders::_1),
-		[this]()
-		{
 			BombRenderer->ChangeAnimation("Explosion_Bomb");
 		}
 	);
+
 
 	FSM.ChangeState(BombState::Idle);
 }
@@ -88,12 +82,27 @@ void ABomb::Idle(float _DeltaTime)
 	if (DelayTime > 1.6f)
 	{
 		DelayTime = 0.0f;
-		FSM.ChangeState(BombState::Explosion);
+		ExplosionStart();
 	}
 }
 
-void ABomb::Explosion(float _DeltaTime)
+void ABomb::ExplosionStart()
 {
+	int RandomValue = Random.RandomInt(1, 3);
+	switch (RandomValue)
+	{
+	case 1:
+		EffectPlayer = UEngineSound::Play("boss explosions 0.wav");
+		break;
+	case 2:
+		EffectPlayer = UEngineSound::Play("boss explosions 1.wav");
+		break;
+	default:
+		EffectPlayer = UEngineSound::Play("boss expolsions 2.wav");
+		break;
+	}
+	
+
 
 	std::vector<AActor*> Results = CollisionComponent->CollisionAll(ECollisionGroup::Monster, FVector2D::ZERO);
 
@@ -145,15 +154,16 @@ void ABomb::Explosion(float _DeltaTime)
 			{
 				ResultRock->StructureRenderer->ChangeAnimation("Rock0");
 				ResultRock->CollisionComponent->SetActive(false);
+				CrumblePlayer = UEngineSound::Play("rock crumble 0.wav");
 			}
 
 		}
 	}
 
-	FSM.ChangeState(BombState::ExplosionStay);
+	FSM.ChangeState(BombState::Explosion);
 }
 
-void ABomb::ExplosionStay(float _DeltaTime)
+void ABomb::Explosion(float _DeltaTime)
 {
 	DelayTime += _DeltaTime;
 	BombRenderer->SetComponentScale({ 275, 275 });

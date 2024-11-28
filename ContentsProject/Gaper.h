@@ -33,6 +33,8 @@ protected:
 private:
 	float Speed = 150.0f;
 
+	float SoundCoolTime = 2.0f;
+
 	FVector2D Dir = FVector2D::DOWN;
 
 	class USpriteRenderer* BodyRenderer = nullptr;

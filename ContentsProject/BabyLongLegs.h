@@ -25,6 +25,7 @@ public:
 	void Tick(float _DeltaTime) override;
 
 	void Attack(float _DeltaTime);
+	void AttackStart();
 	void Move(float _DeltaTime);
 	void Die(float _DeltaTime);
 	void DieStart();

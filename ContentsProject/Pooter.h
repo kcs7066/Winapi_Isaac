@@ -42,4 +42,6 @@ private:
 	FVector2D RandomDir;
 
 	class U2DCollision* AttackRadius = nullptr;
+
+	USoundPlayer SwarmPlayer;
 };

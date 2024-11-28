@@ -186,6 +186,7 @@ Fade->FadeOut();
 
 
 	BGMPlayer = UEngineSound::Play("diptera sonata.ogg");
+	BGMPlayer.Loop(100);
 
 }
 
@@ -222,11 +223,11 @@ void APlayGameMode::Tick(float _DeltaTime)
 			}
 			else
 			{
-				BGMPlayer.Off();
 				PauseGameRenderer->SetComponentLocation(CurRoom->RoomPos);
 				PauseGameRenderer->SetSpriteScale(1.0f);
 				UEngineAPICore::GetCore()->SetGlobalTimeScale(0.0f);
 				Fade->BackSpriteRenderer->SetAlphafloat(0.8f);
+				EffectPlayer = UEngineSound::Play("paper_in.wav");
 				PauseGame = true;
 			}
 		}
@@ -251,24 +252,30 @@ void APlayGameMode::Tick(float _DeltaTime)
 
 	if (true == UEngineInput::GetInst().IsDown(VK_SPACE))
 	{
-		if(false == PauseGame)
-		BGMPlayer.On();
+		if (true == ExitGameValue)
+		{
+	    BGMPlayer.Off();
 		PauseGameRenderer->SetSpriteScale(0.0f);
 		UEngineAPICore::GetCore()->SetGlobalTimeScale(1.0f);
 		Fade->BackSpriteRenderer->SetAlphafloat(0.00f);
 		PauseGame = false;
-
-		if (true == ExitGameValue)
-		{
-	    BGMPlayer.Off();
 		UEngineAPICore::GetCore()->CreateLevel<ATitleGameMode, AActor>("Title");
         UEngineAPICore::GetCore()->OpenLevel("Title");
+		}
+		else if (true == PauseGame)
+		{
+			PauseGameRenderer->SetSpriteScale(0.0f);
+			UEngineAPICore::GetCore()->SetGlobalTimeScale(1.0f);
+			Fade->BackSpriteRenderer->SetAlphafloat(0.00f);
+			PauseGame = false;
+			EffectPlayer = UEngineSound::Play("paper_out.wav");
 		}
 
 
 		if (true == DeathValue)
 		{
 			UEngineAPICore::GetCore()->SetGlobalTimeScale(1.0f);
+			BGMPlayer.Off();
 		UEngineAPICore::GetCore()->ResetLevel<APlayGameMode, AIsaac>("Play");
 		DeathValue = false;
 		}
@@ -277,6 +284,7 @@ void APlayGameMode::Tick(float _DeltaTime)
 
 	if (true == UEngineInput::GetInst().IsDown('R'))
 	{
+		BGMPlayer.Off();
 	UEngineAPICore::GetCore()->ResetLevel<APlayGameMode, AIsaac>("Play");
 	}
 

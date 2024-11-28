@@ -220,7 +220,6 @@ void AIsaac::Tick(float _DeltaTime)
 
 void AIsaac::Idle(float _DeltaTime)
 {
-	HpCheck();
 	if (true == UEngineInput::GetInst().IsPress('A') ||
 		true == UEngineInput::GetInst().IsPress('D') ||
 		true == UEngineInput::GetInst().IsPress('W') ||
@@ -261,6 +260,9 @@ void AIsaac::Idle(float _DeltaTime)
 			HitStart();
 		}
 	}
+
+	HpCheck();
+
 }
 
 
@@ -269,8 +271,6 @@ void AIsaac::Idle(float _DeltaTime)
 void AIsaac::Move(float _DeltaTime)
 {
 	APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
-
-	HpCheck();
 
 	if (true == UEngineInput::GetInst().IsPress(VK_UP))
 	{
@@ -441,6 +441,8 @@ void AIsaac::Move(float _DeltaTime)
 			HitStart();
 		}
 	}
+
+	HpCheck();
 
 }
 
@@ -764,6 +766,19 @@ void AIsaac::HitStart()
 {
 	DelayTime = 0.0f;
 	HitCoolTime = 1.0f;
+	int RandomValue = Random.RandomInt(1, 3);
+	switch (RandomValue)
+	{
+	case 1:
+		EffectPlayer = UEngineSound::Play("hurt grunt.wav");
+		break;
+	case 2:
+		EffectPlayer = UEngineSound::Play("hurt grunt 1.wav");
+		break;
+	default:
+		EffectPlayer = UEngineSound::Play("hurt grunt 2.wav");
+		break;
+	}
 	FSM.ChangeState(IsaacState::Hit);
 }
 
@@ -1011,7 +1026,9 @@ void AIsaac::Die(float _DeltaTime)
 	{
 		APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
 		PlayGameMode->DeathValue = true;
-		FSM.ChangeState(IsaacState::Idle);
+		PlayGameMode->BGMPlayer.Off();
+		PlayGameMode->BGMPlayer = UEngineSound::Play("you died.ogg");
+		Destroy();
 	}
 
 }
@@ -1031,6 +1048,21 @@ void AIsaac::DieStart()
 	GhostRenderer->SetComponentLocation({ 20,-15 });
 	GhostRenderer->CreateAnimation("Ghost", "Ghost.png", 0, 4 , 0.1f);
 	GhostRenderer->ChangeAnimation("Ghost");
+
+	EffectPlayer = UEngineSound::Play("isaac dies new.wav");
+	int RandomValue = Random.RandomInt(1, 3);
+	switch (RandomValue)
+	{
+	case 1:
+		EffectPlayer = UEngineSound::Play("isaac dies new.wav");
+		break;
+	case 2:
+		EffectPlayer = UEngineSound::Play("isaac dies new 1.wav");
+		break;
+	default:
+		EffectPlayer = UEngineSound::Play("isaac dies new 2.wav");
+		break;
+	}
 
 	FSM.ChangeState(IsaacState::Die);
 	Speed = 0.0f;

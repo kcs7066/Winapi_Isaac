@@ -69,6 +69,12 @@ void AGaper::Tick(float _DeltaTime)
 {
 	Super::Tick(_DeltaTime);
 	FSM.Update(_DeltaTime);
+	SoundCoolTime -= _DeltaTime;
+	if (0.0f > SoundCoolTime)
+	{
+		EffectPlayer = UEngineSound::Play("zombie walker kid 2.wav");
+		SoundCoolTime = 2.0f;
+	}
 }
 
 void AGaper::Move(float _DeltaTime)
@@ -78,10 +84,6 @@ void AGaper::Move(float _DeltaTime)
 
 	if (this->Hp <= 0.0f)
 	{
-		APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
-		PlayGameMode->CurRoom->MonsterNumber--;
-		DelayTime = 0.0f;
-		EffectPlayer = UEngineSound::Play("death burst small.wav");
 		DieStart();
 	}
 
@@ -137,13 +139,30 @@ void AGaper::Move(float _DeltaTime)
 
 void AGaper::DieStart()
 {
+	APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
+	PlayGameMode->CurRoom->MonsterNumber--;
+	DelayTime = 0.0f;
 	CollisionComponent->SetActive(false);
 	BodyRenderer->SetComponentScale(FVector2D::ZERO);
 	ShadowRenderer->SetSpriteScale(0.0f);
+	int RandomValue = Random.RandomInt(1, 3);
+	switch (RandomValue)
+	{
+	case 1:
+		EffectPlayer = UEngineSound::Play("death burst small.wav");
+		break;
+	case 2:
+		EffectPlayer = UEngineSound::Play("death burst small 2.wav");
+		break;
+	default:
+		EffectPlayer = UEngineSound::Play("death burst small 3.wav");
+		break;
+	}
+
 
 	FSM.ChangeState(GaperState::Die);
-	int RandomValue = Random.RandomInt(1, 2);
-	if(1 == RandomValue)
+	int NewRandomValue = Random.RandomInt(1, 2);
+	if(1 == NewRandomValue)
 	{
 		APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
 		PlayGameMode->CurRoom->MonsterNumber++;

@@ -2,6 +2,8 @@
 #include <EngineCore/Actor.h>
 
 #include <EngineBase/FSMStateManager.h>
+#include <EngineBase/EngineRandom.h>
+
 #include <EnginePlatform/EngineSound.h>
 
 enum class BombState
@@ -30,8 +32,8 @@ protected:
 	void Tick(float _DeltaTime) override;
 
 	void Idle(float _DeltaTime);
+	void ExplosionStart();
 	void Explosion(float _DeltaTime);
-	void ExplosionStay(float _DeltaTime);
 
 private:
 
@@ -42,5 +44,8 @@ private:
 	class U2DCollision* CollisionComponent;
 
 	UFSMStateManager FSM = UFSMStateManager();
+	USoundPlayer EffectPlayer;
+	USoundPlayer CrumblePlayer;
+	UEngineRandom Random;
 };
 

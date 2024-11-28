@@ -26,6 +26,7 @@ void ATitleGameMode::BeginPlay()
 	Super::BeginPlay();
 	TitleLogo* NewActor = GetWorld()->SpawnActor<TitleLogo>();
 	BGMPlayer = UEngineSound::Play("title screen.ogg");
+	BGMPlayer.Loop(100);
 
 	UEngineAPICore::GetCore()->DestroyLevel("Play");
 }

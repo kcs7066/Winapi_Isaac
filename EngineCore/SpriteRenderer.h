@@ -70,6 +70,16 @@ public:
 		return Order;
 	}
 
+	int GetCurIndex()
+	{
+		return CurIndex;
+	}
+
+	int GetFrameIndex()
+	{
+		return CurAnimation->CurIndex;
+	}
+
 	FVector2D SetSpriteScale(float _Ratio = 1.0f, int _CurIndex = 0);
 
 

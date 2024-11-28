@@ -66,7 +66,8 @@ void APooter::BeginPlay()
 			MonsterRenderer->ChangeAnimation("Die_Pooter");
 		}
 	);
-
+	SwarmPlayer = UEngineSound::Play("insect swarm.wav");
+	SwarmPlayer.Loop(65535);
 	FSM.ChangeState(PooterState::Move);
 }
 
@@ -84,10 +85,6 @@ void APooter::Move(float _DeltaTime)
 
 	if (this->Hp <= 0.0f)
 	{
-		APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
-		PlayGameMode->CurRoom->MonsterNumber--;
-		DelayTime = 0.0f;
-		EffectPlayer = UEngineSound::Play("death burst small.wav");
 		DieStart();
 	}
 
@@ -151,10 +148,6 @@ void APooter::Attack(float _DeltaTime)
 
 	if (this->Hp <= 0.0f)
 	{
-		APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
-		PlayGameMode->CurRoom->MonsterNumber--;
-		DelayTime = 0.0f;
-		EffectPlayer = UEngineSound::Play("death burst small.wav");
 		DieStart();
 	}
 
@@ -175,9 +168,26 @@ void APooter::Attack(float _DeltaTime)
 
 void APooter::DieStart()
 {
+	APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
+	PlayGameMode->CurRoom->MonsterNumber--;
+	DelayTime = 0.0f;
 	CollisionComponent->SetActive(false);
 	ShadowRenderer->SetSpriteScale(0.0f);
 
+	int RandomValue = Random.RandomInt(1, 3);
+	switch (RandomValue)
+	{
+	case 1:
+		EffectPlayer = UEngineSound::Play("death burst small.wav");
+		break;
+	case 2:
+		EffectPlayer = UEngineSound::Play("death burst small 2.wav");
+		break;
+	default:
+		EffectPlayer = UEngineSound::Play("death burst small 3.wav");
+		break;
+	}
+	SwarmPlayer.Off();
 	FSM.ChangeState(PooterState::Die);
 }
 

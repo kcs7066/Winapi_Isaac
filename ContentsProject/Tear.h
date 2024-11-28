@@ -49,7 +49,8 @@ private:
 	class U2DCollision* CollisionComponent;
 
 	UFSMStateManager FSM = UFSMStateManager();
-	USoundPlayer BGMPlayer;
+	USoundPlayer EffectPlayer;
+	USoundPlayer PoopPlayer;
 	UEngineRandom Random;
 
 };

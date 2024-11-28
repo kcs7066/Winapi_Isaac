@@ -121,10 +121,6 @@ void ADip::Idle(float _DeltaTime)
 	}
 	if (this->Hp <= 0.0f)
 	{
-		APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
-		PlayGameMode->CurRoom->MonsterNumber--;
-		DelayTime = 0.0f;
-		EffectPlayer = UEngineSound::Play("death burst small.wav");
 		DieStart();
 	}
 }
@@ -206,10 +202,6 @@ void ADip::Move(float _DeltaTime)
 
 	if (this->Hp <= 0.0f)
 	{
-		APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
-		PlayGameMode->CurRoom->MonsterNumber--;
-		DelayTime = 0.0f;
-		EffectPlayer = UEngineSound::Play("death burst small.wav");
 		DieStart();
 	}
 }
@@ -256,9 +248,24 @@ void ADip::DirChange()
 
 void ADip::DieStart()
 {
+	APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
+	PlayGameMode->CurRoom->MonsterNumber--;
+	DelayTime = 0.0f;
 	CollisionComponent->SetActive(false);
 	ShadowRenderer->SetSpriteScale(0.0f);
-
+	int RandomValue = Random.RandomInt(1, 3);
+	switch (RandomValue)
+	{
+	case 1:
+		EffectPlayer = UEngineSound::Play("death burst small.wav");
+		break;
+	case 2:
+		EffectPlayer = UEngineSound::Play("death burst small 2.wav");
+		break;
+	default:
+		EffectPlayer = UEngineSound::Play("death burst small 3.wav");
+		break;
+	}
 	FSM.ChangeState(DipState::Die);
 }
 
