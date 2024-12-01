@@ -155,14 +155,9 @@ void ALarryjr::DirChange(float _DeltaTime)
 	if 
 		(LarryjrPart::HEAD == Part)
 	{
-		FVector2D ExpectPos = {std::floorf(FuturePos.X), std::floorf(FuturePos.Y) };
-		FVector2D NewPos = GetActorLocation();
-		FVector2D NewNewPos = { std::floorf(NewPos.X), std::floorf(NewPos.Y) };
 		APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
 		FVector2D NextFuturePos = { 0,0 };
 
-		if (ExpectPos == NewNewPos)
-		{
 			int RandomValue = Random.RandomInt(1, 20);
 
 			switch (RandomValue)
@@ -235,9 +230,8 @@ void ALarryjr::DirChange(float _DeltaTime)
 					FSM.ChangeState(LarryjrState::LeftMove);
 				}
 			}
-
-			SavePos = NewNewPos;
-		}
+			FVector2D NewPos = GetActorLocation();
+			SavePos = {NewPos.iX(), NewPos.iY() };
 
 	}
 
@@ -246,26 +240,30 @@ void ALarryjr::DirChange(float _DeltaTime)
 		FuturePos = LinkedParts[LinkDir::Front]->SavePos;
 		FVector2D NewDir = FuturePos - GetActorLocation();
 
-		int a = 0;
-
 		if (NewDir.Y < -40)
 		{
 			FSM.ChangeState(LarryjrState::UpMove);
+			SavePos = { GetActorLocation().iX(),GetActorLocation().iY() };
 		}
 		else if (NewDir.X > 40)
 		{
 			FSM.ChangeState(LarryjrState::RightMove);
+			SavePos = { GetActorLocation().iX(),GetActorLocation().iY() };
 		}
 		else if (NewDir.Y > 40)
 		{
 			FSM.ChangeState(LarryjrState::DownMove);
+			SavePos = { GetActorLocation().iX(),GetActorLocation().iY() };
 		}
 		else if (NewDir.X < -40)
 		{
 			FSM.ChangeState(LarryjrState::LeftMove);
+			SavePos = { GetActorLocation().iX(),GetActorLocation().iY() };
 		}
-
-		SavePos = { GetActorLocation().iX(),GetActorLocation().iY()};
+		else
+		{
+		
+		}
 
 		if (Part == LarryjrPart::TAIL)
 		{
@@ -297,14 +295,15 @@ void ALarryjr::UpMove(float _DeltaTime)
 			AStructure* ResultStructure = dynamic_cast<AStructure*>(Result);
 			APoop* ResultPoop = dynamic_cast<APoop*>(ResultStructure);
 			ResultPoop->Hp = 0;
+			EffectPlayer = UEngineSound::Play("plop.wav");
 			ResultPoop->StructureRenderer->ChangeAnimation("Poop0");
 			ResultPoop->CollisionComponent->SetActive(false);
 		}
 	}
 
-	    float ExpectPos = std::floorf(FuturePos.Y);
+	    int ExpectPos = FuturePos.iY();
 		FVector2D NewPos = GetActorLocation();
-		float NewNewPos = std::floorf(NewPos.Y);
+		int NewNewPos = NewPos.iY();
 		if (ExpectPos == NewNewPos) 
 		{
 			FSM.ChangeState(LarryjrState::DirChange);
@@ -312,7 +311,7 @@ void ALarryjr::UpMove(float _DeltaTime)
 		else
 		{
 			Dir = { 0,-1 };
-			AddActorLocation(Dir * _DeltaTime * Speed);
+			AddActorLocation(Dir * Speed);
 		}
 
 		if (this->Hp <= 0.0f || true == LinkedParts.empty())
@@ -332,14 +331,15 @@ void ALarryjr::RightMove(float _DeltaTime)
 			AStructure* ResultStructure = dynamic_cast<AStructure*>(Result);
 			APoop* ResultPoop = dynamic_cast<APoop*>(ResultStructure);
 			ResultPoop->Hp = 0;
+			EffectPlayer = UEngineSound::Play("plop.wav");
 			ResultPoop->StructureRenderer->ChangeAnimation("Poop0");
 			ResultPoop->CollisionComponent->SetActive(false);
 		}
 	}
 
-	float ExpectPos = std::floorf(FuturePos.X);
+	int ExpectPos = FuturePos.iX();
 	FVector2D NewPos = GetActorLocation();
-	float NewNewPos = std::floorf(NewPos.X);
+	int NewNewPos = NewPos.iX();
 	if (ExpectPos == NewNewPos)
 	{
 		FSM.ChangeState(LarryjrState::DirChange);
@@ -347,7 +347,7 @@ void ALarryjr::RightMove(float _DeltaTime)
 	else
 	{
 		Dir = { 1,0 };
-		AddActorLocation(Dir * _DeltaTime * Speed);
+		AddActorLocation(Dir * Speed);
 	}
 	if (this->Hp <= 0.0f || true == LinkedParts.empty())
 	{
@@ -366,14 +366,15 @@ void ALarryjr::DownMove(float _DeltaTime)
 			AStructure* ResultStructure = dynamic_cast<AStructure*>(Result);
 			APoop* ResultPoop = dynamic_cast<APoop*>(ResultStructure);
 			ResultPoop->Hp = 0;
+			EffectPlayer = UEngineSound::Play("plop.wav");
 			ResultPoop->StructureRenderer->ChangeAnimation("Poop0");
 			ResultPoop->CollisionComponent->SetActive(false);
 		}
 	}
 
-	float ExpectPos = std::floorf(FuturePos.Y);
+	int ExpectPos = FuturePos.iY();
 	FVector2D NewPos = GetActorLocation();
-	float NewNewPos = std::floorf(NewPos.Y);
+	int NewNewPos = NewPos.iY();
 	if (ExpectPos == NewNewPos)
 	{
 		FSM.ChangeState(LarryjrState::DirChange);
@@ -381,7 +382,7 @@ void ALarryjr::DownMove(float _DeltaTime)
 	else
 	{
 		Dir = { 0,1 };
-		AddActorLocation(Dir * _DeltaTime * Speed);
+		AddActorLocation(Dir * Speed);
 	}
 	if (this->Hp <= 0.0f || true == LinkedParts.empty())
 	{
@@ -400,14 +401,15 @@ void ALarryjr::LeftMove(float _DeltaTime)
 			AStructure* ResultStructure = dynamic_cast<AStructure*>(Result);
 			APoop* ResultPoop = dynamic_cast<APoop*>(ResultStructure);
 			ResultPoop->Hp = 0;
+			EffectPlayer = UEngineSound::Play("plop.wav");
 			ResultPoop->StructureRenderer->ChangeAnimation("Poop0");
 			ResultPoop->CollisionComponent->SetActive(false);
 		}
 	}
 
-	float ExpectPos = std::floorf(FuturePos.X);
+	int ExpectPos = FuturePos.iX();
 	FVector2D NewPos = GetActorLocation();
-	float NewNewPos = std::floorf(NewPos.X);
+	int NewNewPos = NewPos.iX();
 	if (ExpectPos == NewNewPos)
 	{
 		FSM.ChangeState(LarryjrState::DirChange);
@@ -415,7 +417,7 @@ void ALarryjr::LeftMove(float _DeltaTime)
 	else
 	{
 		Dir = { -1,0 };
-		AddActorLocation(Dir * _DeltaTime * Speed);
+		AddActorLocation(Dir * Speed);
 	}
 
 	if (this->Hp <= 0.0f || true == LinkedParts.empty())
@@ -451,6 +453,8 @@ void ALarryjr::DieStart()
 	PlayGameMode->CurRoom->MonsterNumber--;
 	if (0 == PlayGameMode->CurRoom->MonsterNumber)
 	{
+		PlayGameMode->BGMPlayer.Off();
+		PlayGameMode->BGMPlayer = UEngineSound::Play("secret to everyone.ogg");
 		ATrapDoor* NewTrapDoor = GetWorld()->SpawnActor<ATrapDoor>();
 		NewTrapDoor->SetActorLocation({ PlayGameMode->CurRoom->RoomPos.X + 52.0f * (0.0f), PlayGameMode->CurRoom->RoomPos.Y - 52.0f * (2.0f) });
 		EffectPlayer = UEngineSound::Play("death burst large.wav");

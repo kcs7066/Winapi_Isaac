@@ -90,8 +90,6 @@ void IsaacContentsCore::BeginPlay()
 	UImageManager::GetInst().CuttingSprite("Ui_Hearts.png", { 16, 16 });
 	UImageManager::GetInst().CuttingSprite("Number.png", { 16, 16 });
 	UImageManager::GetInst().CuttingSprite("HUDPickups.png", { 16, 16 });
-	UImageManager::GetInst().CuttingSprite("Pickup_Coin.png", { 64, 64 });
-	UImageManager::GetInst().CuttingSprite("Pickup_Key.png", { 32, 32 });
 	UImageManager::GetInst().CuttingSprite("Pickup_Heart.png", { 32, 32 });
 	UImageManager::GetInst().CuttingSprite("Character_Isaac.png", { 64, 64 });
 	UImageManager::GetInst().CuttingSprite("Ghost.png", { 64, 64 });
@@ -106,7 +104,6 @@ void IsaacContentsCore::BeginPlay()
 	UImageManager::GetInst().CuttingSprite("Effect_Poof.png", { 64, 64 });
 	UImageManager::GetInst().CuttingSprite("Monster_Pooter.png", { 32, 32 });
 	UImageManager::GetInst().CuttingSprite("Costume.png", { 64, 64 });
-	UImageManager::GetInst().CuttingSprite("Ui_BossHealthBar.png", { 150, 32 });
 
 	{
 

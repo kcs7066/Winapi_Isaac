@@ -74,11 +74,13 @@ APlayGameMode::APlayGameMode()
 	RestartGameRenderer->SetSprite("Die.png");
 	RestartGameRenderer->SetSpriteScale(0.0f);
 	RestartGameRenderer->SetComponentLocation({ 0,0 });
+
+	
 }
 
 APlayGameMode::~APlayGameMode()
 {
-	
+
 }
 
 
@@ -187,7 +189,7 @@ Fade->FadeOut();
 
 	BGMPlayer = UEngineSound::Play("diptera sonata.ogg");
 	BGMPlayer.Loop(100);
-	UEngineDebug::SwitchIsDebug();
+
 }
 
 void APlayGameMode::Tick(float _DeltaTime)
@@ -317,7 +319,6 @@ void APlayGameMode::Tick(float _DeltaTime)
 				Ptr->CanMove = true;
 			}
 			else {
-				int a = 0;
 			}
 
 			if (1 == CurRoom->CanSpawnNumber)
@@ -677,7 +678,7 @@ void APlayGameMode::CreateMap()
 	
 	if (Rooms[4] == CurRoom)
 	{
-		int RandomValue = Random.RandomInt(1, 1);
+		int RandomValue = Random.RandomInt(2, 2);
 
 		switch (RandomValue)
 		{
@@ -727,6 +728,7 @@ void APlayGameMode::CreateMap()
 		default:
 			break;
 		}
+		EffectPlayer = UEngineSound::Play("castleportcullis.wav");
 	}
 	else
 	{

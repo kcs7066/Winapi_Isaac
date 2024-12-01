@@ -51,9 +51,7 @@ public:
 	void HpCheck();
 
 	int Hp = 6;
-	int CoinNumber = 0;
 	int BombNumber = 1;
-	int KeyNumber = 0;
 
 	float Damage = 3.5f;
 	float HitCoolTime = 0.0f;

@@ -172,7 +172,6 @@ void ADip::Move(float _DeltaTime)
 			}
 			else if (abs(NewX) == abs(NewY))
 			{
-				int a = 0;
 				RandomDir.Y *= (-1.0f);
 			}
 			else

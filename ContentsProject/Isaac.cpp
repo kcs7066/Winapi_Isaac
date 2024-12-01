@@ -189,6 +189,7 @@ void AIsaac::Tick(float _DeltaTime)
 			{
 				if (BombCoolTime <= 0.0f)
 				{
+					EffectPlayer = UEngineSound::Play("fetus land.wav");
 					ABomb* NewBomb = GetWorld()->SpawnActor<ABomb>();
 					NewBomb->SetActorLocation(GetActorLocation());
 					BombCoolTime = 1.3f;
@@ -1583,7 +1584,6 @@ void AIsaac::DieStart()
 
 void AIsaac::LevelChangeStart()
 {
-	int a = 0;
 }
 
 void AIsaac::HpCheck()

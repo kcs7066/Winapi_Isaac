@@ -67,7 +67,7 @@ protected:
 
 private:
 
-	float Speed = 208.0f;
+	float Speed = 1.0f;
 
 	FVector2D FuturePos = { 0.0f,0.0f };
 	FVector2D SavePos = { 0.0f , 0.0f };
