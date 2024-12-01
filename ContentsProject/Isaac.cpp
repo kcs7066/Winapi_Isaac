@@ -51,10 +51,10 @@ AIsaac::AIsaac()
 	HeadRenderer->CreateAnimation("Run_LeftHead", "Head.png", 1, 1, 0.1f);
 
 	HeadRenderer->CreateAnimation("Item_Idle_Head", "Costume.png", 7, 7, 0.1f);
-	HeadRenderer->CreateAnimation("Item_Attack_UpHead", "Costume.png", { 4, 5 }, { 0.1f,0.266666f });
-	HeadRenderer->CreateAnimation("Item_Attack_RightHead", "Costume.png", { 2, 3 }, { 0.1f,0.266666f });
-	HeadRenderer->CreateAnimation("Item_Attack_DownHead", "Costume.png", { 6, 7 }, { 0.1f,0.266666f });
-	HeadRenderer->CreateAnimation("Item_Attack_LeftHead", "Costume.png", { 0, 1 }, { 0.1f,0.266666f });
+	HeadRenderer->CreateAnimation("Item_Attack_UpHead", "Costume.png", { 4, 5 }, { 0.1f,0.633333f });
+	HeadRenderer->CreateAnimation("Item_Attack_RightHead", "Costume.png", { 2, 3 }, { 0.1f,0.633333f });
+	HeadRenderer->CreateAnimation("Item_Attack_DownHead", "Costume.png", { 6, 7 }, { 0.1f,0.633333f });
+	HeadRenderer->CreateAnimation("Item_Attack_LeftHead", "Costume.png", { 0, 1 }, { 0.1f,0.633333f });
 	HeadRenderer->CreateAnimation("Item_Run_UpHead", "Costume.png", 5, 5, 0.1f);
 	HeadRenderer->CreateAnimation("Item_Run_RightHead", "Costume.png", 3, 3, 0.1f);
 	HeadRenderer->CreateAnimation("Item_Run_LeftHead", "Costume.png", 1, 1, 0.1f);

@@ -106,7 +106,7 @@ void IsaacContentsCore::BeginPlay()
 	UImageManager::GetInst().CuttingSprite("Effect_Poof.png", { 64, 64 });
 	UImageManager::GetInst().CuttingSprite("Monster_Pooter.png", { 32, 32 });
 	UImageManager::GetInst().CuttingSprite("Costume.png", { 64, 64 });
-
+	UImageManager::GetInst().CuttingSprite("Ui_BossHealthBar.png", { 150, 32 });
 
 	{
 
