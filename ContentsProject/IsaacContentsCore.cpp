@@ -105,6 +105,7 @@ void IsaacContentsCore::BeginPlay()
 	UImageManager::GetInst().CuttingSprite("Monster_Fatty_Left.png", { 64, 64 });
 	UImageManager::GetInst().CuttingSprite("Effect_Poof.png", { 64, 64 });
 	UImageManager::GetInst().CuttingSprite("Monster_Pooter.png", { 32, 32 });
+	UImageManager::GetInst().CuttingSprite("Costume.png", { 64, 64 });
 
 
 	{
@@ -122,11 +123,9 @@ void IsaacContentsCore::BeginPlay()
 
 	UEngineAPICore::GetCore()->GetMainWindow().SetWindowPosAndScale({ 0, 0 }, { 960, 540 });
 
-	UEngineAPICore::GetCore()->CreateLevel<APlayGameMode, AIsaac>("Play");
-
 	UEngineAPICore::GetCore()->CreateLevel<ATitleGameMode, AActor>("Title");
 
-	UEngineAPICore::GetCore()->OpenLevel("Play");
+	UEngineAPICore::GetCore()->OpenLevel("Title");
 }
 
 void IsaacContentsCore::Tick()

@@ -53,14 +53,15 @@ void APickUpHeart::Tick(float _DeltaTime)
 	if (nullptr != Result)
 	{
 		AIsaac* NewResult = dynamic_cast<AIsaac*>(Result);
-
 		if (4 >= NewResult->Hp)
 		{
+			EffectPlayer = UEngineSound::Play("vamp.wav");
 			NewResult->Hp += 2;
 			Destroy();
 		}
 		else if (5 == NewResult->Hp)
 		{
+			EffectPlayer = UEngineSound::Play("vamp.wav");
 			NewResult->Hp += 1;
 			Destroy();
 		}

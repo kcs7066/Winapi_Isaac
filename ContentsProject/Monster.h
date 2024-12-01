@@ -25,8 +25,10 @@ public:
 
 
 	bool DeathValue = false;
+	
 	float DelayTime = 0.0f;
 	float Hp = 1.0f;
+	
 
 	class USpriteRenderer* ShadowRenderer = nullptr;
 	class USpriteRenderer* MonsterRenderer = nullptr;

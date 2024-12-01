@@ -35,7 +35,7 @@ ADip::ADip()
 
 	DebugOn();
 
-	SetHp(3.0f);
+	SetHp(4.0f);
 }
 
 ADip::~ADip()

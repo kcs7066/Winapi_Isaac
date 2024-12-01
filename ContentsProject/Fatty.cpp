@@ -36,7 +36,7 @@ AFatty::AFatty()
 	ShadowRenderer->SetSpriteScale(0.3f);
 
 	NewPoofRenderer = CreateDefaultSubObject<USpriteRenderer>();
-	NewPoofRenderer->SetOrder(ERenderOrder::MONSTERBACK);
+	NewPoofRenderer->SetOrder(ERenderOrder::MONSTERFRONT);
 	NewPoofRenderer->SetComponentLocation({ 0,-50 });
 	NewPoofRenderer->SetComponentScale({ 0,0 });
 	NewPoofRenderer->CreateAnimation("Poof", "Effect_Poof.png", 0, 14, 0.05f);

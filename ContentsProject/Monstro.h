@@ -41,6 +41,8 @@ private:
 
 	float TearCoolTime = 1.5f;
 	float Speed = 300.0f;
+	bool JumpValue = true;
+	bool JumpValue2 = true;
 
 	FVector2D Dir;
 };

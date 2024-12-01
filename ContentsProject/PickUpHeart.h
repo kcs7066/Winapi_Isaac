@@ -1,5 +1,7 @@
 #pragma once
 #include "PickUp.h"
+#include <EnginePlatform/EngineSound.h>
+
 
 class APickUpHeart : public APickUp
 {
@@ -20,6 +22,6 @@ public:
 protected:
 
 private:
-
+	USoundPlayer EffectPlayer;
 };
 

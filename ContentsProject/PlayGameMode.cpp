@@ -45,7 +45,7 @@ APlayGameMode::APlayGameMode()
 	MapRenderer->SetCameraEffect(false);
 	MapRenderer->SetOrder(ERenderOrder::MAPBOARD);
 	MapRenderer->SetSprite("Minimap1.png");
-	MapRenderer->SetSpriteScale(2.0f);
+	MapRenderer->SetSpriteScale(3.0f);
 	MapRenderer->SetComponentLocation({850,80});
 
 	BossMiniMapRenderer = CreateDefaultSubObject<USpriteRenderer>();
@@ -187,7 +187,7 @@ Fade->FadeOut();
 
 	BGMPlayer = UEngineSound::Play("diptera sonata.ogg");
 	BGMPlayer.Loop(100);
-
+	UEngineDebug::SwitchIsDebug();
 }
 
 void APlayGameMode::Tick(float _DeltaTime)

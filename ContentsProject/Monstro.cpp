@@ -142,11 +142,17 @@ void AMonstro::Move(float _DeltaTime)
 
 	if (DelayTime < 0.5f)
 	{
+		if (true == JumpValue)
+		{
+		EffectPlayer = UEngineSound::Play("boss lite roar 1.wav");
+		JumpValue = false;
+		}
 		MonsterRenderer->SetComponentLocation({ 0,-150 });
 		ShadowRenderer->SetSpriteScale(0.8f);
 
 		Dir = GetWorld()->GetPawn()->GetActorLocation() - GetActorLocation();
 		Dir.Normalize();
+
 
 		FVector2D NewLocation = GetActorLocation() += Dir * _DeltaTime * Speed;
 		APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
@@ -166,6 +172,11 @@ void AMonstro::Move(float _DeltaTime)
 	}
 	else
 	{
+		if (true == JumpValue2)
+		{
+			EffectPlayer = UEngineSound::Play("boss stump.wav");
+			JumpValue2 = false;
+		}
 		MonsterRenderer->SetComponentLocation({ 0,-40 });
 		ShadowRenderer->SetSpriteScale(1.0f);
 	}
@@ -173,6 +184,8 @@ void AMonstro::Move(float _DeltaTime)
 	if (DelayTime > 1.0f)
 	{
 		FSM.ChangeState(MonstroState::Idle);
+		JumpValue = true;
+		JumpValue2 = true;
 		DelayTime = 0.0f;
 	}
 }
@@ -196,6 +209,8 @@ void AMonstro::Attack(float _DeltaTime)
 			NewTear->Dir = GetWorld()->GetPawn()->GetActorLocation() - GetActorLocation();
 			NewTear->Dir.Normalize();
 			TearCoolTime = 1.5f;
+			EffectPlayer = UEngineSound::Play("boss spit blob barf 1.wav");
+
 		}
 
 		if (DelayTime > 1.0f)
@@ -213,7 +228,11 @@ void AMonstro::Jump(float _DeltaTime)
 	ShadowRenderer->SetSpriteScale(0.4f);
 
 
-
+	if (true == JumpValue)
+	{
+		EffectPlayer = UEngineSound::Play("boss lite roar 1.wav");
+		JumpValue = false;
+	}
 	if (DelayTime > 0.3f)
 	{
 		if (DelayTime > 1.0f)
@@ -247,6 +266,11 @@ void AMonstro::Jump(float _DeltaTime)
 
 	if (DelayTime > 1.8f)
 	{
+		if (true == JumpValue2)
+		{
+			EffectPlayer = UEngineSound::Play("boss stump.wav");
+			JumpValue2 = false;
+		}
 		ShadowRenderer->SetSpriteScale(1.0f);
 		if (TearCoolTime < 0.0f)
 		{
@@ -299,6 +323,8 @@ void AMonstro::Jump(float _DeltaTime)
 		{
 			MonsterRenderer->SetComponentLocation({ 0,-40 });
 			FSM.ChangeState(MonstroState::Idle);
+			JumpValue = true;
+			JumpValue2 = true;
 			DelayTime = 0.0f;
 		}
 	
