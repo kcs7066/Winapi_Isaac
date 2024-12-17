@@ -100,15 +100,15 @@ Fade->FadeOut();
 	CreateRestRoomPath(6);
 	CreateRestRoomPath(7);
 
-	CreateRoom("FirstRoom",RoomBind[0]);
+	CreateRoom("FirstRoom",NormalizedRoom[0]);
 	Rooms[0]->CanSpawnNumber = 0;
-	CreateRoom("Room1", RoomBind[1]);
-	CreateRoom("Room2", RoomBind[2]);
-	CreateRoom("Room3", RoomBind[3]);
-	CreateRoom("BossRoom", RoomBind[4], RoomType::BOSS);
-	CreateRoom("AdditionalRoom1", RoomBind[5]);
-	CreateRoom("AdditionalRoom2", RoomBind[6]);
-	CreateRoom("GoldRoom", RoomBind[7], RoomType::GOLD);
+	CreateRoom("Room1", NormalizedRoom[1]);
+	CreateRoom("Room2", NormalizedRoom[2]);
+	CreateRoom("Room3", NormalizedRoom[3]);
+	CreateRoom("BossRoom", NormalizedRoom[4], RoomType::BOSS);
+	CreateRoom("AdditionalRoom1", NormalizedRoom[5]);
+	CreateRoom("AdditionalRoom2", NormalizedRoom[6]);
+	CreateRoom("GoldRoom", NormalizedRoom[7], RoomType::GOLD);
 
 	Rooms[0]->MiniMapRenderer->ChangeAnimation("Now");
 	Rooms[0]->RoomRenderer->SetSprite("FirstRoom.png");
@@ -347,7 +347,7 @@ void APlayGameMode::CreateBossRoomPath()
 {
 	int RoomNumber = 0;
 	FVector2D CreateRoomPos = { 0,0 };
-	RoomBind.insert({ RoomNumber, CreateRoomPos });
+	NormalizedRoom.push_back(CreateRoomPos);
 	int RandomValue = Random.RandomInt(1, 4);
 
 	switch (RandomValue)
@@ -355,7 +355,7 @@ void APlayGameMode::CreateBossRoomPath()
 	case 1:
 		CreateRoomPos += {0, -1};
 		RoomNumber++;
-		RoomBind.insert({ RoomNumber, CreateRoomPos });
+		NormalizedRoom.push_back(CreateRoomPos);
 		for (size_t i = 0; i < 3; i++)
 		{
 			RandomValue = Random.RandomInt(1, 2);
@@ -366,13 +366,13 @@ void APlayGameMode::CreateBossRoomPath()
 			case 1:
 				CreateRoomPos += {0, -1};
 				RoomNumber++;
-				RoomBind.insert({ RoomNumber, CreateRoomPos });
+				NormalizedRoom.push_back(CreateRoomPos);
 				break;
 
 			case 2:
 				CreateRoomPos += {1, 0};
 				RoomNumber++;
-				RoomBind.insert({ RoomNumber, CreateRoomPos });
+				NormalizedRoom.push_back(CreateRoomPos);
 				break;
 			default:
 				break;
@@ -382,7 +382,7 @@ void APlayGameMode::CreateBossRoomPath()
 	case 2:
 		CreateRoomPos += {1, 0};
 		RoomNumber++;
-		RoomBind.insert({ RoomNumber, CreateRoomPos });
+		NormalizedRoom.push_back(CreateRoomPos);
 		for (size_t i = 0; i < 3; i++)
 		{
 			RandomValue = Random.RandomInt(1, 2);
@@ -393,13 +393,13 @@ void APlayGameMode::CreateBossRoomPath()
 			case 1:
 				CreateRoomPos += {1, 0};
 				RoomNumber++;
-				RoomBind.insert({ RoomNumber, CreateRoomPos });
+				NormalizedRoom.push_back(CreateRoomPos);
 				break;
 
 			case 2:
 				CreateRoomPos += {0, 1};
 				RoomNumber++;
-				RoomBind.insert({ RoomNumber, CreateRoomPos });
+				NormalizedRoom.push_back(CreateRoomPos);
 				break;
 			default:
 				break;
@@ -409,7 +409,7 @@ void APlayGameMode::CreateBossRoomPath()
 	case 3:
 		CreateRoomPos += {0, 1};
 		RoomNumber++;
-		RoomBind.insert({ RoomNumber, CreateRoomPos });
+		NormalizedRoom.push_back(CreateRoomPos);
 		for (size_t i = 0; i < 3; i++)
 		{
 			RandomValue = Random.RandomInt(1, 2);
@@ -420,13 +420,13 @@ void APlayGameMode::CreateBossRoomPath()
 			case 1:
 				CreateRoomPos += {0, 1};
 				RoomNumber++;
-				RoomBind.insert({ RoomNumber, CreateRoomPos });
+				NormalizedRoom.push_back(CreateRoomPos);
 				break;
 
 			case 2:
 				CreateRoomPos += {-1, 0};
 				RoomNumber++;
-				RoomBind.insert({ RoomNumber, CreateRoomPos });
+				NormalizedRoom.push_back(CreateRoomPos);
 				break;
 			default:
 				break;
@@ -436,7 +436,7 @@ void APlayGameMode::CreateBossRoomPath()
 	case 4:
 		CreateRoomPos += {-1, 0};
 		RoomNumber++;
-		RoomBind.insert({ RoomNumber, CreateRoomPos });
+		NormalizedRoom.push_back(CreateRoomPos);
 		for (size_t i = 0; i < 3; i++)
 		{
 			RandomValue = Random.RandomInt(1, 2);
@@ -447,13 +447,13 @@ void APlayGameMode::CreateBossRoomPath()
 			case 1:
 				CreateRoomPos += {-1, 0};
 				RoomNumber++;
-				RoomBind.insert({ RoomNumber, CreateRoomPos });
+				NormalizedRoom.push_back(CreateRoomPos);
 				break;
 
 			case 2:
 				CreateRoomPos += {0, -1};
 				RoomNumber++;
-				RoomBind.insert({ RoomNumber, CreateRoomPos });
+				NormalizedRoom.push_back(CreateRoomPos);
 				break;
 			default:
 				break;
@@ -470,12 +470,12 @@ void APlayGameMode::CreateBossRoomPath()
 bool APlayGameMode::IsBind(FVector2D _Pos)
 {
 	{
-		std::map<int, FVector2D>::iterator StartIter = RoomBind.begin();
-		std::map<int, FVector2D>::iterator EndIter = RoomBind.end();
+		std::vector<FVector2D>::iterator StartIter = NormalizedRoom.begin();
+		std::vector<FVector2D>::iterator EndIter = NormalizedRoom.end();
 
 		for (; StartIter != EndIter; ++StartIter)
 		{
-			if (StartIter->second == _Pos)
+			if (*StartIter == _Pos)
 			{
 				return true;
 			}
@@ -493,43 +493,43 @@ bool APlayGameMode::IsAdjacentTwice(FVector2D _Pos)
 	FVector2D AdjacentPos4 = { _Pos.X , _Pos.Y - 1 };
 
 	{
-		std::map<int, FVector2D>::iterator StartIter = RoomBind.begin();
-		std::map<int, FVector2D>::iterator EndIter = RoomBind.end();
+		std::vector<FVector2D>::iterator StartIter = NormalizedRoom.begin();
+		std::vector<FVector2D>::iterator EndIter = NormalizedRoom.end();
 
 		for (; StartIter != EndIter; ++StartIter)
 		{
-			if (StartIter->second == AdjacentPos1)
+			if (*StartIter == AdjacentPos1)
 				AdjacentRoom++;
 		}
 	}
 
 	{
-		std::map<int, FVector2D>::iterator StartIter = RoomBind.begin();
-		std::map<int, FVector2D>::iterator EndIter = RoomBind.end();
+		std::vector<FVector2D>::iterator StartIter = NormalizedRoom.begin();
+		std::vector<FVector2D>::iterator EndIter = NormalizedRoom.end();
 
 		for (; StartIter != EndIter; ++StartIter)
 		{
-			if (StartIter->second == AdjacentPos2)
+			if (*StartIter == AdjacentPos2)
 				AdjacentRoom++;
 		}
 	}
 	{
-		std::map<int, FVector2D>::iterator StartIter = RoomBind.begin();
-		std::map<int, FVector2D>::iterator EndIter = RoomBind.end();
+		std::vector<FVector2D>::iterator StartIter = NormalizedRoom.begin();
+		std::vector<FVector2D>::iterator EndIter = NormalizedRoom.end();
 
 		for (; StartIter != EndIter; ++StartIter)
 		{
-			if (StartIter->second == AdjacentPos3)
+			if (*StartIter == AdjacentPos3)
 				AdjacentRoom++;
 		}
 	}
 	{
-		std::map<int, FVector2D>::iterator StartIter = RoomBind.begin();
-		std::map<int, FVector2D>::iterator EndIter = RoomBind.end();
+		std::vector<FVector2D>::iterator StartIter = NormalizedRoom.begin();
+		std::vector<FVector2D>::iterator EndIter = NormalizedRoom.end();
 
 		for (; StartIter != EndIter; ++StartIter)
 		{
-			if (StartIter->second == AdjacentPos4)
+			if (*StartIter == AdjacentPos4)
 				AdjacentRoom++;
 		}
 	}
@@ -543,13 +543,13 @@ bool APlayGameMode::IsAdjacentTwice(FVector2D _Pos)
 
 int APlayGameMode::Roomkey(FVector2D _Pos)
 {
-	std::map<int, FVector2D>::iterator StartIter = RoomBind.begin();
-	std::map<int, FVector2D>::iterator EndIter = RoomBind.end();
+	std::vector<FVector2D>::iterator StartIter = NormalizedRoom.begin();
+	std::vector<FVector2D>::iterator EndIter = NormalizedRoom.end();
 
-	for (; StartIter != EndIter; ++StartIter)
+	for (int index = 0; StartIter != EndIter; ++StartIter, ++index)
 	{
-		if (StartIter->second == _Pos)
-			return StartIter->first;
+		if (*StartIter == _Pos)
+			return index;
 	}
 	return 0;
 }
@@ -562,7 +562,7 @@ void APlayGameMode::CreateRestRoomPath(int _RoomNumber)
 
 	while (IsBind(CreateRoomPos))
 	{
-		if (CreateRoomPos == RoomBind[3])
+		if (CreateRoomPos == NormalizedRoom[3])
 		{
 			CreateRoomPos = { 0,0 };
 		}
@@ -599,7 +599,7 @@ void APlayGameMode::CreateRestRoomPath(int _RoomNumber)
 	}
 
 
-	RoomBind.insert({ _RoomNumber,CreateRoomPos });
+	NormalizedRoom.push_back(CreateRoomPos);
 
 }
 
@@ -627,10 +627,8 @@ void APlayGameMode::CreateRoom(std::string_view _RoomName,FVector2D _Pos, RoomTy
 	NewRoom->Random.SetSeed(time(nullptr) + SeedValue);
 	SeedValue++;
 
-	Rooms.insert({ RoomNumber,NewRoom });	
-	RoomNumber++;
+	Rooms.push_back({NewRoom});	
 
-	
 }
 
 void APlayGameMode::Link(ARoom* _Room)

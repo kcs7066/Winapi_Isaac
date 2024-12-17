@@ -39,7 +39,7 @@ public:
 	class AUi* BombUi = nullptr;
 	class AFade* Fade = nullptr;
 
-	std::map<int, class ARoom*> Rooms;
+	std::vector<class ARoom*> Rooms;
 
 	USoundPlayer BGMPlayer;
 	USoundPlayer EffectPlayer;
@@ -50,7 +50,6 @@ protected:
 	
 private:
 	
-	int RoomNumber = 0;
 	int SpawnCaseValue = 1;
 	long long SeedValue = 0;
 
@@ -59,7 +58,7 @@ private:
 	bool PauseGame = false;
 	bool ExitGameValue = false;
 
-	std::map<int, FVector2D> RoomBind;
+	std::vector<FVector2D> NormalizedRoom;
 
 	class USpriteRenderer* SpriteRenderer = nullptr;
 	class USpriteRenderer* MapRenderer = nullptr;

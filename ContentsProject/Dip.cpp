@@ -128,7 +128,7 @@ void ADip::Idle(float _DeltaTime)
 void ADip::Move(float _DeltaTime)
 {
 	DelayTime += _DeltaTime;
-
+	PrevPos = GetActorLocation();
 	FVector2D NewLocation = GetActorLocation() += RandomDir * _DeltaTime * Speed;
 	APlayGameMode* PlayGameMode = GetWorld()->GetGameMode<APlayGameMode>();
 
@@ -160,9 +160,13 @@ void ADip::Move(float _DeltaTime)
 	{
 		AActor* StructureResult = CollisionComponent->CollisionOnce(ECollisionGroup::Structure);
 
+			
+		
 		if (nullptr != StructureResult)
 		{
 			AStructure* NewResult = dynamic_cast<AStructure*>(StructureResult);
+
+			SetActorLocation(PrevPos);
 
 			float NewX = NewResult->Pos.X - GetActorLocation().X ;
 			float NewY = NewResult->Pos.Y - GetActorLocation().Y;
